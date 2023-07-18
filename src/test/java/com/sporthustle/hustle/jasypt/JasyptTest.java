@@ -21,6 +21,7 @@ public class JasyptTest extends JasyptConfig {
         String encryptedText = jasypt.encrypt(plainText);
         String decryptedText = jasypt.decrypt(encryptedText);
 
+        // 테스트 결과에서 암호문 확인 가능
         System.out.println(encryptedText);
 
         assertThat(plainText).isEqualTo(decryptedText);
