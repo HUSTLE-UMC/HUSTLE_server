@@ -1,6 +1,7 @@
 package com.sporthustle.hustle.src.user.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
+import com.sporthustle.hustle.common.entity.BaseState;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -40,6 +41,10 @@ public class User extends BaseEntity implements UserDetails {
 
   @Column(name = "refresh_token", nullable = true)
   private String refreshToken;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "state", nullable = false, length = 10)
+  protected BaseState state = BaseState.ACTIVE;
 
   @Column(name = "roles")
   @ElementCollection(fetch = FetchType.EAGER)
