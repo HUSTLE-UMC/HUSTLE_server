@@ -1,6 +1,6 @@
 package com.sporthustle.hustle.src.user;
 
-import com.sporthustle.hustle.common.security.JwtTokenProvider;
+import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
 import com.sporthustle.hustle.src.user.model.JoinReq;
 import com.sporthustle.hustle.src.user.model.JoinRes;
 import com.sporthustle.hustle.src.user.model.LoginReq;

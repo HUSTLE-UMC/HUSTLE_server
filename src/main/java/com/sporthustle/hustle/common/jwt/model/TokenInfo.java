@@ -1,4 +1,4 @@
-package com.sporthustle.hustle.common.security.model;
+package com.sporthustle.hustle.common.jwt.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

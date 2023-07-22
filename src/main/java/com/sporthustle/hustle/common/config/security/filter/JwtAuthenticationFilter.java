@@ -1,6 +1,6 @@
-package com.sporthustle.hustle.common.security.filter;
+package com.sporthustle.hustle.common.config.security.filter;
 
-import com.sporthustle.hustle.common.security.JwtTokenProvider;
+import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

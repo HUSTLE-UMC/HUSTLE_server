@@ -2,8 +2,8 @@ package com.sporthustle.hustle.src.user;
 
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
-import com.sporthustle.hustle.common.security.JwtTokenProvider;
-import com.sporthustle.hustle.common.security.model.TokenInfo;
+import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
+import com.sporthustle.hustle.common.jwt.model.TokenInfo;
 import com.sporthustle.hustle.src.user.entity.Gender;
 import com.sporthustle.hustle.src.user.entity.User;
 import com.sporthustle.hustle.src.user.model.JoinReq;

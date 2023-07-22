@@ -1,7 +1,7 @@
-package com.sporthustle.hustle.common.security.config;
+package com.sporthustle.hustle.common.config.security;
 
-import com.sporthustle.hustle.common.security.JwtTokenProvider;
-import com.sporthustle.hustle.common.security.filter.JwtAuthenticationFilter;
+import com.sporthustle.hustle.common.config.security.filter.JwtAuthenticationFilter;
+import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

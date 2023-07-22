@@ -1,8 +1,8 @@
-package com.sporthustle.hustle.common.security;
+package com.sporthustle.hustle.common.jwt;
 
 import static com.sporthustle.hustle.common.consts.Constants.*;
 
-import com.sporthustle.hustle.common.security.model.TokenInfo;
+import com.sporthustle.hustle.common.jwt.model.TokenInfo;
 import io.jsonwebtoken.*;
 import java.util.Base64;
 import java.util.Date;
