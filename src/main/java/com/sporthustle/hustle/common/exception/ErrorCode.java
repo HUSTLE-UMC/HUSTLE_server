@@ -8,9 +8,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public enum ErrorCode {
-  ALREADY_EXIST_USER(BAD_REQUEST, "USER_400", "이미 존재하는 유저입니다."),
-  USER_NOT_FOUND(NOT_FOUND, "USER_401", "해당 유저를 찾을 수 없습니다."),
-  INVALID_PASSWORD(BAD_REQUEST, "USER_402", "잘못된 비밀번호 입니다."),
+  ALREADY_EXIST_USER(BAD_REQUEST, "ALREADY_EXIST_USER", "이미 존재하는 유저입니다."),
+  USER_NOT_FOUND(NOT_FOUND, "USER_NOT_FOUND", "해당 유저를 찾을 수 없습니다."),
+  INVALID_PASSWORD(BAD_REQUEST, "INVALID_PASSWORD", "잘못된 비밀번호 입니다."),
   ;
 
   private final HttpStatus status;
