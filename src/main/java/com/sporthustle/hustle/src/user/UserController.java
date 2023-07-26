@@ -44,4 +44,12 @@ public class UserController {
     SearchUserIdRes searchUserIdRes = userService.searchUserId(searchUserIdReq);
     return ResponseEntity.ok(searchUserIdRes);
   }
+
+  @Operation(summary = "비밀번호 초기화 api")
+  @PatchMapping("/clear-pwd")
+  public ResponseEntity<ClearUserPwdRes> clearUserPwd(
+      @RequestBody ClearUserPwdReq clearUserPwdReq) {
+    ClearUserPwdRes clearUserPwdRes = userService.clearUserPwd(clearUserPwdReq);
+    return ResponseEntity.ok(clearUserPwdRes);
+  }
 }

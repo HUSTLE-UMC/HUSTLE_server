@@ -95,4 +95,8 @@ public class User extends BaseEntity implements UserDetails {
   public void insertRefreshToken(String refreshToken) {
     this.refreshToken = refreshToken;
   }
+
+  public void changePassword(String password) {
+    this.password = password;
+  }
 }

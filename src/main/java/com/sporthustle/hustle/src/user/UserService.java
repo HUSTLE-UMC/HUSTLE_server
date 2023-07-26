@@ -1,5 +1,7 @@
 package com.sporthustle.hustle.src.user;
 
+import static com.sporthustle.hustle.common.consts.Constants.*;
+
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
@@ -7,12 +9,16 @@ import com.sporthustle.hustle.common.jwt.model.TokenInfo;
 import com.sporthustle.hustle.src.user.entity.Gender;
 import com.sporthustle.hustle.src.user.entity.User;
 import com.sporthustle.hustle.src.user.model.*;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
 
@@ -51,11 +57,31 @@ public class UserService {
     return LoginRes.builder().tokenInfo(tokenInfo).build();
   }
 
+  @Transactional(readOnly = true)
   public SearchUserIdRes searchUserId(SearchUserIdReq searchUserIdReq) {
     User findUser =
         userRepository
             .findByNameAndBirth(searchUserIdReq.getName(), searchUserIdReq.getBirth())
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
     return SearchUserIdRes.builder().userId(findUser.getEmail()).build();
+  }
+
+  public ClearUserPwdRes clearUserPwd(ClearUserPwdReq clearUserPwdReq) {
+    User user =
+        userRepository
+            .findByNameAndBirthAndEmail(
+                clearUserPwdReq.getName(), clearUserPwdReq.getBirth(), clearUserPwdReq.getUserId())
+            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+    String tmpPwd = passwordEncoder.encode(generateTemporaryPwd());
+    user.changePassword(tmpPwd);
+    return ClearUserPwdRes.builder().message("비밀번호가 초기화 되었습니다.").build();
+  }
+
+  private String generateTemporaryPwd() {
+    SecureRandom random = new SecureRandom();
+    return random
+        .ints(TEMPORARY_PASSWORD_LENGTH, RANDOM_NUM_ORIGIN, RANDOM_NUM_BOUND + 1)
+        .mapToObj(i -> String.valueOf((char) i))
+        .collect(Collectors.joining());
   }
 }
