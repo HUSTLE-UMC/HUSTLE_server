@@ -46,10 +46,10 @@ public class UserController {
   }
 
   @Operation(summary = "비밀번호 초기화 api")
-  @PatchMapping("/clear-pwd")
-  public ResponseEntity<ClearUserPwdRes> clearUserPwd(
-      @RequestBody ClearUserPwdReq clearUserPwdReq) {
-    ClearUserPwdRes clearUserPwdRes = userService.clearUserPwd(clearUserPwdReq);
-    return ResponseEntity.ok(clearUserPwdRes);
+  @PatchMapping("/reset-pwd")
+  public ResponseEntity<ResetUserPwdRes> resetUserPwd(
+      @RequestBody ResetUserPwdReq resetUserPwdReq) {
+    ResetUserPwdRes resetUserPwdRes = userService.resetUserPwd(resetUserPwdReq);
+    return ResponseEntity.ok(resetUserPwdRes);
   }
 }

@@ -1,7 +1,5 @@
 package com.sporthustle.hustle.src.user;
 
-import static com.sporthustle.hustle.common.consts.Constants.*;
-
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
@@ -64,13 +62,13 @@ public class UserService {
     return SearchUserIdRes.builder().userId(findUser.getEmail()).build();
   }
 
-  public ClearUserPwdRes clearUserPwd(ClearUserPwdReq clearUserPwdReq) {
+  public ResetUserPwdRes resetUserPwd(ResetUserPwdReq resetUserPwdReq) {
     User user =
         userRepository
             .findByNameAndBirthAndEmail(
-                clearUserPwdReq.getName(), clearUserPwdReq.getBirth(), clearUserPwdReq.getUserId())
+                resetUserPwdReq.getName(), resetUserPwdReq.getBirth(), resetUserPwdReq.getUserId())
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-    user.changePassword(passwordEncoder.encode(clearUserPwdReq.getNewPassword()));
-    return ClearUserPwdRes.builder().message("비밀번호가 초기화 되었습니다.").build();
+    user.changePassword(passwordEncoder.encode(resetUserPwdReq.getNewPassword()));
+    return ResetUserPwdRes.builder().message("비밀번호가 초기화 되었습니다.").build();
   }
 }
