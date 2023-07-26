@@ -15,4 +15,7 @@ public class ClearUserPwdReq {
 
   @NotBlank(message = "생년월일은 필수 입력 값입니다.")
   private Date birth;
+
+  @NotBlank(message = "생년월일은 필수 입력 값입니다.")
+  private String newPassword;
 }

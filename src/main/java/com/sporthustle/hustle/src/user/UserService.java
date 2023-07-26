@@ -9,9 +9,7 @@ import com.sporthustle.hustle.common.jwt.model.TokenInfo;
 import com.sporthustle.hustle.src.user.entity.Gender;
 import com.sporthustle.hustle.src.user.entity.User;
 import com.sporthustle.hustle.src.user.model.*;
-import java.security.SecureRandom;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -72,16 +70,7 @@ public class UserService {
             .findByNameAndBirthAndEmail(
                 clearUserPwdReq.getName(), clearUserPwdReq.getBirth(), clearUserPwdReq.getUserId())
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-    String tmpPwd = passwordEncoder.encode(generateTemporaryPwd());
-    user.changePassword(tmpPwd);
+    user.changePassword(passwordEncoder.encode(clearUserPwdReq.getNewPassword()));
     return ClearUserPwdRes.builder().message("비밀번호가 초기화 되었습니다.").build();
-  }
-
-  private String generateTemporaryPwd() {
-    SecureRandom random = new SecureRandom();
-    return random
-        .ints(TEMPORARY_PASSWORD_LENGTH, RANDOM_NUM_ORIGIN, RANDOM_NUM_BOUND + 1)
-        .mapToObj(i -> String.valueOf((char) i))
-        .collect(Collectors.joining());
   }
 }
