@@ -6,10 +6,7 @@ import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
 import com.sporthustle.hustle.common.jwt.model.TokenInfo;
 import com.sporthustle.hustle.src.user.entity.Gender;
 import com.sporthustle.hustle.src.user.entity.User;
-import com.sporthustle.hustle.src.user.model.JoinReq;
-import com.sporthustle.hustle.src.user.model.JoinRes;
-import com.sporthustle.hustle.src.user.model.LoginReq;
-import com.sporthustle.hustle.src.user.model.LoginRes;
+import com.sporthustle.hustle.src.user.model.*;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,8 +28,8 @@ public class UserService {
         User.builder()
             .email(joinReq.getEmail())
             .password(passwordEncoder.encode(joinReq.getPassword()))
+            .name(joinReq.getName())
             .birth(joinReq.getBirth())
-            .nickname(joinReq.getNickname())
             .gender(Gender.valueOf(joinReq.getGender()))
             .roles(List.of(joinReq.getRoles()))
             .build();
@@ -52,5 +49,13 @@ public class UserService {
     findUser.insertRefreshToken(tokenInfo.getRefreshToken());
     userRepository.save(findUser);
     return LoginRes.builder().tokenInfo(tokenInfo).build();
+  }
+
+  public SearchUserIdRes searchUserId(SearchUserIdReq searchUserIdReq) {
+    User findUser =
+        userRepository
+            .findByNameAndBirth(searchUserIdReq.getName(), searchUserIdReq.getBirth())
+            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+    return SearchUserIdRes.builder().userId(findUser.getEmail()).build();
   }
 }

@@ -1,5 +1,6 @@
 package com.sporthustle.hustle.src.user.model;
 
+import java.util.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import lombok.Getter;
@@ -16,11 +17,11 @@ public class JoinReq {
       message = "비밀번호 형식이 올바르지 않습니다.")
   private String password;
 
-  @NotBlank(message = "생일은 필수 입력 값입니다.")
-  private String birth;
+  @NotBlank(message = "이름 필수 입력 값입니다.")
+  private String name;
 
-  @NotBlank(message = "닉네임은 필수 입력 값입니다.")
-  private String nickname;
+  @NotBlank(message = "생일은 필수 입력 값입니다.")
+  private Date birth;
 
   @NotBlank(message = "성별은 필수 입력 값입니다.")
   private String gender;

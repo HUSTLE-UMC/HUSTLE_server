@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.httpBasic()
         .disable()
         .authorizeRequests()
-        .antMatchers("/api/user/join", "/api/user/login")
+        .antMatchers("/api/user/join", "/api/user/login", "/api/user/search-id")
         .permitAll()
         .antMatchers("/api/**")
         .authenticated()

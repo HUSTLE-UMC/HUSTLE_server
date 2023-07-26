@@ -4,6 +4,7 @@ import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseState;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.*;
@@ -29,11 +30,11 @@ public class User extends BaseEntity implements UserDetails {
   @Column(name = "password", nullable = false)
   private String password;
 
-  @Column(name = "birth", length = 6)
-  private String birth;
+  @Column(name = "name", length = 15)
+  private String name;
 
-  @Column(name = "nickname", length = 15)
-  private String nickname;
+  @Column(name = "birth", length = 6)
+  private Date birth;
 
   @Column(name = "genger", length = 6)
   @Enumerated(EnumType.STRING)
@@ -82,16 +83,11 @@ public class User extends BaseEntity implements UserDetails {
 
   @Builder
   public User(
-      String email,
-      String password,
-      String birth,
-      String nickname,
-      Gender gender,
-      List<String> roles) {
+      String email, String password, Date birth, String name, Gender gender, List<String> roles) {
     this.email = email;
     this.password = password;
     this.birth = birth;
-    this.nickname = nickname;
+    this.name = name;
     this.gender = gender;
     this.roles = roles;
   }

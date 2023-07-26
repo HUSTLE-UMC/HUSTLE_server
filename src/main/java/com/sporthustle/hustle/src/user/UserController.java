@@ -1,19 +1,13 @@
 package com.sporthustle.hustle.src.user;
 
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
-import com.sporthustle.hustle.src.user.model.JoinReq;
-import com.sporthustle.hustle.src.user.model.JoinRes;
-import com.sporthustle.hustle.src.user.model.LoginReq;
-import com.sporthustle.hustle.src.user.model.LoginRes;
+import com.sporthustle.hustle.src.user.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "User", description = "유저 API")
 @Slf4j
@@ -41,5 +35,13 @@ public class UserController {
     log.info("로그인 시도됨");
     LoginRes loginRes = userService.login(loginReq);
     return ResponseEntity.ok(loginRes);
+  }
+
+  @Operation(summary = "아이디 찾기 api")
+  @GetMapping("/search-id")
+  public ResponseEntity<SearchUserIdRes> searchUserId(
+      @RequestBody SearchUserIdReq searchUserIdReq) {
+    SearchUserIdRes searchUserIdRes = userService.searchUserId(searchUserIdReq);
+    return ResponseEntity.ok(searchUserIdRes);
   }
 }
