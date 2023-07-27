@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "sportevent")
+@Table(name = "SportEvent")
 public class SportEvent extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sportevent_id", nullable = false)
+  @Column(name = "sport_event_id", nullable = false)
   private Long id;
 
   @Column(name = "name")
