@@ -20,7 +20,7 @@ public class SportEvent extends BaseEntity {
   @Column(name = "sport_event_id", nullable = false, updatable = false)
   private Long id;
 
-  @Column(name = "name")
+  @Column(nullable = false)
   private String name;
 
   @OneToMany(mappedBy = "sportEvent")

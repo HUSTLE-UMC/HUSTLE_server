@@ -20,7 +20,7 @@ public class SportPosition extends BaseEntity {
   @Column(name = "sport_position_id", nullable = false, updatable = false)
   private Long id;
 
-  @Column(name = "name")
+  @Column(nullable = false)
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY)
