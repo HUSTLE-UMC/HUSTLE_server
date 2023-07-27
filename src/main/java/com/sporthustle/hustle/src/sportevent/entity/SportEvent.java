@@ -8,8 +8,6 @@ import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
@@ -26,6 +24,5 @@ public class SportEvent extends BaseEntity {
   private String name;
 
   @OneToMany(mappedBy = "sportEvent")
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private List<SportPosition> sportPositions = new ArrayList<>();
 }
