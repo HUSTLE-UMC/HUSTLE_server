@@ -1,10 +1,15 @@
 package com.sporthustle.hustle.src.sportevent.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
+import com.sporthustle.hustle.src.sportposition.entity.SportPosition;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
@@ -14,9 +19,13 @@ public class SportEvent extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sport_event_id", nullable = false)
+  @Column(name = "sport_event_id", nullable = false, updatable = false)
   private Long id;
 
   @Column(name = "name")
   private String name;
+
+  @OneToMany(mappedBy = "sportEvent")
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private List<SportPosition> sportPositions = new ArrayList<>();
 }

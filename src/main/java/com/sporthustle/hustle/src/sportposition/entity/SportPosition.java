@@ -7,8 +7,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Entity
@@ -17,14 +15,13 @@ import org.hibernate.annotations.OnDeleteAction;
 public class SportPosition extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sport_position_id", nullable = false)
+  @Column(name = "sport_position_id", nullable = false, updatable = false)
   private Long id;
 
   @Column(name = "name")
   private String name;
 
-  @ManyToOne
-  @OnDelete(action = OnDeleteAction.CASCADE)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sport_event_id", nullable = false)
   private SportEvent sportEvent;
 

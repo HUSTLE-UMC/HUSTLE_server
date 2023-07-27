@@ -12,7 +12,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  #    database-platform: org.hibernate.dialect.MySQL5Dialect
 
   ### spring security ###
   security:

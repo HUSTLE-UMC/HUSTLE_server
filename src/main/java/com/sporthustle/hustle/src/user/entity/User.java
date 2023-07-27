@@ -35,7 +35,7 @@ public class User extends BaseEntity implements UserDetails {
   @Column(name = "nickname", length = 15)
   private String nickname;
 
-  @Column(name = "genger", length = 6)
+  @Column(name = "gender", length = 6)
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
