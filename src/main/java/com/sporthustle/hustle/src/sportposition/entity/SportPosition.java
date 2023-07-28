@@ -3,6 +3,8 @@ package com.sporthustle.hustle.src.sportposition.entity;
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.src.sportevent.entity.SportEvent;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,10 +19,9 @@ import org.hibernate.annotations.OnDeleteAction;
 public class SportPosition extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(nullable = false, updatable = false)
   private Long id;
 
-  @Column(nullable = false)
+  @NotNull
   private String name;
 
   @ManyToOne(fetch = FetchType.LAZY)
