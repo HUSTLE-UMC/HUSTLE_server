@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,32 +23,33 @@ public class User extends BaseEntity implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(nullable = false)
   private Long id;
 
-  @Column(nullable = false, length = 100, unique = true)
+  @NotNull
+  @Column(unique = true)
   private String email;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(length = 128)
   private String password;
 
-  @Column(nullable = false)
+  @NotNull
   private String name;
 
-  @Column(nullable = false)
+  @NotNull
   private Date birth;
 
-  @Column(nullable = false)
+  @NotNull
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
   private String refreshToken;
 
+  @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 10)
   protected BaseState state = BaseState.ACTIVE;
 
-  @Column(nullable = false)
+  @NotNull
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> roles = new ArrayList<>();
 
