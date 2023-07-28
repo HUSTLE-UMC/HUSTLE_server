@@ -17,7 +17,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class SportPosition extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sport_position_id", nullable = false, updatable = false)
+  @Column(nullable = false, updatable = false)
   private Long id;
 
   @Column(nullable = false)
