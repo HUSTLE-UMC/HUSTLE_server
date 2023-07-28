@@ -32,7 +32,7 @@ public class UserService {
             .email(joinReq.getEmail())
             .password(passwordEncoder.encode(joinReq.getPassword()))
             .birth(joinReq.getBirth())
-            .nickname(joinReq.getNickname())
+            .name(joinReq.getName())
             .gender(Gender.valueOf(joinReq.getGender()))
             .roles(List.of(joinReq.getRoles()))
             .build();
