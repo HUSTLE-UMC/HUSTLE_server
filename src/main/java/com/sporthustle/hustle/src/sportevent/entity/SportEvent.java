@@ -5,8 +5,6 @@ import com.sporthustle.hustle.src.sportposition.entity.SportPosition;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +19,7 @@ public class SportEvent extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotNull
+  @Column(nullable = false)
   private String name;
 
   @OneToMany(mappedBy = "sportEvent")
