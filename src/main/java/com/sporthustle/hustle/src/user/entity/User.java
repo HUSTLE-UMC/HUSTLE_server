@@ -2,8 +2,10 @@ package com.sporthustle.hustle.src.user.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseState;
+import com.sporthustle.hustle.src.university.entity.University;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.persistence.*;
@@ -20,35 +22,37 @@ public class User extends BaseEntity implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id", nullable = false)
   private Long id;
 
-  @Column(name = "email", nullable = false, length = 100, unique = true)
+  @Column(nullable = false, unique = true)
   private String email;
 
-  @Column(name = "password", nullable = false)
+  @Column(nullable = false, length = 128)
   private String password;
 
-  @Column(name = "birth", length = 6)
-  private String birth;
+  @Column(nullable = false)
+  private String name;
 
-  @Column(name = "nickname", length = 15)
-  private String nickname;
+  @Column(nullable = false)
+  private Date birth;
 
-  @Column(name = "genger", length = 6)
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
-  @Column(name = "refresh_token", nullable = true)
   private String refreshToken;
 
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  @Column(name = "state", nullable = false, length = 10)
   protected BaseState state = BaseState.ACTIVE;
 
-  @Column(name = "roles")
+  @Column(nullable = false)
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> roles = new ArrayList<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "university_id")
+  private University university;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,16 +86,11 @@ public class User extends BaseEntity implements UserDetails {
 
   @Builder
   public User(
-      String email,
-      String password,
-      String birth,
-      String nickname,
-      Gender gender,
-      List<String> roles) {
+      String email, String password, Date birth, String name, Gender gender, List<String> roles) {
     this.email = email;
     this.password = password;
     this.birth = birth;
-    this.nickname = nickname;
+    this.name = name;
     this.gender = gender;
     this.roles = roles;
   }

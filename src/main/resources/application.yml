@@ -1,33 +1,51 @@
+### jpa setting ###
 spring:
-  datasource:
-    driver-class-name: ENC(4zv7k66bl0S9CkPIg0RRzaWiUGE2DhjRaIxsA8E9l+kWvMMPExbdHg==)
-    url: ENC(n4BgVC45DNHZ7Dv+eIGHp6NmDrt9UVXY93jMqfOq+Eb4lRi9oP6by9eJ3NuZGKrnk1QUdrQ4J2QFWMTvqV9AuCG2y500vtLwPJngcLnbAz1JxooZAJoNCxYOyW1HwFnOY0zEqGA45hhAZxCpZEKn4IPiX8JOxYZpl13BDw/qoExcYplGW3GJVD3mhD1Yqy2B)
-    username: ENC(3IlDHh9Hevic4hySvkJUVfhwVklsc20q)
-    password: ENC(Z9yNmaE1Sk5DKZerehtnl+GNz3MfhVBsrT8obGfbaLU=)
-
-  ### jpa setting ###
   jpa:
     hibernate:
       ddl-auto: create-drop
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+        show_sql: true
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hustle?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: root
 
-  ### spring security ###
-  security:
-    user:
-      name: ENC(oVSEw6gxE46j0SJPrnVgyg==)
-      password: ENC(kyHrVONdlwShgsY4YOKmiZDmH3g3tCae4Z55N6qyyYypqG0AQWsF6g==)
-    #      roles: USER, ADMIN
+### spring security ###
+security:
+  user:
+    name: ENC(oVSEw6gxE46j0SJPrnVgyg==)
+    password: ENC(kyHrVONdlwShgsY4YOKmiZDmH3g3tCae4Z55N6qyyYypqG0AQWsF6g==)
+  #      roles: USER, ADMIN
 
+### jwt ###
 jwt:
   secret:
     key: ENC(8Zdp8FGcysujUJk7CiGhHKrm3IzIWAa7Id0Wa2sdBptB1me6LzYxptMoABBZPqvh81xeo+E7nrsK/bzOwf5r1g==)
 
-  ### Swagger ###
+### Swagger ###
 springdoc:
   swagger-ui:
     enabled: true
     try-it-out-enabled: true
   version: 'v1'
+
+---
+spring.config:
+  activate:
+    on-profile: prod
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driver-class-name: ENC(4zv7k66bl0S9CkPIg0RRzaWiUGE2DhjRaIxsA8E9l+kWvMMPExbdHg==)
+    url: ENC(n4BgVC45DNHZ7Dv+eIGHp6NmDrt9UVXY93jMqfOq+Eb4lRi9oP6by9eJ3NuZGKrnk1QUdrQ4J2QFWMTvqV9AuCG2y500vtLwPJngcLnbAz1JxooZAJoNCxYOyW1HwFnOY0zEqGA45hhAZxCpZEKn4IPiX8JOxYZpl13BDw/qoExcYplGW3GJVD3mhD1Yqy2B)
+    username: ENC(3IlDHh9Hevic4hySvkJUVfhwVklsc20q)
+    password: ENC(Z9yNmaE1Sk5DKZerehtnl+GNz3MfhVBsrT8obGfbaLU=)
