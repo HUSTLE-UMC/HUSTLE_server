@@ -2,6 +2,8 @@ package com.sporthustle.hustle.src.club.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseState;
+import com.sporthustle.hustle.src.sportevent.entity.SportEvent;
+import com.sporthustle.hustle.src.university.entity.University;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,29 +18,32 @@ public class Club extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "club_id", nullable = false)
   private Long id;
 
-  @Column(name = "name", nullable = false)
+  @Column(nullable = false)
   private String name;
 
-  @Column(name = "instagramAddress")
-  private String instagramAddress;
+  private String instagram;
 
-  @Column(name = "youtubeUrl", length = 2100)
   private String youtubeUrl;
 
-  @Column(name = "mainArea")
+  @Column(nullable = false)
   private String mainArea;
 
-  @Column(name = "profileImageUrl", length = 2100)
   private String profileImageUrl;
 
-  @Column(name = "point")
   @ColumnDefault("0")
   private int point;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "state", nullable = false, length = 10)
+  @Column(nullable = false, length = 10)
   protected BaseState state = BaseState.ACTIVE;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "university_id", nullable = false)
+  private University university;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "sport_event_id", nullable = false)
+  private SportEvent sportEvent;
 }
