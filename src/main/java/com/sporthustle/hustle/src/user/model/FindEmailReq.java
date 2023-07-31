@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class SearchUserIdReq {
+public class FindEmailReq {
 
   @NotBlank(message = "이름은 필수 입력 값입니다.")
   private String name;

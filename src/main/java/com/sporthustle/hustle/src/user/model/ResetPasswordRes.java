@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ResetUserPwdRes {
+public class ResetPasswordRes {
 
   private String message;
 }

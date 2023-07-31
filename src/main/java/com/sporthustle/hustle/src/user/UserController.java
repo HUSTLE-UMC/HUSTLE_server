@@ -38,18 +38,17 @@ public class UserController {
   }
 
   @Operation(summary = "아이디 찾기 api")
-  @GetMapping("/search-id")
-  public ResponseEntity<SearchUserIdRes> searchUserId(
-      @RequestBody SearchUserIdReq searchUserIdReq) {
-    SearchUserIdRes searchUserIdRes = userService.searchUserId(searchUserIdReq);
-    return ResponseEntity.ok(searchUserIdRes);
+  @GetMapping("/find/email")
+  public ResponseEntity<FindEmailRes> findEmail(@RequestBody FindEmailReq findEmailReq) {
+    FindEmailRes findEmailRes = userService.findEmail(findEmailReq);
+    return ResponseEntity.ok(findEmailRes);
   }
 
   @Operation(summary = "비밀번호 초기화 api")
-  @PatchMapping("/reset-pwd")
-  public ResponseEntity<ResetUserPwdRes> resetUserPwd(
-      @RequestBody ResetUserPwdReq resetUserPwdReq) {
-    ResetUserPwdRes resetUserPwdRes = userService.resetUserPwd(resetUserPwdReq);
-    return ResponseEntity.ok(resetUserPwdRes);
+  @PatchMapping("/reset/password")
+  public ResponseEntity<ResetPasswordRes> resetPassword(
+      @RequestBody ResetPasswordReq resetPasswordReq) {
+    ResetPasswordRes resetPasswordRes = userService.resetPassword(resetPasswordReq);
+    return ResponseEntity.ok(resetPasswordRes);
   }
 }

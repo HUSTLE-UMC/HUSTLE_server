@@ -54,21 +54,23 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
-  public SearchUserIdRes searchUserId(SearchUserIdReq searchUserIdReq) {
+  public FindEmailRes findEmail(FindEmailReq findEmailReq) {
     User findUser =
         userRepository
-            .findByNameAndBirth(searchUserIdReq.getName(), searchUserIdReq.getBirth())
+            .findByNameAndBirth(findEmailReq.getName(), findEmailReq.getBirth())
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-    return SearchUserIdRes.builder().userId(findUser.getEmail()).build();
+    return FindEmailRes.builder().email(findUser.getEmail()).build();
   }
 
-  public ResetUserPwdRes resetUserPwd(ResetUserPwdReq resetUserPwdReq) {
+  public ResetPasswordRes resetPassword(ResetPasswordReq resetPasswordReq) {
     User user =
         userRepository
             .findByNameAndBirthAndEmail(
-                resetUserPwdReq.getName(), resetUserPwdReq.getBirth(), resetUserPwdReq.getUserId())
+                resetPasswordReq.getName(),
+                resetPasswordReq.getBirth(),
+                resetPasswordReq.getEmail())
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
-    user.changePassword(passwordEncoder.encode(resetUserPwdReq.getNewPassword()));
-    return ResetUserPwdRes.builder().message("비밀번호가 초기화 되었습니다.").build();
+    user.changePassword(passwordEncoder.encode(resetPasswordReq.getNewPassword()));
+    return ResetPasswordRes.builder().message("비밀번호가 초기화 되었습니다.").build();
   }
 }
