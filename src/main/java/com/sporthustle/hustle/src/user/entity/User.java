@@ -2,6 +2,7 @@ package com.sporthustle.hustle.src.user.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseState;
+import com.sporthustle.hustle.src.university.entity.University;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -48,6 +49,10 @@ public class User extends BaseEntity implements UserDetails {
   @Column(nullable = false)
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> roles = new ArrayList<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "university_id")
+  private University university;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
