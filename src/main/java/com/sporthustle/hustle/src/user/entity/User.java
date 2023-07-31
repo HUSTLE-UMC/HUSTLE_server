@@ -2,6 +2,7 @@ package com.sporthustle.hustle.src.user.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseState;
+import com.sporthustle.hustle.src.university.entity.University;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -21,35 +22,37 @@ public class User extends BaseEntity implements UserDetails {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id", nullable = false)
   private Long id;
 
-  @Column(name = "email", nullable = false, length = 100, unique = true)
+  @Column(nullable = false, unique = true)
   private String email;
 
-  @Column(name = "password", nullable = false)
+  @Column(nullable = false, length = 128)
   private String password;
 
-  @Column(name = "name", length = 15)
+  @Column(nullable = false)
   private String name;
 
-  @Column(name = "birth", length = 6)
+  @Column(nullable = false)
   private Date birth;
 
-  @Column(name = "genger", length = 6)
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
-  @Column(name = "refresh_token", nullable = true)
   private String refreshToken;
 
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  @Column(name = "state", nullable = false, length = 10)
   protected BaseState state = BaseState.ACTIVE;
 
-  @Column(name = "roles")
+  @Column(nullable = false)
   @ElementCollection(fetch = FetchType.EAGER)
   private List<String> roles = new ArrayList<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "university_id")
+  private University university;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

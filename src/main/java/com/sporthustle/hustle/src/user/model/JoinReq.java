@@ -17,7 +17,7 @@ public class JoinReq {
       message = "비밀번호 형식이 올바르지 않습니다.")
   private String password;
 
-  @NotBlank(message = "이름 필수 입력 값입니다.")
+  @NotBlank(message = "이름은 필수 입력 값입니다.")
   private String name;
 
   @NotBlank(message = "생일은 필수 입력 값입니다.")
