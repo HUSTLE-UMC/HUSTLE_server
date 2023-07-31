@@ -17,7 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "User")
+@Table(
+    name = "User",
+    indexes = {@Index(name = "i_findEmail", columnList = "email")})
 public class User extends BaseEntity implements UserDetails {
 
   @Id

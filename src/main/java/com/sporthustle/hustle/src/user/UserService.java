@@ -65,10 +65,7 @@ public class UserService {
   public ResetPasswordRes resetPassword(ResetPasswordReq resetPasswordReq) {
     User user =
         userRepository
-            .findByNameAndBirthAndEmail(
-                resetPasswordReq.getName(),
-                resetPasswordReq.getBirth(),
-                resetPasswordReq.getEmail())
+            .findByEmail(resetPasswordReq.getEmail())
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
     user.changePassword(passwordEncoder.encode(resetPasswordReq.getNewPassword()));
     return ResetPasswordRes.builder().message("비밀번호가 초기화 되었습니다.").build();
