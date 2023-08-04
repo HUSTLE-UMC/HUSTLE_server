@@ -11,6 +11,8 @@ public enum ErrorCode {
   ALREADY_EXIST_USER(BAD_REQUEST, "ALREADY_EXIST_USER", "이미 존재하는 유저입니다."),
   USER_NOT_FOUND(NOT_FOUND, "USER_NOT_FOUND", "해당 유저를 찾을 수 없습니다."),
   INVALID_PASSWORD(BAD_REQUEST, "INVALID_PASSWORD", "잘못된 비밀번호 입니다."),
+  SECURITY_CONTEXT_NOT_FOUND(
+      BAD_REQUEST, "SECURITY_CONTEXT_NOT_FOUND", "security context not found"),
   ;
 
   private final HttpStatus status;
