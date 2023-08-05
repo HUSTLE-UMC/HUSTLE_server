@@ -14,6 +14,8 @@ public enum ErrorCode {
   UNIVERSITY_NOT_FOUND(NOT_FOUND, "UNIVERSITY_NOT_FOUND", "해당 대학교를 찾을 수 없습니다."),
   SECURITY_CONTEXT_NOT_FOUND(
       BAD_REQUEST, "SECURITY_CONTEXT_NOT_FOUND", "security context not found"),
+  COMPETITION_NOT_FOUND(NOT_FOUND, "COMPETITION_NOT_FOUND", "해당 대회를 찾을 수 없습니다."),
+  CLUB_NOT_FOUND(NOT_FOUND, "CLUB_NOT_FOUND", "해당 동아리를 찾을 수 없습니다.")
   ;
 
   private final HttpStatus status;
