@@ -84,4 +84,21 @@ public class UserService {
   public boolean findAccount(FindAccountReq findAccountReq) {
     return userRepository.existsByEmailAndState(findAccountReq.getEmail(), ACTIVE);
   }
+
+  public void modifyUserInfo(ModifyUserInfoReq modifyUserInfoReq) {
+    User user =
+        userRepository
+            .findByEmail(modifyUserInfoReq.getEmail())
+            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+    University university =
+        universityRepository
+            .findById(modifyUserInfoReq.getUniversityId())
+            .orElseThrow(() -> new BaseException(ErrorCode.UNIVERSITY_NOT_FOUND));
+    user.modifyUserInfo(
+        modifyUserInfoReq.getPassword(),
+        modifyUserInfoReq.getName(),
+        modifyUserInfoReq.getBirth(),
+        modifyUserInfoReq.getGender(),
+        university);
+  }
 }
