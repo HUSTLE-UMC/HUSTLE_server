@@ -1,5 +1,7 @@
 package com.sporthustle.hustle.src.user;
 
+import static com.sporthustle.hustle.common.entity.BaseState.*;
+
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
@@ -42,7 +44,7 @@ public class UserService {
   public LoginRes login(LoginReq loginReq) {
     User findUser =
         userRepository
-            .findByEmail(loginReq.getEmail())
+            .findByEmailAndState(loginReq.getEmail(), ACTIVE)
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
     if (!passwordEncoder.matches(loginReq.getPassword(), findUser.getPassword())) {
       throw new BaseException(ErrorCode.INVALID_PASSWORD);
@@ -57,7 +59,7 @@ public class UserService {
   public FindEmailRes findEmail(FindEmailReq findEmailReq) {
     User findUser =
         userRepository
-            .findByNameAndBirth(findEmailReq.getName(), findEmailReq.getBirth())
+            .findByNameAndBirthAndState(findEmailReq.getName(), findEmailReq.getBirth(), ACTIVE)
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
     return FindEmailRes.builder().email(findUser.getEmail()).build();
   }
@@ -65,7 +67,7 @@ public class UserService {
   public ResetPasswordRes resetPassword(ResetPasswordReq resetPasswordReq) {
     User user =
         userRepository
-            .findByEmail(resetPasswordReq.getEmail())
+            .findByEmailAndState(resetPasswordReq.getEmail(), ACTIVE)
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
     user.changePassword(passwordEncoder.encode(resetPasswordReq.getNewPassword()));
     return ResetPasswordRes.builder().message("비밀번호가 초기화 되었습니다.").build();

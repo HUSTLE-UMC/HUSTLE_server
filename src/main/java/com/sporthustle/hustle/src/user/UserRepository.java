@@ -1,16 +1,16 @@
 package com.sporthustle.hustle.src.user;
 
+import com.sporthustle.hustle.common.entity.BaseState;
 import com.sporthustle.hustle.src.user.entity.User;
 import java.util.Date;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-  Optional<User> findByEmail(String username);
+
+  Optional<User> findByEmailAndState(String email, BaseState state);
 
   boolean existsByEmail(String email);
 
-  Optional<User> findByNameAndBirth(String name, Date birth);
-
-  Optional<User> findByNameAndBirthAndEmail(String name, Date birth, String userId);
+  Optional<User> findByNameAndBirthAndState(String name, Date birth, BaseState state);
 }
