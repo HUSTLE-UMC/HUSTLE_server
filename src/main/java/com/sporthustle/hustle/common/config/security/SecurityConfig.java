@@ -38,7 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .disable()
         .authorizeRequests()
         .antMatchers(
-            "/api/user/join", "/api/user/login", "/api/user/find/email", "/api/user/reset/password")
+            "/api/user/join",
+            "/api/user/login",
+            "/api/user/find/email",
+            "/api/user/reset/password",
+            "/api/user/find/account")
         .permitAll()
         .antMatchers("/api/**")
         .authenticated()
