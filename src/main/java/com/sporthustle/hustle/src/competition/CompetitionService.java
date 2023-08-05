@@ -2,6 +2,8 @@ package com.sporthustle.hustle.src.competition;
 
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
+import com.sporthustle.hustle.src.club.entity.Club;
+import com.sporthustle.hustle.src.club.model.ClubRepository;
 import com.sporthustle.hustle.src.competition.Repository.CompetitionContactRepository;
 import com.sporthustle.hustle.src.competition.Repository.CompetitionRepository;
 import com.sporthustle.hustle.src.competition.Repository.EntryTeamRepository;
@@ -34,6 +36,8 @@ public class CompetitionService {
     private final CompetitionContactRepository competitionContactRepository;
     private final EntryTeamRepository entryTeamRepository;
     private final ReadCompetitionInfoRes readCompetitionInfoRes;
+    private final ClubRepository clubRepository;
+
 
     @Transactional
     public HostRes createCompetition(HostReq hostreq){
@@ -142,8 +146,7 @@ public class CompetitionService {
             if(c.getPosition().equals("sub"))subPhoneNumber = c.getPhoneNumber();
         }
 
-        //List<Club> entryClubList = clubRepository.findByCompetitionId(competitionId)
-        //      .orElseThrow(() -> new BaseException(ErrorCode.CLUB_NOT_FOUND));    클럽 추후 구현
+        List<Club> entryClubList = clubRepository.findByCompetitionId(competitionId);
 
         ReadCompetitionInfoRes readCompetitionInfoRes = ReadCompetitionInfoRes.builder()
                 .startDate(competition.getStartDate())
@@ -156,8 +159,8 @@ public class CompetitionService {
                 .place(competition.getPlace())
                 .mainPhoneNumber(mainPhoneNumber)
                 .subPhoneNumber(subPhoneNumber)
-                //.numberOfTeam(entryClubList.size())
-                //.clubList(entryClubList)
+                .numberOfTeam(entryClubList.size())
+                .clubList(entryClubList)
                 .build();
 
         return readCompetitionInfoRes;
@@ -167,8 +170,8 @@ public class CompetitionService {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         Competition competition = competitionRepository.findById(competitionId)
                         .orElseThrow(() -> new BaseException(ErrorCode.COMPETITION_NOT_FOUND));
-        //Club club = clubRepository.findByName(entryReq.getClubName())
-        //               .orElseThroe(()-> new BaseException(ErrorCode.CLUB_NOT_FOUND)); 클럽 추후 구현
+
+        Club club = clubRepository.findByName(entryReq.getClubName());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -176,7 +179,7 @@ public class CompetitionService {
         EntryTeam entryTeam = EntryTeam.builder()
                 .competition(competition)
                 .userId(user)
-                //.clubId(entryReq.getClubName()) 클럽 추후 구현
+                .club(club)
                 .name(entryReq.getMainName())
                 .phoneNumber(entryReq.getMainPhoneNumber())
                 .score(0)

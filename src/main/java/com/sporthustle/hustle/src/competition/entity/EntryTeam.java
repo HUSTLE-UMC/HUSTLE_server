@@ -1,6 +1,7 @@
 package com.sporthustle.hustle.src.competition.entity;
 
 
+import com.sporthustle.hustle.src.club.entity.Club;
 import com.sporthustle.hustle.src.competition.Repository.CompetitionRepository;
 import com.sporthustle.hustle.src.user.entity.User;
 import lombok.AllArgsConstructor;
@@ -32,9 +33,9 @@ public class EntryTeam {
     @JoinColumn(name = "user_id")
     private User userId;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "club_id")
-    //private Club club;  클럽 추후 구현
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id")
+    private Club club;
 
 
     @Column(name = "name", length = 20)

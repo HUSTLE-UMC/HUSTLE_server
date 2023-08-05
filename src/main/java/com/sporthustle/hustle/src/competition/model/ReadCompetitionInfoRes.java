@@ -1,9 +1,11 @@
 package com.sporthustle.hustle.src.competition.model;
 
+import com.sporthustle.hustle.src.club.entity.Club;
 import lombok.Builder;
 
 import javax.persistence.Column;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 @Builder
@@ -18,6 +20,6 @@ public class ReadCompetitionInfoRes {
     private String place;
     private String mainPhoneNumber;
     private String subPhoneNumber;
-    //private int numberOfTeam;
-    //private List<ClubRes> clubResList; 추후 구현
+    private int numberOfTeam;
+    private List<Club> clubList;
 }
