@@ -63,7 +63,7 @@ public class UserController {
   }
 
   @Operation(summary = "회원 정보 수정 api")
-  @PatchMapping("/modify/infomation")
+  @PatchMapping("/modify/information")
   public ResponseEntity<ModifyUserInfoRes> modifyUserInfo(
       @RequestBody ModifyUserInfoReq modifyUserInfoReq) {
     userService.modifyUserInfo(modifyUserInfoReq);
