@@ -2,6 +2,7 @@ package com.sporthustle.hustle.src.user;
 
 import static com.sporthustle.hustle.common.entity.BaseState.*;
 
+import com.sporthustle.hustle.common.config.security.SecurityUtils;
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
@@ -88,7 +89,7 @@ public class UserService {
   public void modifyUserInfo(ModifyUserInfoReq modifyUserInfoReq) {
     User user =
         userRepository
-            .findByEmail(modifyUserInfoReq.getEmail())
+            .findByEmailAndState(SecurityUtils.getCurrentUserEmail(), ACTIVE)
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
     University university =
         universityRepository

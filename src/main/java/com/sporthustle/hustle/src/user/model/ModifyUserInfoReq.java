@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public class ModifyUserInfoReq {
 
-  private String email;
   private String password;
   private String name;
   private Date birth;
