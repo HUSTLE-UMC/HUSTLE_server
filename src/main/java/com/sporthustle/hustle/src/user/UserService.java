@@ -4,6 +4,8 @@ import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
 import com.sporthustle.hustle.common.jwt.model.TokenInfo;
+import com.sporthustle.hustle.src.university.UniversityRepository;
+import com.sporthustle.hustle.src.university.entity.University;
 import com.sporthustle.hustle.src.user.entity.Gender;
 import com.sporthustle.hustle.src.user.entity.User;
 import com.sporthustle.hustle.src.user.model.JoinReq;
@@ -22,11 +24,16 @@ public class UserService {
   private final JwtTokenProvider jwtTokenProvider;
   private final PasswordEncoder passwordEncoder;
   private final UserRepository userRepository;
+  private final UniversityRepository universityRepository;
 
   public JoinRes join(JoinReq joinReq) {
     if (userRepository.existsByEmail(joinReq.getEmail())) {
       throw new BaseException(ErrorCode.ALREADY_EXIST_USER);
     }
+    University university =
+        universityRepository
+            .findById(joinReq.getUniversityId())
+            .orElseThrow(() -> new BaseException(ErrorCode.UNIVERSITY_NOT_FOUND));
     User user =
         User.builder()
             .email(joinReq.getEmail())
@@ -35,6 +42,7 @@ public class UserService {
             .name(joinReq.getName())
             .gender(Gender.valueOf(joinReq.getGender()))
             .roles(List.of(joinReq.getRoles()))
+            .university(university)
             .build();
     userRepository.save(user);
     return JoinRes.builder().message("회원가입 완료하였습니다.").build();

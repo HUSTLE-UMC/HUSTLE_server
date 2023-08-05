@@ -86,13 +86,20 @@ public class User extends BaseEntity implements UserDetails {
 
   @Builder
   public User(
-      String email, String password, Date birth, String name, Gender gender, List<String> roles) {
+      String email,
+      String password,
+      Date birth,
+      String name,
+      Gender gender,
+      List<String> roles,
+      University university) {
     this.email = email;
     this.password = password;
     this.birth = birth;
     this.name = name;
     this.gender = gender;
     this.roles = roles;
+    this.university = university;
   }
 
   public void insertRefreshToken(String refreshToken) {
