@@ -102,4 +102,17 @@ public class UserService {
         modifyUserInfoReq.getGender(),
         university);
   }
+
+  public GetUserInformationRes getUserInformation() {
+    User user =
+        userRepository
+            .findByEmailAndState(SecurityUtils.getCurrentUserEmail(), ACTIVE)
+            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+    return GetUserInformationRes.builder()
+        .name(user.getName())
+        .birth(user.getBirth())
+        .gender(user.getGender())
+        .universityId(user.getUniversity().getId())
+        .build();
+  }
 }
