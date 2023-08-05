@@ -30,7 +30,6 @@ public class SwaggerConfig {
                     .name(jwtSchemeName)
                     .type(SecurityScheme.Type.HTTP)
                     .scheme("bearer")
-                    //                        .bearerFormat("JWT")
                     .in(SecurityScheme.In.HEADER)
                     .name("Authorization"));
     return new OpenAPI().info(info).addSecurityItem(securityRequirement).components(components);
