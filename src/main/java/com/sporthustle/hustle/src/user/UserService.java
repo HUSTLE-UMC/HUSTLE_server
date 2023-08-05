@@ -25,7 +25,7 @@ public class UserService {
   private final UserRepository userRepository;
 
   public JoinRes join(JoinReq joinReq) {
-    if (userRepository.existsByEmail(joinReq.getEmail())) {
+    if (userRepository.existsByEmailAndState(joinReq.getEmail(), ACTIVE)) {
       throw new BaseException(ErrorCode.ALREADY_EXIST_USER);
     }
     User user =
@@ -71,5 +71,9 @@ public class UserService {
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
     user.changePassword(passwordEncoder.encode(resetPasswordReq.getNewPassword()));
     return ResetPasswordRes.builder().message("비밀번호가 초기화 되었습니다.").build();
+  }
+
+  public boolean findAccount(FindAccountReq findAccountReq) {
+    return userRepository.existsByEmailAndState(findAccountReq.getEmail(), ACTIVE);
   }
 }

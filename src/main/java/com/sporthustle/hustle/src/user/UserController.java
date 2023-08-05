@@ -44,6 +44,16 @@ public class UserController {
     return ResponseEntity.ok(findEmailRes);
   }
 
+  @Operation(summary = "비밀번호 초기화를 위한 계정 찾기 api")
+  @GetMapping("/find/account")
+  public ResponseEntity<FindAccountRes> findAccount(@RequestBody FindAccountReq findAccountReq) {
+    String result = "존재하지 않는 계정입니다.";
+    if (userService.findAccount(findAccountReq)) {
+      result = "비밀번호 변경가능합니다.";
+    }
+    return ResponseEntity.ok(FindAccountRes.builder().message(result).build());
+  }
+
   @Operation(summary = "비밀번호 초기화 api")
   @PatchMapping("/reset/password")
   public ResponseEntity<ResetPasswordRes> resetPassword(

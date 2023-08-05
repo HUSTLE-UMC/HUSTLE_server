@@ -10,7 +10,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findByEmailAndState(String email, BaseState state);
 
-  boolean existsByEmail(String email);
+  boolean existsByEmailAndState(String email, BaseState state);
 
   Optional<User> findByNameAndBirthAndState(String name, Date birth, BaseState state);
 }
