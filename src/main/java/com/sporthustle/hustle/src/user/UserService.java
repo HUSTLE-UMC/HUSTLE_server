@@ -96,7 +96,6 @@ public class UserService {
             .findById(modifyUserInfoReq.getUniversityId())
             .orElseThrow(() -> new BaseException(ErrorCode.UNIVERSITY_NOT_FOUND));
     user.modifyUserInfo(
-        modifyUserInfoReq.getPassword(),
         modifyUserInfoReq.getName(),
         modifyUserInfoReq.getBirth(),
         modifyUserInfoReq.getGender(),
