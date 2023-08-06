@@ -71,4 +71,11 @@ public class UserController {
         ModifyUserInfoRes.builder().message("수정 완료되었습니다.").build();
     return ResponseEntity.ok(modifyUserInfoRes);
   }
+
+  @Operation(summary = "회웑 정보 수정을 위한 회원 정보 조회 api")
+  @GetMapping("/information")
+  public ResponseEntity<GetUserInformationRes> getUserInformation() {
+    GetUserInformationRes getUserInformationRes = userService.getUserInformation();
+    return ResponseEntity.ok(getUserInformationRes);
+  }
 }
