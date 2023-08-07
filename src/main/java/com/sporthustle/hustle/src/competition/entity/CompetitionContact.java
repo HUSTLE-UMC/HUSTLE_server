@@ -1,6 +1,8 @@
 package com.sporthustle.hustle.src.competition.entity;
 
 
+import com.sporthustle.hustle.common.entity.BaseEntity;
+import com.sporthustle.hustle.src.club.entity.Club;
 import com.sporthustle.hustle.src.user.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +18,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "CompetitionContact")
-public class CompetitionContact {
+public class CompetitionContact extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,22 +26,15 @@ public class CompetitionContact {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "competition_id")
+    @JoinColumn(name = "competition_id", nullable = false)
     private Competition competition;
 
-    @Column(name = "name", length = 20)
+
+    @Column(name = "name", length = 20, nullable = false)
     private String name;
 
-    @Column(name = "phone_number", length = 20)
+    @Column(name = "phone_number", length = 20, nullable = false)
     private String phoneNumber;
 
-    @Column(name = "position",length = 20)
-    private String position; //@추가
-
-    @Column(name = "created_at")
-    private Timestamp createdAt;
-
-    @Column(name = "update_at")
-    private Timestamp updateAt;
 
 }
