@@ -108,6 +108,13 @@ public class User extends BaseEntity implements UserDetails {
     this.refreshToken = refreshToken;
   }
 
+  public void modifyUserInfo(String name, Date birth, Gender gender, University university) {
+    this.name = name;
+    this.birth = birth;
+    this.gender = gender;
+    this.university = university;
+  }
+
   public void changePassword(String password) {
     this.password = password;
   }

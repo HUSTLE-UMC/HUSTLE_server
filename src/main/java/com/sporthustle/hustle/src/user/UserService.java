@@ -2,6 +2,7 @@ package com.sporthustle.hustle.src.user;
 
 import static com.sporthustle.hustle.common.entity.BaseState.*;
 
+import com.sporthustle.hustle.common.config.security.SecurityUtils;
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
@@ -83,5 +84,34 @@ public class UserService {
 
   public boolean findAccount(FindAccountReq findAccountReq) {
     return userRepository.existsByEmailAndState(findAccountReq.getEmail(), ACTIVE);
+  }
+
+  public void modifyUserInfo(ModifyUserInfoReq modifyUserInfoReq) {
+    User user =
+        userRepository
+            .findByEmailAndState(SecurityUtils.getCurrentUserEmail(), ACTIVE)
+            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+    University university =
+        universityRepository
+            .findById(modifyUserInfoReq.getUniversityId())
+            .orElseThrow(() -> new BaseException(ErrorCode.UNIVERSITY_NOT_FOUND));
+    user.modifyUserInfo(
+        modifyUserInfoReq.getName(),
+        modifyUserInfoReq.getBirth(),
+        modifyUserInfoReq.getGender(),
+        university);
+  }
+
+  public GetUserInformationRes getUserInformation() {
+    User user =
+        userRepository
+            .findByEmailAndState(SecurityUtils.getCurrentUserEmail(), ACTIVE)
+            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+    return GetUserInformationRes.builder()
+        .name(user.getName())
+        .birth(user.getBirth())
+        .gender(user.getGender())
+        .universityId(user.getUniversity().getId())
+        .build();
   }
 }

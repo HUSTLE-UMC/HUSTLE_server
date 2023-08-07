@@ -61,4 +61,21 @@ public class UserController {
     ResetPasswordRes resetPasswordRes = userService.resetPassword(resetPasswordReq);
     return ResponseEntity.ok(resetPasswordRes);
   }
+
+  @Operation(summary = "회원 정보 수정 api")
+  @PatchMapping("/modify/information")
+  public ResponseEntity<ModifyUserInfoRes> modifyUserInfo(
+      @RequestBody ModifyUserInfoReq modifyUserInfoReq) {
+    userService.modifyUserInfo(modifyUserInfoReq);
+    ModifyUserInfoRes modifyUserInfoRes =
+        ModifyUserInfoRes.builder().message("수정 완료되었습니다.").build();
+    return ResponseEntity.ok(modifyUserInfoRes);
+  }
+
+  @Operation(summary = "회웑 정보 수정을 위한 회원 정보 조회 api")
+  @GetMapping("/information")
+  public ResponseEntity<GetUserInformationRes> getUserInformation() {
+    GetUserInformationRes getUserInformationRes = userService.getUserInformation();
+    return ResponseEntity.ok(getUserInformationRes);
+  }
 }
