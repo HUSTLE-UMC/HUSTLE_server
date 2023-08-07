@@ -83,7 +83,8 @@ public class UserService {
   }
 
   public boolean findAccount(FindAccountReq findAccountReq) {
-    return userRepository.existsByEmailAndState(findAccountReq.getEmail(), ACTIVE);
+    return userRepository.existsByNameAndBirthAndEmailAndState(
+        findAccountReq.getName(), findAccountReq.getBirth(), findAccountReq.getEmail(), ACTIVE);
   }
 
   public void modifyUserInfo(ModifyUserInfoReq modifyUserInfoReq) {
