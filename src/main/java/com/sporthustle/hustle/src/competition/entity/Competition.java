@@ -1,6 +1,8 @@
 package com.sporthustle.hustle.src.competition.entity;
 
 
+import com.sporthustle.hustle.common.entity.BaseEntity;
+import com.sporthustle.hustle.src.sportevent.entity.SportEvent;
 import com.sporthustle.hustle.src.university.entity.University;
 import com.sporthustle.hustle.src.user.entity.User;
 import lombok.*;
@@ -8,6 +10,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -15,67 +18,69 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "Competition")
-public class Competition {
+public class Competition extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "competition_id", nullable = false)
     private Long id;
 
-    @Column(name = "title", length = 60)
+    @Column(name = "title", length = 60, nullable = false)
     private String title;
 
-    @Column(name = "host", length = 45)
+    @Column(name = "host", length = 45, nullable = false)
     private String host;
 
-    @Column(name = "poster_url", length = 255)
-    private String posterUrl;
+    @Column(name = "place", length = 60, nullable = false)
+    private String place;
 
-    @Column(name = "start_date")
-    private Timestamp startDate;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDate;
 
-    @Column(name = "end_date")
-    private Timestamp endDate;
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime endDate;
 
-    @Column(name = "recruitment_start_date")
-    private Timestamp recruitmentStartDate;
+    @Column(name = "recruitment_start_date", nullable = false)
+    private LocalDateTime recruitmentStartDate;
 
-    @Column(name = "recruitment_end_date")
-    private Timestamp recruitmentEndDate;
+    @Column(name = "recruitment_end_date", nullable = false)
+    private LocalDateTime recruitmentEndDate;
 
-    @Column(name = "entry_fee")
-    private int entryFee; //unsigned
+    @Column(name = "entry_fee", nullable = false)
+    private Long entryFee;
 
-    @Column(name = "max_entry_count")
-    private short maxEntryCount;
-
-    @Column(name = "pre_round_group_count")
-    private int preRoundGroupCount; //@추가
-
-    @Column(name = "final_round_group_count")
-    private int finalRoundTeamCount; //@추가
+    @Column(name = "max_entry_count", nullable = false)
+    private int maxEntryCount;
 
     @Column(name = "sponsor", length = 60)
     private String sponsor;
 
-    @Column(name = "place", length = 60)
-    private String place;
+    @Column(name = "poster_url", length = 255, nullable = false)
+    private String posterUrl;
 
-    @Column(name = "event", length = 20)
-    private String event;  //@추가
+    @Column(name = "pre_round_group_count", nullable = false)
+    private int preRoundGroupCount;
 
-    @Column(name = "status", length = 10)
-    private String status; //모집완료/모집중
+    @Column(name = "final_round_team_count", nullable = false)
+    private int finalRoundTeamCount;
 
-    @Column(name = "created_at")
-    private Timestamp createdAt;
+    @Column(name = "type", length = 10, nullable = false)
+    private String type; // RECRUITING / COMPLETE / BEFORE
 
-    @Column(name = "update_at")
-    private Timestamp updateAt;
+    @Column(name="state",length=20,nullable = false)
+    private String state;//RECRUITING / COMPLETE / DRAFT
+
+    @Column(name = "status", length = 10, nullable = false)
+    private String status;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sportEvent_id", nullable = false)
+    private SportEvent sportEvent;
 
 
 
