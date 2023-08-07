@@ -5,13 +5,14 @@ import com.sporthustle.hustle.common.entity.BaseState;
 import com.sporthustle.hustle.src.sportevent.entity.SportEvent;
 import com.sporthustle.hustle.src.university.entity.University;
 import javax.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "Club")
 public class Club extends BaseEntity {
