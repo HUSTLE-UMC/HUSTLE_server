@@ -5,7 +5,9 @@ import com.sporthustle.hustle.common.entity.BaseState;
 import com.sporthustle.hustle.src.sportevent.entity.SportEvent;
 import com.sporthustle.hustle.src.university.entity.University;
 import javax.persistence.*;
+
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
@@ -46,4 +48,24 @@ public class Club extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sport_event_id", nullable = false)
   private SportEvent sportEvent;
+
+  @Builder
+  public Club(
+          String name,
+          String instagram,
+          String youtubeUrl,
+          String mainArea,
+          String profileImageUrl,
+          BaseState state,
+          University university,
+          SportEvent sportEvent) {
+    this.name = name;
+    this.instagram = instagram;
+    this.youtubeUrl = youtubeUrl;
+    this.mainArea = mainArea;
+    this.profileImageUrl = profileImageUrl;
+    this.state = state;
+    this.university = university;
+    this.sportEvent = sportEvent;
+  }
 }
