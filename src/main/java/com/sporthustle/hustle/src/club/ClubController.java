@@ -34,8 +34,8 @@ public class ClubController {
         return new ResponseEntity<>(clubDto, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<Club>> getAllClubs() {
-        List<Club> clubs = clubService.getAllClubs();
+    public ResponseEntity<List<ClubDto>> getAllClubs() {
+        List<ClubDto> clubs = clubService.getAllClubs();
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
 }

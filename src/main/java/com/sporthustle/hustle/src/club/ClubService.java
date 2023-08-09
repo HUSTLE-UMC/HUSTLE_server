@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -49,20 +50,28 @@ public class ClubService {
     public ClubDto getClubById(Long id) {
         Club club = clubRepository.findById(id).orElse(null);
         if (club != null) {
-            ClubDto clubDTO = new ClubDto();
-            clubDTO.setId(club.getId());
-            clubDTO.setName(club.getName());
-            clubDTO.setUniversityName(club.getUniversity().getName());
-            clubDTO.setMainArea(club.getMainArea());
-            clubDTO.setInstagram(club.getInstagram());
-            clubDTO.setYoutubeUrl(club.getYoutubeUrl());
-            clubDTO.setProfileImageUrl(club.getProfileImageUrl());
-            clubDTO.setPoint(club.getPoint());
-            return clubDTO;
+            return convertToDTO(club);
         }
         return null;
     }
-    public List<Club> getAllClubs() {
-        return clubRepository.findAll();
+    public List<ClubDto> getAllClubs() {
+        List<Club> clubs = clubRepository.findAll();
+        return clubs.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+
+    private ClubDto convertToDTO(Club club) {
+        ClubDto clubDTO = new ClubDto();
+        clubDTO.setId(club.getId());
+        clubDTO.setName(club.getName());
+        clubDTO.setUniversityName(club.getUniversity().getName());
+        clubDTO.setMainArea(club.getMainArea());
+        clubDTO.setInstagram(club.getInstagram());
+        clubDTO.setYoutubeUrl(club.getYoutubeUrl());
+        clubDTO.setProfileImageUrl(club.getProfileImageUrl());
+        clubDTO.setPoint(club.getPoint());
+        return clubDTO;
     }
 }
