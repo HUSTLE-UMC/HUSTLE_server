@@ -2,21 +2,18 @@ package com.sporthustle.hustle.src.university;
 
 import com.sporthustle.hustle.src.university.entity.University;
 import com.sporthustle.hustle.src.university.UniversityService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/universities")
 public class UniversityController {
 
     private final UniversityService universityService;
-
-    @Autowired
-    public UniversityController(UniversityService universityService) {
-        this.universityService = universityService;
-    }
 
     @GetMapping
     public List<University> getAllUniversities() {

@@ -4,19 +4,16 @@ import com.sporthustle.hustle.src.sportevent.entity.SportEvent;
 import com.sporthustle.hustle.src.sportevent.SportEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/sport-events")
 public class SportEventController {
 
     private final SportEventService sportEventService;
-
-    @Autowired
-    public SportEventController(SportEventService sportEventService) {
-        this.sportEventService = sportEventService;
-    }
 
     @GetMapping
     public List<SportEvent> getAllSportEvents() {
