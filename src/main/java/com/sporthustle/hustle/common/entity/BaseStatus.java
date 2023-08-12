@@ -1,6 +1,6 @@
 package com.sporthustle.hustle.common.entity;
 
-public enum BaseState {
+public enum BaseStatus {
   ACTIVE,
   INACTIVE;
 }
