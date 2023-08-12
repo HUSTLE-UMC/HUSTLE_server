@@ -40,8 +40,7 @@ public class ClubResponseDTO {
             .build();
 
     SportEvent sportEvent = club.getSportEvent();
-    SportEventResponseDTO sportEventResponseDTO =
-        SportEventResponseDTO.builder().id(sportEvent.getId()).name(sportEvent.getName()).build();
+    SportEventResponseDTO sportEventResponseDTO = SportEventResponseDTO.from(sportEvent);
 
     return ClubResponseDTO.builder()
         .id(club.getId())
