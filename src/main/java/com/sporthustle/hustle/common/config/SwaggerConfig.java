@@ -40,5 +40,21 @@ public class SwaggerConfig {
                     .in(SecurityScheme.In.HEADER)
                     .name("Authorization"));
     return new OpenAPI().info(info).addSecurityItem(securityRequirement).components(components);
+
+  private List<Server> getServers() {
+    /*
+    url 을 지정해주지 않으면 실서버에서 스웨거 테스트 시 http 프로토콜로 실행되어 오류 발생으로 테스트가 불가능해짐
+    */
+    Server productionServer =
+        new Server().url("https://api.sport-hustle.com").description("Production Server");
+
+    Server localServer = new Server().url("/").description("Local/Current Server");
+
+    List<Server> servers = new ArrayList<>();
+    servers.add(productionServer);
+    servers.add(localServer);
+
+    return servers;
+  }
   }
 }
