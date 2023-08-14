@@ -8,6 +8,7 @@ import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.common.jwt.JwtTokenProvider;
 import com.sporthustle.hustle.common.jwt.dto.TokenInfo;
+import com.sporthustle.hustle.university.UniversityUtils;
 import com.sporthustle.hustle.university.entity.University;
 import com.sporthustle.hustle.university.repository.UniversityRepository;
 import com.sporthustle.hustle.user.entity.Gender;
@@ -48,10 +49,8 @@ public class AuthService {
     SnsType snsType = signUpRequestDTO.getSnsType();
     user.updateSnsValue(snsId, snsType);
 
-    University university =
-        universityRepository
-            .findById(signUpRequestDTO.getUniversityId())
-            .orElseThrow(() -> BaseException.from(ErrorCode.UNIVERSITY_NOT_FOUND));
+    Long universityId = signUpRequestDTO.getUniversityId();
+    University university = UniversityUtils.getUniversityById(universityId, universityRepository);
     user.updateUniversity(university);
 
     userRepository.save(user);

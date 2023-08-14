@@ -7,8 +7,10 @@ import com.sporthustle.hustle.club.repository.ClubMemberRepository;
 import com.sporthustle.hustle.club.repository.ClubRepository;
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
+import com.sporthustle.hustle.sport.SportUtils;
 import com.sporthustle.hustle.sport.entity.SportEvent;
 import com.sporthustle.hustle.sport.repository.SportEventRepository;
+import com.sporthustle.hustle.university.UniversityUtils;
 import com.sporthustle.hustle.university.entity.University;
 import com.sporthustle.hustle.university.repository.UniversityRepository;
 import com.sporthustle.hustle.user.UserUtils;
@@ -71,16 +73,12 @@ public class ClubService {
             .profileImageUrl(createClubRequestDTO.getProfileImageUrl())
             .build();
 
-    University university =
-        universityRepository
-            .findById(createClubRequestDTO.getUniversityId())
-            .orElseThrow(() -> BaseException.from(ErrorCode.UNIVERSITY_NOT_FOUND));
+    Long universityId = createClubRequestDTO.getUniversityId();
+    University university = UniversityUtils.getUniversityById(universityId, universityRepository);
     club.updateUniversity(university);
 
-    SportEvent sportEvent =
-        sportEventRepository
-            .findById(createClubRequestDTO.getSportEventId())
-            .orElseThrow(() -> BaseException.from(ErrorCode.SPORT_EVENT_NOT_FOUND));
+    Long sportEventId = createClubRequestDTO.getSportEventId();
+    SportEvent sportEvent = SportUtils.getSportEventById(sportEventId, sportEventRepository);
     club.updateSportEvent(sportEvent);
 
     clubRepository.save(club);
@@ -95,18 +93,14 @@ public class ClubService {
     Club club = ClubUtils.getClubById(clubId, clubRepository);
 
     if (updateClubRequestDTO.getUniversityId() != null) {
-      University university =
-          universityRepository
-              .findById(updateClubRequestDTO.getUniversityId())
-              .orElseThrow(() -> BaseException.from(ErrorCode.UNIVERSITY_NOT_FOUND));
+      Long universityId = updateClubRequestDTO.getUniversityId();
+      University university = UniversityUtils.getUniversityById(universityId, universityRepository);
       club.updateUniversity(university);
     }
 
     if (updateClubRequestDTO.getSportEventId() != null) {
-      SportEvent sportEvent =
-          sportEventRepository
-              .findById(updateClubRequestDTO.getSportEventId())
-              .orElseThrow(() -> BaseException.from(ErrorCode.SPORT_EVENT_NOT_FOUND));
+      Long sportEventId = updateClubRequestDTO.getSportEventId();
+      SportEvent sportEvent = SportUtils.getSportEventById(sportEventId, sportEventRepository);
       club.updateSportEvent(sportEvent);
     }
 
