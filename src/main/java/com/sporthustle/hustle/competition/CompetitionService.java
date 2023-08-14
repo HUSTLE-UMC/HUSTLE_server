@@ -44,12 +44,15 @@ public class CompetitionService {
       Long sportEventId, CompetitionStateRequest competitionStateRequest, Pageable pageable) {
     Page<Competition> competitions = Page.empty();
 
-    if (competitionStateRequest.equals(CompetitionStateRequest.ACTIVE)) {
-      competitions = this.getCompetitionsBeforeComplete(sportEventId, pageable);
-    } else if (competitionStateRequest.equals(CompetitionStateRequest.COMPLETE)) {
-      competitions = this.getCompleteCompetitions(sportEventId, pageable);
-    } else {
-      throw new IllegalArgumentException("CompetitionStateRequest 해당되는 값이 없습니다.");
+    switch (competitionStateRequest) {
+      case ACTIVE:
+        competitions = this.getCompetitionsBeforeComplete(sportEventId, pageable);
+        break;
+      case COMPLETE:
+        competitions = this.getCompleteCompetitions(sportEventId, pageable);
+        break;
+      default:
+        throw new IllegalArgumentException("CompetitionStateRequest 해당되는 값이 없습니다.");
     }
 
     Page<CompetitionResponseDTO> competitionResponseDTOs =
