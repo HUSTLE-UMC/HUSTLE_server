@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Competition", description = "대회 API")
 @Slf4j
-@RestController
-@RequestMapping("/api/competition")
 @RequiredArgsConstructor
 @Service
 public class CompetitionService {
