@@ -1,7 +1,7 @@
 package com.sporthustle.hustle.common.exception;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.FORBIDDEN;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -9,11 +9,16 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
   ALREADY_EXIST_USER(BAD_REQUEST, "ALREADY_EXIST_USER", "이미 존재하는 유저입니다."),
-  USER_NOT_FOUND(NOT_FOUND, "USER_NOT_FOUND", "해당 유저를 찾을 수 없습니다."),
+  USER_NOT_FOUND(BAD_REQUEST, "USER_NOT_FOUND", "해당 유저를 찾을 수 없습니다."),
   INVALID_PASSWORD(BAD_REQUEST, "INVALID_PASSWORD", "잘못된 비밀번호 입니다."),
-  UNIVERSITY_NOT_FOUND(NOT_FOUND, "UNIVERSITY_NOT_FOUND", "해당 대학교를 찾을 수 없습니다."),
-  SECURITY_CONTEXT_NOT_FOUND(
-      BAD_REQUEST, "SECURITY_CONTEXT_NOT_FOUND", "security context not found"),
+  UNIVERSITY_NOT_FOUND(BAD_REQUEST, "UNIVERSITY_NOT_FOUND", "해당 대학을 찾을 수 없습니다."),
+  REFRESH_TOKEN_NOT_FOUND(BAD_REQUEST, "REFRESH_TOKEN_NOT_FOUND", "해당 리프레쉬 토큰을 찾을 수 없습니다."),
+  REFRESH_TOKEN_EXPIRED(BAD_REQUEST, "REFRESH_TOKEN_EXPIRED", "해당 리프레쉬 토큰은 만료됐습니다."),
+  SPORT_EVENT_NOT_FOUND(BAD_REQUEST, "SPORT_EVENT_NOT_FOUND", "해당 종목을 찾을 수 없습니다."),
+  CLUB_NOT_FOUND(BAD_REQUEST, "CLUB_NOT_FOUND", "해당 동아리를 찾을 수 없습니다."),
+  MEMBER_NOT_IN_CLUB(BAD_REQUEST, "MEMBER_NOT_IN_CLUB", "해당 동아리원이 아닙니다."),
+  COMPETITION_NOT_FOUND(BAD_REQUEST, "COMPETITION_NOT_FOUND", "해당 대회를 찾을 수 없습니다."),
+  USER_NOT_OWNER(FORBIDDEN, "USER_NOT_OWNER", "접근 권한이 없습니다."),
   ;
 
   private final HttpStatus status;

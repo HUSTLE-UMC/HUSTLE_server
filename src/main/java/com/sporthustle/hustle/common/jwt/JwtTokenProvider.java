@@ -2,62 +2,63 @@ package com.sporthustle.hustle.common.jwt;
 
 import static com.sporthustle.hustle.common.consts.Constants.*;
 
-import com.sporthustle.hustle.common.jwt.model.TokenInfo;
+import com.sporthustle.hustle.common.jwt.dto.TokenInfo;
+import com.sporthustle.hustle.user.entity.User;
 import io.jsonwebtoken.*;
 import java.util.Date;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
+@Component
 public class JwtTokenProvider {
   @Value("${jwt.secret.key}")
   private String secretKey;
 
   private final UserDetailsService userDetailsService;
 
-  private String createAccessToken(
-      String userPk, List<String> roles, Date issueAt, Date accessTokenExpiredIn) {
+  private String createAccessToken(String userPk, Date issueAt, Date tokenExpiredIn) {
     return Jwts.builder()
         .setSubject(userPk)
         .setIssuedAt(issueAt)
         .claim(TOKEN_TYPE, ACCESS_TOKEN)
-        .claim(TOKEN_ROLE, roles)
-        .setExpiration(accessTokenExpiredIn)
+        .setExpiration(tokenExpiredIn)
         .signWith(SignatureAlgorithm.HS256, secretKey)
         .compact();
   }
 
-  private String createRefreshToken(String userPk, Date issueAt, Date accessTokenExpiredIn) {
+  private String createRefreshToken(String userPk, Date issueAt, Date tokenExpiredIn) {
     return Jwts.builder()
         .setSubject(userPk)
         .setIssuedAt(issueAt)
         .claim(TOKEN_TYPE, REFRESH_TOKEN)
-        .setExpiration(accessTokenExpiredIn)
+        .setExpiration(tokenExpiredIn)
         .signWith(SignatureAlgorithm.HS256, secretKey)
         .compact();
   }
 
-  public TokenInfo createToken(String userPk, List<String> roles) {
+  public TokenInfo createToken(String userPk) {
     Date now = new Date();
-    Date accessTokenExpiredIn = new Date(now.getTime() * TOKEN_VALID_TIME);
-    String accessToken = createAccessToken(userPk, roles, now, accessTokenExpiredIn);
-    String refreshToken = createRefreshToken(userPk, now, accessTokenExpiredIn);
+
+    Date accessTokenExpiredIn = new Date(now.getTime() + ACCESS_TOKEN_EXPIRATION_TIME);
+    Date refreshTokenExpiredIn = new Date(now.getTime() + REFRESH_TOKEN_EXPIRATION_TIME);
+
+    String accessToken = createAccessToken(userPk, now, accessTokenExpiredIn);
+    String refreshToken = createRefreshToken(userPk, now, refreshTokenExpiredIn);
+
     return TokenInfo.builder().accessToken(accessToken).refreshToken(refreshToken).build();
   }
 
   public Authentication getAuthentication(String token) {
-    UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    User user = (User) userDetailsService.loadUserByUsername(this.getUserPk(token));
+    return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
   }
 
   public String getUserPk(String token) {
@@ -69,7 +70,7 @@ public class JwtTokenProvider {
     return refineToken(token);
   }
 
-  private String refineToken(String token) {
+  public String refineToken(String token) {
     if (token != null && token.substring(0, 6).equals("Bearer")) {
       token = token.substring(7);
     }
@@ -88,7 +89,15 @@ public class JwtTokenProvider {
       log.info("Unsupported JWT Token", e);
     } catch (IllegalArgumentException e) {
       log.info("JWT claims string is empty.", e);
+    } catch (SignatureException e) {
+      log.info("JWT Signature does not match locally compuited signature.", e);
     }
     return false;
+  }
+
+  public String getTokenType(String jwtToken) {
+    Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+    String type = (String) claims.getBody().get(TOKEN_TYPE);
+    return type;
   }
 }
