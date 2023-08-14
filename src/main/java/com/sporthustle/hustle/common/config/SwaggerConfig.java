@@ -5,13 +5,20 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import lombok.RequiredArgsConstructor;
 import org.springdoc.core.GroupedOpenApi;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@RequiredArgsConstructor
 @Configuration
 public class SwaggerConfig {
 
+  private final BuildProperties buildProperties;
+
+  private final String JWT_HEADER_NAME = "Authorization";
+  private final String JWT_SCHEME = "bearer";
   @Bean
   public GroupedOpenApi publicApi() {
     return GroupedOpenApi.builder().group("v1-definition").pathsToMatch("/api/**").build();
