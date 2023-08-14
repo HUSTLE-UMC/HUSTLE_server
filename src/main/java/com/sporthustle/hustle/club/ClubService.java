@@ -11,6 +11,7 @@ import com.sporthustle.hustle.sport.entity.SportEvent;
 import com.sporthustle.hustle.sport.repository.SportEventRepository;
 import com.sporthustle.hustle.university.entity.University;
 import com.sporthustle.hustle.university.repository.UniversityRepository;
+import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.entity.User;
 import com.sporthustle.hustle.user.repository.UserRepository;
 import java.util.List;
@@ -99,10 +100,7 @@ public class ClubService {
 
   @Transactional
   public UpdateClubResponseDTO updateClub(Long clubId, UpdateClubRequestDTO updateClubRequestDTO) {
-    Club club =
-        clubRepository
-            .findById(clubId)
-            .orElseThrow(() -> BaseException.from(ErrorCode.CLUB_NOT_FOUND));
+    Club club = ClubUtils.getClubById(clubId, clubRepository);
 
     if (updateClubRequestDTO.getUniversityId() != null) {
       University university =
@@ -134,10 +132,7 @@ public class ClubService {
 
   @Transactional
   public DeleteClubResponseDTO deleteClub(Long clubId) {
-    Club club =
-        clubRepository
-            .findById(clubId)
-            .orElseThrow(() -> BaseException.from(ErrorCode.CLUB_NOT_FOUND));
+    Club club = ClubUtils.getClubById(clubId, clubRepository);
 
     club.delete();
     clubRepository.save(club);
@@ -147,15 +142,9 @@ public class ClubService {
 
   @Transactional
   public JoinClubResponseDTO joinClub(Long userId, Long clubId) {
-    User user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(() -> BaseException.from(ErrorCode.USER_NOT_FOUND));
+    User user = UserUtils.getUserById(userId, userRepository);
 
-    Club club =
-        clubRepository
-            .findById(clubId)
-            .orElseThrow(() -> BaseException.from(ErrorCode.CLUB_NOT_FOUND));
+    Club club = ClubUtils.getClubById(clubId, clubRepository);
 
     ClubMember clubMember = ClubMember.builder().user(user).club(club).build();
     clubMemberRepository.save(clubMember);
@@ -165,11 +154,7 @@ public class ClubService {
 
   @Transactional(readOnly = true)
   public GetClubMembersResponseDTO getClubMembers(Long userId, Long clubId) {
-
-    User user =
-        userRepository
-            .findById(userId)
-            .orElseThrow(() -> BaseException.from(ErrorCode.USER_NOT_FOUND));
+    User user = UserUtils.getUserById(userId, userRepository);
     validateUserInClub(user, clubId);
 
     List<ClubMember> clubMembers = clubMemberRepository.findAllByClub_id(clubId);
