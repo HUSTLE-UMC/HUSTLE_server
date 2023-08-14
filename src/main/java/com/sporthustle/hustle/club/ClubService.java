@@ -60,14 +60,6 @@ public class ClubService {
     return clubsResponseDTO;
   }
 
-  @Transactional(readOnly = true)
-  public ClubResponseDTO getClubById(Long id) {
-    Club club =
-        clubRepository.findById(id).orElseThrow(() -> BaseException.from(ErrorCode.CLUB_NOT_FOUND));
-
-    return ClubResponseDTO.from(club);
-  }
-
   @Transactional
   public CreateClubResponseDTO createClub(CreateClubRequestDTO createClubRequestDTO) {
     Club club =
