@@ -9,9 +9,9 @@ public class ClubUtils {
 
   public static Club getClubById(Long clubId, ClubRepository clubRepository) {
     Club club =
-            clubRepository
-                    .findById(clubId)
-                    .orElseThrow(() -> BaseException.from(ErrorCode.CLUB_NOT_FOUND));
+        clubRepository
+            .findById(clubId)
+            .orElseThrow(() -> BaseException.from(ErrorCode.CLUB_NOT_FOUND));
     return club;
   }
 }
