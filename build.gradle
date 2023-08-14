@@ -14,10 +14,14 @@ spotless {
 }
 
 group = 'com.sport-hustle'
-version = '0.0.2-SNAPSHOT'
+version = 'v0.0.2'
 
 java {
 	sourceCompatibility = '11'
+}
+
+springBoot {
+	buildInfo()
 }
 
 configurations {
