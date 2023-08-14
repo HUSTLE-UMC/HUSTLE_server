@@ -1,0 +1,53 @@
+name-template: 'v$NEXT_PATCH_VERSION 배포'
+tag-template: 'v$NEXT_PATCH_VERSION'
+
+# categories : 레이블마다 제목을 붙여줍니다.
+categories:
+  - title: '⭐️ 신규 기능'
+    labels:
+      - 'feat'
+  - title: '🐛 버그 수정'
+    labels:
+      - 'bug'
+  - title: '🛠 리팩터링'
+    labels:
+      - 'refactoring'
+  - title: '✅ 테스트 작성'
+    labels:
+      - 'test'
+
+# autolabeler : files(glob), branch(regex), title(regex), body(regex) 조건이 일치하면 레이블을 붙여줍니다.
+autolabeler:
+  - label: 'feat'
+    branch:
+      - '/Feature\/.+/'
+  - label: 'bug'
+    branch:
+      - '/Fix\/.+/'
+  - label: 'refactoring'
+    branch:
+      - '/Refactor\/.+/'
+  - label: 'test'
+    files:
+      - 'src/test/**/*.java'
+
+
+# change-template : PR 리스트를 작성할 때의 형식입니다.
+#  $NUMBER	The number of the pull request, e.g. 42.
+#  $TITLE	The title of the pull request, e.g. Add alien technology. Any characters excluding @ and # matching change-title-escapes will be prepended with a backslash so that they will appear verbatim instead of being interpreted as markdown format characters. @s and #s if present in change-title-escapes will be appended with an HTML comment so that they don't become mentions.
+#  $AUTHOR	The pull request author’s username, e.g. gracehopper.
+#  $BODY	The body of the pull request e.g. Fixed spelling mistake.
+#  $URL	The URL of the pull request e.g. https://github.com/octocat/repo/pull/42.
+#  $BASE_REF_NAME	The base name of of the base Ref associated with the pull request e.g. master.
+#  $HEAD_REF_NAME	The head name of the head Ref associated with the pull request e.g. my-bug-fix.
+change-template: '- $TITLE (#$NUMBER) @$AUTHOR'
+
+# template: Release 초안으로 들어갈 내용입니다.
+template: |
+  ## 배포 변경점
+
+  $CHANGES
+
+  ## 기여자
+
+  $CONTRIBUTORS
