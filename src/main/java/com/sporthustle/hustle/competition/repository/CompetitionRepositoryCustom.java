@@ -78,14 +78,14 @@ public class CompetitionRepositoryCustom {
 
   public Page<Competition> getPopularCompetitions(Pageable pageable) {
     JPAQuery<Competition> countQuery =
-            queryFactory
-                    .selectFrom(competition)
-                    .leftJoin(competition.sportEvent, sportEvent)
-                    .leftJoin(competition.user, user)
-                    .where(inRecruiting())
-                    .orderBy(competition.entryCount.desc())
-                    .offset(pageable.getOffset())
-                    .limit(pageable.getPageSize());
+        queryFactory
+            .selectFrom(competition)
+            .leftJoin(competition.sportEvent, sportEvent)
+            .leftJoin(competition.user, user)
+            .where(inRecruiting())
+            .orderBy(competition.entryCount.desc(), competition.recruitmentEndDate.asc())
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize());
 
     List<Competition> content = countQuery.fetch();
 
