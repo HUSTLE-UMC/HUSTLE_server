@@ -1,0 +1,31 @@
+### jpa setting ###
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+### spring security ###
+security:
+  user:
+    name: ENC(oVSEw6gxE46j0SJPrnVgyg==)
+    password: ENC(kyHrVONdlwShgsY4YOKmiZDmH3g3tCae4Z55N6qyyYypqG0AQWsF6g==)
+  #      roles: USER, ADMIN
+
+### jwt ###
+jwt:
+  secret:
+    key: ENC(8Zdp8FGcysujUJk7CiGhHKrm3IzIWAa7Id0Wa2sdBptB1me6LzYxptMoABBZPqvh81xeo+E7nrsK/bzOwf5r1g==)
