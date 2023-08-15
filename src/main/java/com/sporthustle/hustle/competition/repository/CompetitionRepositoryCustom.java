@@ -82,7 +82,7 @@ public class CompetitionRepositoryCustom {
             .selectFrom(competition)
             .leftJoin(competition.sportEvent, sportEvent)
             .leftJoin(competition.user, user)
-            .where(inRecruiting())
+            .where(nowBetweenRecruitingDate(), notMaxEntryCount())
             .orderBy(competition.entryCount.desc(), competition.recruitmentEndDate.asc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize());
@@ -92,9 +92,12 @@ public class CompetitionRepositoryCustom {
     return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
   }
 
-  private BooleanExpression inRecruiting() {
+  private BooleanExpression nowBetweenRecruitingDate() {
     LocalDateTime now = LocalDateTime.now();
-
     return competition.recruitmentStartDate.loe(now).and(competition.recruitmentEndDate.goe(now));
+  }
+
+  private BooleanExpression notMaxEntryCount() {
+    return competition.entryCount.lt(competition.maxEntryCount);
   }
 }
