@@ -212,4 +212,19 @@ public class CompetitionService {
 
     return DeleteCompetitionResponseDTO.builder().message("대회를 성공적으로 삭제했습니다.").build();
   }
+
+  @Transactional(readOnly = true)
+  public CompetitionsResponseDTO getPopularCompetitions(Pageable pageable) {
+    Page<Competition> competitions = competitionRepositoryCustom.getPopularCompetitions(pageable);
+
+    Page<CompetitionResponseDTO> competitionResponseDTOs =
+            competitions.map(competition -> CompetitionResponseDTO.from(competition));
+
+    return CompetitionsResponseDTO.builder()
+            .count(competitionResponseDTOs.getNumberOfElements())
+            .totalPage(competitionResponseDTOs.getTotalPages())
+            .totalCount(competitionResponseDTOs.getTotalElements())
+            .data(competitionResponseDTOs.getContent())
+            .build();
+  }
 }

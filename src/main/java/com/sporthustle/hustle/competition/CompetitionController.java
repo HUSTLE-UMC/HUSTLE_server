@@ -94,7 +94,10 @@ public class CompetitionController {
     @ApiResponse(responseCode = "200", description = "HOT 대회 목록 조회에 성공한 경우"),
   })
   @GetMapping("/popular")
-  public ResponseEntity<Object> getPopularCompetitions() {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<Object> getPopularCompetitions(
+          @PageableDefault(size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
+    CompetitionsResponseDTO competitionsResponseDTO =
+            competitionService.getPopularCompetitions(pageable);
+    return ResponseEntity.ok(competitionsResponseDTO);
   }
 }
