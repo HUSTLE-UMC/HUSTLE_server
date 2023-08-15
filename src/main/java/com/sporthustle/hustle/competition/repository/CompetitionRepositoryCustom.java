@@ -75,4 +75,26 @@ public class CompetitionRepositoryCustom {
     LocalDateTime now = LocalDateTime.now();
     return competition.endDate.goe(now);
   }
+
+  public Page<Competition> getPopularCompetitions(Pageable pageable) {
+    JPAQuery<Competition> countQuery =
+            queryFactory
+                    .selectFrom(competition)
+                    .leftJoin(competition.sportEvent, sportEvent)
+                    .leftJoin(competition.user, user)
+                    .where(inRecruiting())
+                    .orderBy(competition.entryCount.desc())
+                    .offset(pageable.getOffset())
+                    .limit(pageable.getPageSize());
+
+    List<Competition> content = countQuery.fetch();
+
+    return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+  }
+
+  private BooleanExpression inRecruiting() {
+    LocalDateTime now = LocalDateTime.now();
+
+    return competition.recruitmentStartDate.loe(now).and(competition.recruitmentEndDate.goe(now));
+  }
 }
