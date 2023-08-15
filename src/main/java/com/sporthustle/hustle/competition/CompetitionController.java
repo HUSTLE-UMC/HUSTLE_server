@@ -32,7 +32,7 @@ public class CompetitionController {
       @RequestParam(name = "sport_event_id", required = false) Long sportEventId,
       @RequestParam(name = "state", defaultValue = "ACTIVE")
           CompetitionStateRequest competitionStateRequest,
-      @PageableDefault(size = 4, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 4, direction = Sort.Direction.DESC) Pageable pageable) {
     CompetitionsResponseDTO competitionsResponseDTO =
         competitionService.getCompetitionsByListType(
             sportEventId, competitionStateRequest, pageable);
