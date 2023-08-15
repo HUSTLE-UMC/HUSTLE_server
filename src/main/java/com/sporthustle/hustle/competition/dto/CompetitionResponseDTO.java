@@ -37,6 +37,8 @@ public class CompetitionResponseDTO {
 
   private Integer maxEntryCount;
 
+  private Integer entryCount;
+
   private String sponsor;
 
   private String posterUrl;
@@ -84,6 +86,7 @@ public class CompetitionResponseDTO {
         .recruitmentEndDate(competition.getRecruitmentEndDate())
         .entryFee(competition.getEntryFee())
         .maxEntryCount(competition.getMaxEntryCount())
+        .entryCount(competition.getEntryCount())
         .sponsor(competition.getSponsor())
         .posterUrl(competition.getPosterUrl())
         .preRoundGroupCount(competition.getPreRoundGroupCount())
