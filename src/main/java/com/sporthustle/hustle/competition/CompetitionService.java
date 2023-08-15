@@ -218,13 +218,13 @@ public class CompetitionService {
     Page<Competition> competitions = competitionRepositoryCustom.getPopularCompetitions(pageable);
 
     Page<CompetitionResponseDTO> competitionResponseDTOs =
-            competitions.map(competition -> CompetitionResponseDTO.from(competition));
+        competitions.map(competition -> CompetitionResponseDTO.from(competition));
 
     return CompetitionsResponseDTO.builder()
-            .count(competitionResponseDTOs.getNumberOfElements())
-            .totalPage(competitionResponseDTOs.getTotalPages())
-            .totalCount(competitionResponseDTOs.getTotalElements())
-            .data(competitionResponseDTOs.getContent())
-            .build();
+        .count(competitionResponseDTOs.getNumberOfElements())
+        .totalPage(competitionResponseDTOs.getTotalPages())
+        .totalCount(competitionResponseDTOs.getTotalElements())
+        .data(competitionResponseDTOs.getContent())
+        .build();
   }
 }

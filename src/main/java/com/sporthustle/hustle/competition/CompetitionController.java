@@ -95,9 +95,9 @@ public class CompetitionController {
   })
   @GetMapping("/popular")
   public ResponseEntity<Object> getPopularCompetitions(
-          @PageableDefault(size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
     CompetitionsResponseDTO competitionsResponseDTO =
-            competitionService.getPopularCompetitions(pageable);
+        competitionService.getPopularCompetitions(pageable);
     return ResponseEntity.ok(competitionsResponseDTO);
   }
 }
