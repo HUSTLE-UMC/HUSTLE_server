@@ -1,6 +1,7 @@
 package com.sporthustle.hustle.common.config;
 
 import com.sporthustle.hustle.common.converter.CompetitionTypeRequestConverter;
+import com.sporthustle.hustle.common.converter.InGameTypeRequestConverter;
 import com.sporthustle.hustle.common.resolver.AuthUserResolver;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addFormatters(FormatterRegistry registry) {
     registry.addConverter(new CompetitionTypeRequestConverter());
+    registry.addConverter(new InGameTypeRequestConverter());
   }
 
   @Override
