@@ -150,7 +150,7 @@ CREATE TABLE MatchResultPost
     `title`           VARCHAR(60)          NOT NULL    COMMENT '경기 제목',
     `category`        CHAR(10)             NOT NULL    DEFAULT 'PREROUND' COMMENT 'PREROUND(예선) / FINAL(본선) 종류',
     `group_category`  CHAR(20)             NOT NULL    COMMENT '예선 조 (A조) / 본선 조 (32강/16강/8강/4강/34위전/결승전)',
-    `order`           SMALLINT UNSIGNED    NOT NULL    DEFAULT 1 COMMENT '경기 수',
+    `post_order`      SMALLINT UNSIGNED    NOT NULL    DEFAULT 1 COMMENT '경기 수',
     `media_url`       VARCHAR(255)         NULL,
     `created_at`      TIMESTAMP            NULL        DEFAULT NOW(),
     `updated_at`      TIMESTAMP            NULL        DEFAULT NOW(),
