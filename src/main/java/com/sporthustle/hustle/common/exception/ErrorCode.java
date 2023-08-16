@@ -20,6 +20,8 @@ public enum ErrorCode {
   COMPETITION_NOT_FOUND(BAD_REQUEST, "COMPETITION_NOT_FOUND", "해당 대회를 찾을 수 없습니다."),
   USER_NOT_OWNER(FORBIDDEN, "USER_NOT_OWNER", "접근 권한이 없습니다."),
   ENTRY_TEAM_NOT_FOUND(BAD_REQUEST, "ENTRY_TEAM_NOT_FOUND", "대회 참가팀이 아닙니다."),
+  PRE_ROUND_DETAIL_NOT_FOUND(BAD_REQUEST, "PRE_ROUND_DETAIL_NOT_FOUND", "예선 세부 정보를 찾을 수 없습니다."),
+  FINAL_ROUND_DETAIL_NOT_FOUND(BAD_REQUEST, "FINAL_ROUND_DETAIL_NOT_FOUND", "본선 세부 정보를 찾을 수 없습니다."),
   ;
 
   private final HttpStatus status;
