@@ -6,6 +6,7 @@ import com.sporthustle.hustle.competition.entity.competition.Competition;
 import com.sporthustle.hustle.user.entity.User;
 import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,4 +40,25 @@ public class EntryTeam extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
+
+  @Builder
+  private EntryTeam(String name, String phoneNumber, Competition competition, Club club, User user) {
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    this.competition = competition;
+    this.club = club;
+    this.user = user;
+  }
+
+  public void updateCompetition(Competition competition) {
+    this.competition = competition;
+  }
+
+  public void updateClub(Club club) {
+    this.club = club;
+  }
+
+  public void updateUser(User user) {
+    this.user = user;
+  }
 }
