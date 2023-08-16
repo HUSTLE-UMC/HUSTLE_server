@@ -10,5 +10,4 @@ public class CreateEntryTeamResponseDTO {
   private String message;
 
   private EntryTeamResponseDTO data;
-
 }

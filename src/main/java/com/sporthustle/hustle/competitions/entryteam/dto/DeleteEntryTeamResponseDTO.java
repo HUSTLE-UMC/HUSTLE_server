@@ -10,5 +10,4 @@ public class DeleteEntryTeamResponseDTO {
   private String message;
 
   private EntryTeamResponseDTO data;
-
 }
