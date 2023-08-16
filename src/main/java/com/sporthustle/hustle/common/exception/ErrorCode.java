@@ -19,6 +19,7 @@ public enum ErrorCode {
   MEMBER_NOT_IN_CLUB(BAD_REQUEST, "MEMBER_NOT_IN_CLUB", "해당 동아리원이 아닙니다."),
   COMPETITION_NOT_FOUND(BAD_REQUEST, "COMPETITION_NOT_FOUND", "해당 대회를 찾을 수 없습니다."),
   USER_NOT_OWNER(FORBIDDEN, "USER_NOT_OWNER", "접근 권한이 없습니다."),
+  ENTRY_TEAM_NOT_FOUND(BAD_REQUEST, "ENTRY_TEAM_NOT_FOUND", "대회 참가팀이 아닙니다."),
   ;
 
   private final HttpStatus status;
