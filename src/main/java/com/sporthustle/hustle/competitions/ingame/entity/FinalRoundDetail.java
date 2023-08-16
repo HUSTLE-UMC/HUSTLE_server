@@ -2,9 +2,9 @@ package com.sporthustle.hustle.competitions.ingame.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.competitions.competition.entity.Competition;
-
 import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +24,17 @@ public class FinalRoundDetail extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "competition_id", nullable = false)
   private Competition competition;
+
+  @Builder
+  private FinalRoundDetail(String timeTableUrl) {
+    this.timeTableUrl = timeTableUrl;
+  }
+
+  public void updateCompetition(Competition competition) {
+    this.competition = competition;
+  }
+
+  public void updateTimeTableUrl(String timeTableUrl) {
+    this.timeTableUrl = timeTableUrl;
+  }
 }
