@@ -32,8 +32,8 @@ public class EntryTeamService {
   private  final ClubRepository clubRepository;
 
   @Transactional(readOnly = true)
-  public EntryTeamsResponseDTO getEntryTeams(Long competitonId) {
-    List<EntryTeam> entryTeams = entryTeamRepository.findAllByCompetition_Id(competitonId);
+  public EntryTeamsResponseDTO getEntryTeams(Long competitionId) {
+    List<EntryTeam> entryTeams = entryTeamRepository.findAllByCompetition_Id(competitionId);
 
     List<EntryTeamResponseDTO> entryTeamDTOs = entryTeams.stream()
             .map(entryTeam -> EntryTeamResponseDTO.from(entryTeam))
