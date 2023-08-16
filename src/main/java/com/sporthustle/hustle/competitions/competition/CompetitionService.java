@@ -37,7 +37,7 @@ public class CompetitionService {
 
   @Transactional(readOnly = true)
   public CompetitionsResponseDTO getCompetitionsByListType(
-          Long sportEventId, CompetitionStateRequest competitionStateRequest, Pageable pageable) {
+      Long sportEventId, CompetitionStateRequest competitionStateRequest, Pageable pageable) {
     Page<Competition> competitions = Page.empty();
 
     switch (competitionStateRequest) {

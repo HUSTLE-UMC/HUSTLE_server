@@ -2,7 +2,6 @@ package com.sporthustle.hustle.competitions.match.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.competitions.competition.entity.Competition;
-
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -40,10 +40,11 @@ public class EntryTeamController {
   })
   @PostMapping("/{competition_id}/entry_team")
   public ResponseEntity<CreateEntryTeamResponseDTO> createEntryTeam(
-          @UserId Long userId,
-          @PathVariable("competition_id") Long competitionId,
-          @RequestBody CreateEntryTeamRequestDTO createEntryTeamRequestDTO) {
-    CreateEntryTeamResponseDTO createEntryTeamResponseDTO = entryTeamService.createEntryTeam(userId, competitionId, createEntryTeamRequestDTO);
+      @UserId Long userId,
+      @PathVariable("competition_id") Long competitionId,
+      @RequestBody CreateEntryTeamRequestDTO createEntryTeamRequestDTO) {
+    CreateEntryTeamResponseDTO createEntryTeamResponseDTO =
+        entryTeamService.createEntryTeam(userId, competitionId, createEntryTeamRequestDTO);
     return ResponseEntity.ok(createEntryTeamResponseDTO);
   }
 
@@ -53,9 +54,9 @@ public class EntryTeamController {
   })
   @DeleteMapping("/{competition_id}/entry_team")
   public ResponseEntity<DeleteEntryTeamResponseDTO> deleteEntryTeam(
-      @UserId Long userId,
-      @PathVariable("competition_id") Long competitionId) {
-    DeleteEntryTeamResponseDTO deleteEntryTeamResponseDTO = entryTeamService.deleteEntryTeam(userId, competitionId);
+      @UserId Long userId, @PathVariable("competition_id") Long competitionId) {
+    DeleteEntryTeamResponseDTO deleteEntryTeamResponseDTO =
+        entryTeamService.deleteEntryTeam(userId, competitionId);
     return ResponseEntity.ok(deleteEntryTeamResponseDTO);
   }
 }

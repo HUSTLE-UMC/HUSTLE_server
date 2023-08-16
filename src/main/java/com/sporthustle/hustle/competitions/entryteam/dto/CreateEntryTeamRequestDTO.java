@@ -1,9 +1,8 @@
 package com.sporthustle.hustle.competitions.entryteam.dto;
 
-import lombok.Getter;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.Getter;
 
 @Getter
 public class CreateEntryTeamRequestDTO {
@@ -16,5 +15,4 @@ public class CreateEntryTeamRequestDTO {
 
   @NotNull(message = "동아리는 필수 입력 값입니다.")
   private Long clubId;
-
 }
