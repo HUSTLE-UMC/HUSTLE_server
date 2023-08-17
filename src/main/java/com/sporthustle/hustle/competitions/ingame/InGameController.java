@@ -1,5 +1,7 @@
 package com.sporthustle.hustle.competitions.ingame;
 
+import com.sporthustle.hustle.common.annotation.UserId;
+import com.sporthustle.hustle.competitions.ingame.dto.PreRoundGroupsResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,14 +18,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class InGameController {
 
+  private final InGameService inGameService;
+
   @Operation(summary = "대회 예선 조 목록 조회 (개설자) API")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
+    @ApiResponse(responseCode = "400", description = "대회 개설자가 아닌 경우"),
   })
   @GetMapping("/{competition_id}/preround/group")
-  public ResponseEntity<Object> getPreRoundGroups(
+  public ResponseEntity<PreRoundGroupsResponseDTO> getPreRoundGroups(
+      @UserId Long userId,
       @PathVariable("competition_id") Long competitionId) {
-    return ResponseEntity.ok(null);
+    PreRoundGroupsResponseDTO preRoundGroupsResponseDTO = inGameService.getPreRoundGroups(userId, competitionId);
+    return ResponseEntity.ok(preRoundGroupsResponseDTO);
   }
 
   @Operation(summary = "대회 예선 조 편성 (개설자) API")
