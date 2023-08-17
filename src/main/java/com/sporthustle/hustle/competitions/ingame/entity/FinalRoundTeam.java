@@ -5,6 +5,7 @@ import com.sporthustle.hustle.competitions.competition.entity.Competition;
 import com.sporthustle.hustle.competitions.entryteam.entity.EntryTeam;
 import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -31,4 +32,17 @@ public class FinalRoundTeam extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "entry_team_id", nullable = false)
   private EntryTeam entryTeam;
+
+  @Builder
+  private FinalRoundTeam(Integer currentTournamentLevel) {
+    this.currentTournamentLevel = currentTournamentLevel;
+  }
+
+  public void updateCompetition(Competition competition) {
+    this.competition = competition;
+  }
+
+  public void updateEntryTeam(EntryTeam entryTeam) {
+    this.entryTeam = entryTeam;
+  }
 }
