@@ -1,6 +1,5 @@
 package com.sporthustle.hustle.competitions.ingame.dto;
 
-import com.sporthustle.hustle.competitions.ingame.entity.FinalRoundTeam;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,5 +9,5 @@ import java.util.List;
 @Builder
 public class FinalRoundTeamsResponseDTO {
 
-  public List<FinalRoundTeam> finalRoundTeams;
+  public List<FinalRoundTeamResponseDTO> finalRoundTeams;
 }
