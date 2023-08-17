@@ -74,13 +74,14 @@ public class InGameController {
     return ResponseEntity.ok(null);
   }
 
-  @Operation(summary = "대회 예선 조 순위 조회 API")
+  @Operation(summary = "대회 예선 조 순위 조회 API (일반 유저)")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
   })
   @GetMapping("/{competition_id}/preround/ranking")
-  public ResponseEntity<Object> getFinalRoundTeams(
-      @PathVariable("competition_id") Long competitionId) {
+  public ResponseEntity<Object> getPreRoundRankingByCategory(
+      @PathVariable("competition_id") Long competitionId,
+      @RequestParam("category") String category) {
     return ResponseEntity.ok(null);
   }
 }
