@@ -42,7 +42,8 @@ public class EntryTeam extends BaseEntity {
   private User user;
 
   @Builder
-  private EntryTeam(String name, String phoneNumber, Competition competition, Club club, User user) {
+  private EntryTeam(
+      String name, String phoneNumber, Competition competition, Club club, User user) {
     this.name = name;
     this.phoneNumber = phoneNumber;
     this.competition = competition;

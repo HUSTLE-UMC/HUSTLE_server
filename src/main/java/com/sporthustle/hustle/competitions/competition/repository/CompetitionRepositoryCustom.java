@@ -1,16 +1,15 @@
 package com.sporthustle.hustle.competitions.competition.repository;
 
-import static com.sporthustle.hustle.competitions.entity.competition.QCompetition.competition;
+import static com.sporthustle.hustle.competitions.competition.entity.QCompetition.competition;
 import static com.sporthustle.hustle.sport.entity.QSportEvent.sportEvent;
 import static com.sporthustle.hustle.user.entity.QUser.user;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.sporthustle.hustle.competitions.competition.repository.condition.RecentCompleteCompetitionsCondition;
 import com.sporthustle.hustle.competitions.competition.entity.Competition;
 import com.sporthustle.hustle.competitions.competition.repository.condition.CompetitionsBeforeCompleteCondition;
-
+import com.sporthustle.hustle.competitions.competition.repository.condition.RecentCompleteCompetitionsCondition;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +41,7 @@ public class CompetitionRepositoryCustom {
   }
 
   public Page<Competition> getRecentCompleteCompetitions(
-          RecentCompleteCompetitionsCondition condition, Pageable pageable) {
+      RecentCompleteCompetitionsCondition condition, Pageable pageable) {
 
     JPAQuery<Competition> countQuery =
         queryFactory

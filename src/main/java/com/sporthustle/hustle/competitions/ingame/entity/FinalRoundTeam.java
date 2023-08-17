@@ -3,7 +3,6 @@ package com.sporthustle.hustle.competitions.ingame.entity;
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.competitions.competition.entity.Competition;
 import com.sporthustle.hustle.competitions.entryteam.entity.EntryTeam;
-
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -24,12 +24,12 @@ public class EntryTeamResponseDTO {
 
   public static EntryTeamResponseDTO from(EntryTeam entryTeam) {
     return EntryTeamResponseDTO.builder()
-            .id(entryTeam.getId())
-            .name(entryTeam.getName())
-            .phoneNumber(entryTeam.getPhoneNumber())
-            .score(entryTeam.getScore())
-            .user(UserResponseDTO.from(entryTeam.getUser(), null))
-            .club(ClubResponseDTO.from(entryTeam.getClub()))
-            .build();
+        .id(entryTeam.getId())
+        .name(entryTeam.getName())
+        .phoneNumber(entryTeam.getPhoneNumber())
+        .score(entryTeam.getScore())
+        .user(UserResponseDTO.from(entryTeam.getUser(), null))
+        .club(ClubResponseDTO.from(entryTeam.getClub()))
+        .build();
   }
 }
