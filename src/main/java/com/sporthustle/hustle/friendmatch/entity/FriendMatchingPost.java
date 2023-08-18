@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "FriendMatchingPost")
@@ -33,6 +35,10 @@ public class FriendMatchingPost extends BaseEntity {
 
   @Column(name = "phone_number", nullable = false, length = 20)
   private String phoneNumber;
+
+  //일시
+  @Column(name = "Date", nullable = false)
+  private LocalDateTime date;
 
   @Column(nullable = false, columnDefinition = "GEOMETRY")
   private Point location;
