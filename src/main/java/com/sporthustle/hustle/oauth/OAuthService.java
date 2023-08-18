@@ -6,9 +6,15 @@ import com.sporthustle.hustle.common.exception.BaseException;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import com.sporthustle.hustle.common.jwt.dto.TokenInfo;
+import com.sporthustle.hustle.oauth.dto.OAuthUserInfoResponseDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class OAuthService {
 
@@ -18,7 +24,7 @@ public class OAuthService {
   @Value("${oauth.secret.redirect-url}")
   private String redirectUrl;
 
-  public String getKakaoAccessToken(String code) {
+  public TokenInfo getKakaoToken(String code) {
     String access_Token = "";
     String refresh_Token = "";
     String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -62,19 +68,16 @@ public class OAuthService {
       access_Token = element.getAsJsonObject().get("access_token").getAsString();
       refresh_Token = element.getAsJsonObject().get("refresh_token").getAsString();
 
-      System.out.println("access_token : " + access_Token);
-      System.out.println("refresh_token : " + refresh_Token);
-
       br.close();
       bw.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
 
-    return access_Token;
+    return TokenInfo.builder().accessToken(access_Token).refreshToken(refresh_Token).build();
   }
 
-  public String createKakaoUser(String token) throws BaseException {
+  public OAuthUserInfoResponseDTO getKakaoUserInfo(String token) throws BaseException {
 
     String reqURL = "https://kapi.kakao.com/v2/user/me";
 
@@ -89,7 +92,7 @@ public class OAuthService {
 
       // 결과 코드가 200이라면 성공
       int responseCode = conn.getResponseCode();
-      System.out.println("responseCode : " + responseCode);
+      log.info("responseCode : " + responseCode);
 
       // 요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
       BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -105,7 +108,7 @@ public class OAuthService {
       JsonParser parser = new JsonParser();
       JsonElement element = parser.parse(result);
 
-      int id = element.getAsJsonObject().get("id").getAsInt();
+      long id = element.getAsJsonObject().get("id").getAsInt();
       boolean hasEmail =
           element
               .getAsJsonObject()
@@ -123,16 +126,38 @@ public class OAuthService {
                 .get("email")
                 .getAsString();
       }
+      String nickname = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("nickname").getAsString();
+      boolean has_birthday = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_birthday").getAsBoolean();
+      String birthday = "";
+      if (has_birthday) {
+        birthday = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("birthday").getAsString();
+      }
+      boolean has_gender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_gender").getAsBoolean();
+      String gender = "";
+      if (has_gender) {
+        gender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender").getAsString();
+      }
 
       System.out.println("id : " + id);
       System.out.println("email : " + email);
+      System.out.println("nickname : " + nickname);
+      System.out.println("birthday : " + birthday);
+      System.out.println("gender : " + gender);
 
       br.close();
-      return email;
+      return OAuthUserInfoResponseDTO.builder()
+              .email(email)
+              .name(nickname)
+              .password(getRamdomPassword())
+              .gender(gender).build();
 
     } catch (IOException e) {
       e.printStackTrace();
     }
     return null;
+  }
+
+  private String getRamdomPassword() {
+    return RandomStringUtils.randomAlphanumeric(100);
   }
 }
