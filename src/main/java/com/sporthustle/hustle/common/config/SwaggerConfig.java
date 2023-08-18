@@ -52,7 +52,8 @@ public class SwaggerConfig {
 
     Server localServer = new Server().url("/").description("Local/Current Server");
 
-    Server frontLocalServer = new Server().url("http://localhost:3000").description("For FrontEnd Server");
+    Server frontLocalServer =
+        new Server().url("http://localhost:3000").description("For FrontEnd Server");
 
     List<Server> servers = new ArrayList<>();
     servers.add(productionServer);
