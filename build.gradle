@@ -68,6 +68,9 @@ dependencies {
 	// hibernate types
 	implementation 'io.hypersistence:hypersistence-utils-hibernate-55:3.5.0'
 
+	// gson
+	implementation 'com.google.code.gson:gson:2.10.1'
+
 	// QueryDSL
 	implementation 'com.querydsl:querydsl-jpa'
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
