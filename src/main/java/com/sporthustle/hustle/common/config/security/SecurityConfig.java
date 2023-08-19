@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.httpBasic()
         .disable()
         .authorizeRequests()
-        .antMatchers("/", "/api/auth/**", "/api/university", "/api/user/find/**")
+        .antMatchers("/", "/api/auth/**", "/api/university", "/api/user/find/**", "/swagger-ui/**", "/api/swagger-ui/**")
         .permitAll()
         .antMatchers("/api/**")
         .authenticated()
