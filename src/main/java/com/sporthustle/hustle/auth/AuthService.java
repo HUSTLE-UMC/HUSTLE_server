@@ -3,6 +3,8 @@ package com.sporthustle.hustle.auth;
 import static com.sporthustle.hustle.common.consts.Constants.REFRESH_TOKEN;
 
 import com.sporthustle.hustle.auth.dto.*;
+import com.sporthustle.hustle.auth.dto.oauth.OAuthSignInRequestDTO;
+import com.sporthustle.hustle.auth.dto.oauth.OAuthSignInResponseDTO;
 import com.sporthustle.hustle.common.entity.BaseStatus;
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
@@ -78,6 +80,7 @@ public class AuthService {
             .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
 
     validateDeletedUser(user.getStatus());
+    validateDefaultLogin(user);
 
     boolean isMatchedPassword =
         passwordEncoder.matches(signInRequestDTO.getPassword(), user.getPassword());
@@ -97,6 +100,14 @@ public class AuthService {
   private void validateDeletedUser(BaseStatus status) {
     if (status == BaseStatus.INACTIVE) {
       throw BaseException.from(ErrorCode.USER_NOT_FOUND);
+    }
+  }
+
+  // 소셜 로그인 할때 비밀번호를 랜덤 문자열을 저장하게 하는데
+  // 만약에 소셜 로그인을 일반 로그인처럼 할 수 있을 가능성이 있기 때문에 validation 추가
+  private void validateDefaultLogin(User user) {
+    if (user.getSnsType() != SnsType.DEFAULT) {
+      throw BaseException.from(ErrorCode.INVALID_LOGIN_ACCESS);
     }
   }
 
@@ -134,6 +145,30 @@ public class AuthService {
     String tokenType = jwtTokenProvider.getTokenType(refreshToken);
     if (!tokenType.equals(REFRESH_TOKEN)) {
       throw BaseException.from(ErrorCode.REFRESH_TOKEN_NOT_FOUND);
+    }
+  }
+
+  public OAuthSignInResponseDTO oAuthSignIn(OAuthSignInRequestDTO oAuthSignInRequestDTO) {
+    String email = oAuthSignInRequestDTO.getEmail();
+
+    User user =
+        userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+
+    validateDeletedUser(user.getStatus());
+    validateOAuthSignIn(user);
+
+    TokenInfo tokenInfo = jwtTokenProvider.createToken(user.getEmail());
+    user.insertRefreshToken(tokenInfo.getRefreshToken());
+    userRepository.save(user);
+
+    return OAuthSignInResponseDTO.builder().tokenInfo(tokenInfo).build();
+  }
+
+  private void validateOAuthSignIn(User user) {
+    if (user.getSnsType() == SnsType.DEFAULT) {
+      throw BaseException.from(ErrorCode.INVALID_LOGIN_ACCESS);
     }
   }
 }

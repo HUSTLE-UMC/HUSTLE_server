@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @Builder
 public class OAuthUserInfoResponseDTO {
-    private String email;
-    private String password;
-    private String name;
-    private String gender;
+  private String email;
+  private String password;
+  private String name;
+  private String gender;
 }

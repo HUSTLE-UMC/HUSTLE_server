@@ -3,12 +3,11 @@ package com.sporthustle.hustle.oauth;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.sporthustle.hustle.common.exception.BaseException;
+import com.sporthustle.hustle.common.jwt.dto.KakaoTokenInfo;
+import com.sporthustle.hustle.oauth.dto.OAuthUserInfoResponseDTO;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
-import com.sporthustle.hustle.common.jwt.dto.TokenInfo;
-import com.sporthustle.hustle.oauth.dto.OAuthUserInfoResponseDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +23,7 @@ public class OAuthService {
   @Value("${oauth.secret.redirect-url}")
   private String redirectUrl;
 
-  public TokenInfo getKakaoToken(String code) {
+  public KakaoTokenInfo getKakaoToken(String code) {
     String access_Token = "";
     String refresh_Token = "";
     String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -74,7 +73,7 @@ public class OAuthService {
       e.printStackTrace();
     }
 
-    return TokenInfo.builder().accessToken(access_Token).refreshToken(refresh_Token).build();
+    return KakaoTokenInfo.builder().accessToken(access_Token).refreshToken(refresh_Token).build();
   }
 
   public OAuthUserInfoResponseDTO getKakaoUserInfo(String token) throws BaseException {
@@ -108,7 +107,6 @@ public class OAuthService {
       JsonParser parser = new JsonParser();
       JsonElement element = parser.parse(result);
 
-      long id = element.getAsJsonObject().get("id").getAsInt();
       boolean hasEmail =
           element
               .getAsJsonObject()
@@ -126,30 +124,41 @@ public class OAuthService {
                 .get("email")
                 .getAsString();
       }
-      String nickname = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("profile").getAsJsonObject().get("nickname").getAsString();
-      boolean has_birthday = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_birthday").getAsBoolean();
-      String birthday = "";
-      if (has_birthday) {
-        birthday = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("birthday").getAsString();
-      }
-      boolean has_gender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_gender").getAsBoolean();
+      String nickname =
+          element
+              .getAsJsonObject()
+              .get("kakao_account")
+              .getAsJsonObject()
+              .get("profile")
+              .getAsJsonObject()
+              .get("nickname")
+              .getAsString();
+
+      boolean has_gender =
+          element
+              .getAsJsonObject()
+              .get("kakao_account")
+              .getAsJsonObject()
+              .get("has_gender")
+              .getAsBoolean();
       String gender = "";
       if (has_gender) {
-        gender = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("gender").getAsString();
+        gender =
+            element
+                .getAsJsonObject()
+                .get("kakao_account")
+                .getAsJsonObject()
+                .get("gender")
+                .getAsString();
       }
-
-      System.out.println("id : " + id);
-      System.out.println("email : " + email);
-      System.out.println("nickname : " + nickname);
-      System.out.println("birthday : " + birthday);
-      System.out.println("gender : " + gender);
 
       br.close();
       return OAuthUserInfoResponseDTO.builder()
-              .email(email)
-              .name(nickname)
-              .password(getRamdomPassword())
-              .gender(gender).build();
+          .email(email)
+          .name(nickname)
+          .password(getRamdomPassword())
+          .gender(gender)
+          .build();
 
     } catch (IOException e) {
       e.printStackTrace();
