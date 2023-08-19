@@ -157,12 +157,12 @@ public class OAuthService {
 
       br.close();
       return OAuthUserInfoResponseDTO.builder()
-              .oauthId(snsId)
-              .email(email)
-              .name(nickname)
-              .password(getRamdomPassword())
-              .gender(gender)
-              .build();
+          .oauthId(snsId)
+          .email(email)
+          .name(nickname)
+          .password(getRamdomPassword())
+          .gender(gender)
+          .build();
 
     } catch (IOException e) {
       e.printStackTrace();

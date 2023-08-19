@@ -181,14 +181,14 @@ public class AuthService {
 
     String hashedPassword = passwordEncoder.encode(oAuthSignUpRequestDTO.getPassword());
     User user =
-            User.builder()
-                    .email(oAuthSignUpRequestDTO.getEmail())
-                    .password(hashedPassword)
-                    .birthday(oAuthSignUpRequestDTO.getBirthday())
-                    .name(oAuthSignUpRequestDTO.getName())
-                    .gender(Gender.valueOf(oAuthSignUpRequestDTO.getGender()))
-                    .isMailing(oAuthSignUpRequestDTO.getIsMailing())
-                    .build();
+        User.builder()
+            .email(oAuthSignUpRequestDTO.getEmail())
+            .password(hashedPassword)
+            .birthday(oAuthSignUpRequestDTO.getBirthday())
+            .name(oAuthSignUpRequestDTO.getName())
+            .gender(Gender.valueOf(oAuthSignUpRequestDTO.getGender()))
+            .isMailing(oAuthSignUpRequestDTO.getIsMailing())
+            .build();
 
     user.updateSnsValue(oAuthSignUpRequestDTO.getSnsId(), oAuthSignUpRequestDTO.getSnsType());
 
@@ -202,7 +202,9 @@ public class AuthService {
   }
 
   private void validateOAUthSignUp(OAuthSignUpRequestDTO oAuthSignUpRequestDTO) {
-    boolean isExistEmail = userRepository.existsByEmailAndSnsId(oAuthSignUpRequestDTO.getEmail(), oAuthSignUpRequestDTO.getSnsId());
+    boolean isExistEmail =
+        userRepository.existsByEmailAndSnsId(
+            oAuthSignUpRequestDTO.getEmail(), oAuthSignUpRequestDTO.getSnsId());
     if (isExistEmail) {
       throw BaseException.from(ErrorCode.ALREADY_EXIST_USER);
     }

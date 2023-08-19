@@ -7,6 +7,5 @@ import lombok.Getter;
 @Builder
 public class OAuthSignUpResponseDTO {
 
-    private String message;
-
+  private String message;
 }

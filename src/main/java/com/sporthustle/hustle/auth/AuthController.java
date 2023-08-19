@@ -36,11 +36,12 @@ public class AuthController {
 
   @Operation(summary = "소셜 로그인 회원가입 API")
   @ApiResponses({
-          @ApiResponse(responseCode = "200", description = "회원가입이 성공한 경우"),
-          @ApiResponse(responseCode = "400", description = "이미 존재하는 유저인 경우")
+    @ApiResponse(responseCode = "200", description = "회원가입이 성공한 경우"),
+    @ApiResponse(responseCode = "400", description = "이미 존재하는 유저인 경우")
   })
   @PostMapping("/signup/oauth")
-  public ResponseEntity<OAuthSignUpResponseDTO> oAuthSignUp(@RequestBody OAuthSignUpRequestDTO oAuthSignUpRequestDTO) {
+  public ResponseEntity<OAuthSignUpResponseDTO> oAuthSignUp(
+      @RequestBody OAuthSignUpRequestDTO oAuthSignUpRequestDTO) {
     OAuthSignUpResponseDTO oAuthSignUpResponseDTO = authService.oAuthSignUp(oAuthSignUpRequestDTO);
     return ResponseEntity.ok(oAuthSignUpResponseDTO);
   }
