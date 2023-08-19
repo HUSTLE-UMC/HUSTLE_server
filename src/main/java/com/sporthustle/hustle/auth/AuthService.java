@@ -5,6 +5,8 @@ import static com.sporthustle.hustle.common.consts.Constants.REFRESH_TOKEN;
 import com.sporthustle.hustle.auth.dto.*;
 import com.sporthustle.hustle.auth.dto.oauth.OAuthSignInRequestDTO;
 import com.sporthustle.hustle.auth.dto.oauth.OAuthSignInResponseDTO;
+import com.sporthustle.hustle.auth.dto.oauth.OAuthSignUpRequestDTO;
+import com.sporthustle.hustle.auth.dto.oauth.OAuthSignUpResponseDTO;
 import com.sporthustle.hustle.common.entity.BaseStatus;
 import com.sporthustle.hustle.common.exception.BaseException;
 import com.sporthustle.hustle.common.exception.ErrorCode;
@@ -148,6 +150,7 @@ public class AuthService {
     }
   }
 
+  @Transactional
   public OAuthSignInResponseDTO oAuthSignIn(OAuthSignInRequestDTO oAuthSignInRequestDTO) {
     String email = oAuthSignInRequestDTO.getEmail();
 
@@ -169,6 +172,39 @@ public class AuthService {
   private void validateOAuthSignIn(User user) {
     if (user.getSnsType() == SnsType.DEFAULT) {
       throw BaseException.from(ErrorCode.INVALID_LOGIN_ACCESS);
+    }
+  }
+
+  @Transactional
+  public OAuthSignUpResponseDTO oAuthSignUp(OAuthSignUpRequestDTO oAuthSignUpRequestDTO) {
+    validateOAUthSignUp(oAuthSignUpRequestDTO);
+
+    String hashedPassword = passwordEncoder.encode(oAuthSignUpRequestDTO.getPassword());
+    User user =
+            User.builder()
+                    .email(oAuthSignUpRequestDTO.getEmail())
+                    .password(hashedPassword)
+                    .birthday(oAuthSignUpRequestDTO.getBirthday())
+                    .name(oAuthSignUpRequestDTO.getName())
+                    .gender(Gender.valueOf(oAuthSignUpRequestDTO.getGender()))
+                    .isMailing(oAuthSignUpRequestDTO.getIsMailing())
+                    .build();
+
+    user.updateSnsValue(oAuthSignUpRequestDTO.getSnsId(), oAuthSignUpRequestDTO.getSnsType());
+
+    Long universityId = oAuthSignUpRequestDTO.getUniversityId();
+    University university = UniversityUtils.getUniversityById(universityId, universityRepository);
+    user.updateUniversity(university);
+
+    userRepository.save(user);
+
+    return OAuthSignUpResponseDTO.builder().message("회원가입 완료하였습니다.").build();
+  }
+
+  private void validateOAUthSignUp(OAuthSignUpRequestDTO oAuthSignUpRequestDTO) {
+    boolean isExistEmail = userRepository.existsByEmailAndSnsId(oAuthSignUpRequestDTO.getEmail(), oAuthSignUpRequestDTO.getSnsId());
+    if (isExistEmail) {
+      throw BaseException.from(ErrorCode.ALREADY_EXIST_USER);
     }
   }
 }

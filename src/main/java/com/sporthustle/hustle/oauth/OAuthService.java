@@ -107,6 +107,9 @@ public class OAuthService {
       JsonParser parser = new JsonParser();
       JsonElement element = parser.parse(result);
 
+      long id = element.getAsJsonObject().get("id").getAsLong();
+      String snsId = Long.toString(id);
+
       boolean hasEmail =
           element
               .getAsJsonObject()
@@ -154,11 +157,12 @@ public class OAuthService {
 
       br.close();
       return OAuthUserInfoResponseDTO.builder()
-          .email(email)
-          .name(nickname)
-          .password(getRamdomPassword())
-          .gender(gender)
-          .build();
+              .oauthId(snsId)
+              .email(email)
+              .name(nickname)
+              .password(getRamdomPassword())
+              .gender(gender)
+              .build();
 
     } catch (IOException e) {
       e.printStackTrace();
