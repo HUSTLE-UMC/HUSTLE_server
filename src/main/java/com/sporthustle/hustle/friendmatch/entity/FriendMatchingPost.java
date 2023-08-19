@@ -5,15 +5,14 @@ import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseStatus;
 import com.sporthustle.hustle.sport.entity.SportEvent;
 import com.sporthustle.hustle.user.entity.User;
-import javax.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.geo.Point;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "FriendMatchingPost")
 @Entity
@@ -44,10 +43,10 @@ public class FriendMatchingPost extends BaseEntity {
   private Point location;
 
   @Column(
-      name = "location_address",
-      nullable = false,
-      length = 60,
-      columnDefinition = "VARCHAR(60) default ''")
+          name = "location_address",
+          nullable = false,
+          length = 60,
+          columnDefinition = "VARCHAR(60) default ''")
   private String locationAddress;
 
   @Column(nullable = false, length = 10, columnDefinition = "CHAR(10) default 'ACTIVE'")
@@ -65,4 +64,23 @@ public class FriendMatchingPost extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sport_event_id", nullable = false)
   private SportEvent sportEvent;
+
+  @Builder
+  public FriendMatchingPost(
+          String title,
+          FriendMatchingPostType category,
+          String name,
+          String phoneNumber,
+          LocalDateTime date,
+          Point location,
+          String locationAddress) {
+    this.title = title;
+    this.category = category;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    this.date = date;
+    this.location = location;
+    this.locationAddress = locationAddress;
+  }
+
 }
