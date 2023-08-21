@@ -58,27 +58,28 @@ public class InGameService {
     preRoundGroupRepository.save(preRoundGroup);
   }
 
-  public CategoriesResponseDTO getCategories(Long competitionId, InGameType inGameType) {
+  public CategoriesResponseDTO getGroupCategories(
+      Long competitionId, InGameCategory inGameCategory) {
     Competition competition =
         CompetitionUtils.getCompetitionById(competitionId, competitionRepository);
 
-    List<String> categories = null;
+    List<String> groupCategories = null;
 
-    switch (inGameType) {
+    switch (inGameCategory) {
       case PREROUND:
-        categories = getPreRoundCategories(competition);
+        groupCategories = getPreRoundGroupCategories(competition);
         break;
       case FINALROUND:
-        categories = getFinalRoundCategories(competition);
+        groupCategories = getFinalRoundGroupCategories(competition);
         break;
       default:
         throw new IllegalArgumentException("InGameType 해당되는 값이 없습니다.");
     }
 
-    return CategoriesResponseDTO.builder().categories(categories).build();
+    return CategoriesResponseDTO.builder().categories(groupCategories).build();
   }
 
-  private List<String> getPreRoundCategories(Competition competition) {
+  private List<String> getPreRoundGroupCategories(Competition competition) {
     List<String> preRoundCategories = new ArrayList<>();
 
     final char FIRST_GROUP_NAME = 'A';
@@ -101,7 +102,7 @@ public class InGameService {
     return preRoundCategories;
   }
 
-  private List<String> getFinalRoundCategories(Competition competition) {
+  private List<String> getFinalRoundGroupCategories(Competition competition) {
     List<String> finalRoundCategories = new ArrayList<>();
 
     int finalRoundTeamCount = competition.getFinalRoundTeamCount();
