@@ -5,8 +5,9 @@ import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseStatus;
 import com.sporthustle.hustle.sport.entity.SportEvent;
 import com.sporthustle.hustle.user.entity.User;
+import org.locationtech.jts.geom.Point;
 import lombok.*;
-import org.springframework.data.geo.Point;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,8 +37,8 @@ public class FriendMatchingPost extends BaseEntity {
   private String phoneNumber;
 
   //일시
-  @Column(name = "Date", nullable = false)
-  private LocalDateTime date;
+  @Column(name = "start_date", nullable = false)
+  private LocalDateTime startDate;
 
   @Column(nullable = false, columnDefinition = "GEOMETRY")
   private Point location;
@@ -73,15 +74,15 @@ public class FriendMatchingPost extends BaseEntity {
           FriendMatchingPostType category,
           String name,
           String phoneNumber,
-          LocalDateTime date,
           Point location,
+          LocalDateTime startDate,
           String locationAddress) {
     this.title = title;
     this.category = category;
     this.name = name;
     this.phoneNumber = phoneNumber;
-    this.date = date;
     this.location = location;
+    this.startDate = startDate;
     this.locationAddress = locationAddress;
   }
 

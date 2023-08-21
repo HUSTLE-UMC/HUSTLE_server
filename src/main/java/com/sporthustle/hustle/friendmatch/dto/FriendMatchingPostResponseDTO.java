@@ -6,14 +6,13 @@ import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import com.sporthustle.hustle.sport.dto.SportEventResponseDTO;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPost;
 import com.sporthustle.hustle.sport.entity.SportEvent;
-import com.sporthustle.hustle.university.dto.UniversityResponseDTO;
-import com.sporthustle.hustle.university.entity.University;
-import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.dto.FriendMatchingUserResponseDTO;
 import com.sporthustle.hustle.user.entity.User;
+import org.locationtech.jts.geom.Point;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.geo.Point;
+
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -25,7 +24,7 @@ public class FriendMatchingPostResponseDTO{
     private FriendMatchingPostType category;
     private String name;
     private String phoneNumber;
-    private LocalDateTime date;
+    private LocalDateTime startDate;
     private Point location;
     private String locationAddress;
     private FriendMatchingUserResponseDTO user;
@@ -48,7 +47,7 @@ public class FriendMatchingPostResponseDTO{
                 .category(friendMatchingPost.getCategory())
                 .name(friendMatchingPost.getName())
                 .phoneNumber(friendMatchingPost.getPhoneNumber())
-                .date(friendMatchingPost.getDate())
+                .startDate(friendMatchingPost.getStartDate())
                 .location(friendMatchingPost.getLocation())
                 .locationAddress(friendMatchingPost.getLocationAddress())
                 .user(friendMatchingUserResponseDTO)
