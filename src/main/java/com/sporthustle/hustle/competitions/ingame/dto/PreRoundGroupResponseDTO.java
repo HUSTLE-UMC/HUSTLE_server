@@ -11,16 +11,30 @@ public class PreRoundGroupResponseDTO {
 
   private Long id;
 
-  private String name;
+  private String groupCategory;
+
+  private Integer matchCount;
+
+  private Integer winCount;
+
+  private Integer loseCount;
+
+  private Integer drawCount;
+
+  private Integer scoreDifferenceCount;
 
   private EntryTeamResponseDTO entryTeam;
 
   public static PreRoundGroupResponseDTO from(PreRoundGroup preRoundGroup) {
-    EntryTeamResponseDTO entryTeamResponseDTO = EntryTeamResponseDTO.from(preRoundGroup.getEntryTeam());
-
     return PreRoundGroupResponseDTO.builder()
-            .name(preRoundGroup.getName())
-            .entryTeam(entryTeamResponseDTO)
-            .build();
+        .id(preRoundGroup.getId())
+        .groupCategory(preRoundGroup.getGroupCategory())
+        .matchCount(preRoundGroup.getMatchCount())
+        .winCount(preRoundGroup.getWinCount())
+        .loseCount(preRoundGroup.getLoseCount())
+        .drawCount(preRoundGroup.getDrawCount())
+        .scoreDifferenceCount(preRoundGroup.getScoreDifferenceCount())
+        .entryTeam(EntryTeamResponseDTO.from(preRoundGroup.getEntryTeam()))
+        .build();
   }
 }
