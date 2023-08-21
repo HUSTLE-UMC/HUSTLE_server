@@ -4,11 +4,10 @@ import com.sporthustle.hustle.club.entity.Club;
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.user.entity.User;
 import javax.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import lombok.*;
 import org.springframework.data.geo.Point;
+
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -73,6 +72,8 @@ public class FriendMatchingRequest extends BaseEntity {
    this.user = user;
    this. club = club;
   }
+
+
 
   public void updateType(FriendMatchingRequestType type){
     this.type = type;

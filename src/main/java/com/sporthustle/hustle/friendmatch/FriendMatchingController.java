@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,11 +43,13 @@ public class FriendMatchingController {
     })
     @GetMapping
     public ResponseEntity<Page<FriendMatchingPostResponseDTO>> getFriendMatchingPostsByTypeAndPage(
-            @RequestParam String type, @RequestParam int page, @PageableDefault(size = 15) Pageable pageable) {
+            @RequestParam(name = "sport_event_id" , required = false) Long sportEventId,
+            @RequestParam(name = "type", defaultValue = "INVITE") String type,
+            @PageableDefault(size = 15, sort = "startDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
         FriendMatchingPostType postType = FriendMatchingPostType.valueOf(type.toUpperCase());
-        Page<FriendMatchingPostResponseDTO> friendMatchingPosts =
-                friendMatchingService.getFriendMatchingPostsByType(postType, page,pageable);
-        return ResponseEntity.ok(friendMatchingPosts);
+        Page<FriendMatchingPostResponseDTO> friendMatchingPostsResponseDTO = friendMatchingService.getFriendMatchingPostsByType(sportEventId, postType,pageable);
+        return ResponseEntity.ok(friendMatchingPostsResponseDTO);
     }
     @GetMapping("/{matchId}")
     public FriendMatchingResponseDTO getFriendMatchingRequests(@PathVariable("matchId")Long matchId
