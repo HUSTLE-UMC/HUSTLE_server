@@ -7,6 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UpdateFriendMatchingRequestStateRequestDTO {
-    Long friendMatchingRequestId;
-    FriendMatchingRequestType friendMatchingRequestType;
+  Long friendMatchingRequestId;
+  FriendMatchingRequestType friendMatchingRequestType;
 }

@@ -7,8 +7,7 @@ import lombok.Getter;
 @Builder
 public class CreateFriendMatchingPostResponseDTO {
 
-    private String message;
+  private String message;
 
-    private FriendMatchingPostResponseDTO data;
-
+  private FriendMatchingPostResponseDTO data;
 }

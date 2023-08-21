@@ -5,12 +5,10 @@ import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseStatus;
 import com.sporthustle.hustle.sport.entity.SportEvent;
 import com.sporthustle.hustle.user.entity.User;
-import org.locationtech.jts.geom.Point;
-import lombok.*;
-
-
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.*;
+import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 @Getter
 @Setter
@@ -36,7 +34,7 @@ public class FriendMatchingPost extends BaseEntity {
   @Column(name = "phone_number", nullable = false, length = 20)
   private String phoneNumber;
 
-  //일시
+  // 일시
   @Column(name = "start_date", nullable = false)
   private LocalDateTime startDate;
 
@@ -44,10 +42,10 @@ public class FriendMatchingPost extends BaseEntity {
   private Point location;
 
   @Column(
-          name = "location_address",
-          nullable = false,
-          length = 60,
-          columnDefinition = "VARCHAR(60) default ''")
+      name = "location_address",
+      nullable = false,
+      length = 60,
+      columnDefinition = "VARCHAR(60) default ''")
   private String locationAddress;
 
   @Column(nullable = false, length = 10, columnDefinition = "CHAR(10) default 'ACTIVE'")
@@ -68,13 +66,13 @@ public class FriendMatchingPost extends BaseEntity {
 
   @Builder
   public FriendMatchingPost(
-          String title,
-          FriendMatchingPostType category,
-          String name,
-          String phoneNumber,
-          Point location,
-          LocalDateTime startDate,
-          String locationAddress) {
+      String title,
+      FriendMatchingPostType category,
+      String name,
+      String phoneNumber,
+      Point location,
+      LocalDateTime startDate,
+      String locationAddress) {
     this.title = title;
     this.category = category;
     this.name = name;
@@ -83,5 +81,4 @@ public class FriendMatchingPost extends BaseEntity {
     this.startDate = startDate;
     this.locationAddress = locationAddress;
   }
-
 }

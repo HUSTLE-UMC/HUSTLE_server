@@ -7,9 +7,9 @@ import lombok.Getter;
 @Getter
 @Builder
 public class FriendMatchingUserResponseDTO {
-    private Long id;
+  private Long id;
 
-    public static FriendMatchingUserResponseDTO from(User user) {
-        return FriendMatchingUserResponseDTO.builder().id(user.getId()).build();
-    }
+  public static FriendMatchingUserResponseDTO from(User user) {
+    return FriendMatchingUserResponseDTO.builder().id(user.getId()).build();
+  }
 }
