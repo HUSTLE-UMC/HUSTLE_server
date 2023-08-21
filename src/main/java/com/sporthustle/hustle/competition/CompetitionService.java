@@ -15,23 +15,15 @@ import com.sporthustle.hustle.sport.repository.SportEventRepository;
 import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.entity.User;
 import com.sporthustle.hustle.user.repository.UserRepository;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@Tag(name = "Competition", description = "대회 API")
-@Slf4j
-@RestController
-@RequestMapping("/api/competition")
 @RequiredArgsConstructor
 @Service
 public class CompetitionService {
@@ -46,12 +38,15 @@ public class CompetitionService {
       Long sportEventId, CompetitionStateRequest competitionStateRequest, Pageable pageable) {
     Page<Competition> competitions = Page.empty();
 
-    if (competitionStateRequest.equals(CompetitionStateRequest.ACTIVE)) {
-      competitions = this.getCompetitionsBeforeComplete(sportEventId, pageable);
-    } else if (competitionStateRequest.equals(CompetitionStateRequest.COMPLETE)) {
-      competitions = this.getCompleteCompetitions(sportEventId, pageable);
-    } else {
-      throw new IllegalArgumentException("CompetitionStateRequest 해당되는 값이 없습니다.");
+    switch (competitionStateRequest) {
+      case ACTIVE:
+        competitions = this.getCompetitionsBeforeComplete(sportEventId, pageable);
+        break;
+      case COMPLETE:
+        competitions = this.getCompleteCompetitions(sportEventId, pageable);
+        break;
+      default:
+        throw new IllegalArgumentException("CompetitionStateRequest 해당되는 값이 없습니다.");
     }
 
     Page<CompetitionResponseDTO> competitionResponseDTOs =
@@ -216,5 +211,20 @@ public class CompetitionService {
     competitionRepository.save(competition);
 
     return DeleteCompetitionResponseDTO.builder().message("대회를 성공적으로 삭제했습니다.").build();
+  }
+
+  @Transactional(readOnly = true)
+  public CompetitionsResponseDTO getPopularCompetitions(Pageable pageable) {
+    Page<Competition> competitions = competitionRepositoryCustom.getPopularCompetitions(pageable);
+
+    Page<CompetitionResponseDTO> competitionResponseDTOs =
+        competitions.map(competition -> CompetitionResponseDTO.from(competition));
+
+    return CompetitionsResponseDTO.builder()
+        .count(competitionResponseDTOs.getNumberOfElements())
+        .totalPage(competitionResponseDTOs.getTotalPages())
+        .totalCount(competitionResponseDTOs.getTotalElements())
+        .data(competitionResponseDTOs.getContent())
+        .build();
   }
 }

@@ -2,7 +2,6 @@ package com.sporthustle.hustle.club.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.common.entity.BaseStatus;
-import com.sporthustle.hustle.sport.entity.SportPosition;
 import com.sporthustle.hustle.user.entity.User;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -40,10 +39,6 @@ public class ClubMember extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id", nullable = false)
   private Club club;
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "position_id", nullable = false)
-  private SportPosition sportPosition;
 
   @Builder
   private ClubMember(User user, Club club) {

@@ -31,8 +31,8 @@ public class MatchResultPost extends BaseEntity {
       columnDefinition = "CHAR(10) default ''")
   private String groupCategory;
 
-  @Column(columnDefinition = "SMALLINT UNSIGNED default 1")
-  private int order;
+  @Column(name = "post_order", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 1")
+  private Integer postOrder;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "competition_id", nullable = false)

@@ -32,7 +32,7 @@ public class CompetitionController {
       @RequestParam(name = "sport_event_id", required = false) Long sportEventId,
       @RequestParam(name = "state", defaultValue = "ACTIVE")
           CompetitionStateRequest competitionStateRequest,
-      @PageableDefault(size = 4, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+      @PageableDefault(size = 4, direction = Sort.Direction.DESC) Pageable pageable) {
     CompetitionsResponseDTO competitionsResponseDTO =
         competitionService.getCompetitionsByListType(
             sportEventId, competitionStateRequest, pageable);
@@ -94,7 +94,10 @@ public class CompetitionController {
     @ApiResponse(responseCode = "200", description = "HOT 대회 목록 조회에 성공한 경우"),
   })
   @GetMapping("/popular")
-  public ResponseEntity<Object> getPopularCompetitions() {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<Object> getPopularCompetitions(
+      @PageableDefault(size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
+    CompetitionsResponseDTO competitionsResponseDTO =
+        competitionService.getPopularCompetitions(pageable);
+    return ResponseEntity.ok(competitionsResponseDTO);
   }
 }

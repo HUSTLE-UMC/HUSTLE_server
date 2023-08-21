@@ -20,7 +20,7 @@ public class FriendMatchingRequest extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 10, columnDefinition = "CHAR(10) default = 'WAIT'")
+  @Column(nullable = false, length = 10, columnDefinition = "CHAR(10) default 'WAIT'")
   @Enumerated(EnumType.STRING)
   private FriendMatchingRequestType type = FriendMatchingRequestType.WAIT;
 
