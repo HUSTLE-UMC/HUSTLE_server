@@ -39,7 +39,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authorizeRequests()
         .antMatchers("/", "/api/auth/**", "/api/university", "/api/user/find/**")
         .permitAll()
-        .antMatchers("/v3/api-docs", "/swagger*/**")
+        .antMatchers("/v2/api-docs")
+        .permitAll()
+        .antMatchers("/configuration/ui")
+        .permitAll()
+        .antMatchers("/swagger-resources/**")
+        .permitAll()
+        .antMatchers("/configuration/security")
+        .permitAll()
+        .antMatchers("/swagger-ui.html")
+        .permitAll()
+        .antMatchers("/swagger-ui/*")
+        .permitAll()
+        .antMatchers("/webjars/**")
+        .permitAll()
+        .antMatchers("/v2/**")
         .permitAll()
         .antMatchers("/api/**")
         .authenticated()
@@ -50,7 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .addFilterBefore(
             new JwtAuthenticationFilter(jwtTokenProvider),
-            UsernamePasswordAuthenticationFilter.class);
+            UsernamePasswordAuthenticationFilter.class)
+        .cors();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 }
