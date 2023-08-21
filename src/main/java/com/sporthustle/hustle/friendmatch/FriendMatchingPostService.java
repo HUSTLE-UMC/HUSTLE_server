@@ -3,12 +3,13 @@ package com.sporthustle.hustle.friendmatch;
 import com.sporthustle.hustle.club.ClubUtils;
 import com.sporthustle.hustle.club.entity.Club;
 import com.sporthustle.hustle.club.repository.ClubRepository;
-import com.sporthustle.hustle.friendmatch.dto.CreateFriendMatchingPostRequestDTO;
-import com.sporthustle.hustle.friendmatch.dto.CreateFriendMatchingPostResponseDTO;
-import com.sporthustle.hustle.friendmatch.dto.FriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostRequestDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.FriendMatchingRequestsResponseDTO;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPost;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
-import com.sporthustle.hustle.friendmatch.repository.FriendMatchingRepository;
+import com.sporthustle.hustle.friendmatch.repository.FriendMatchingPostRepository;
 import com.sporthustle.hustle.sport.SportUtils;
 import com.sporthustle.hustle.sport.entity.SportEvent;
 import com.sporthustle.hustle.sport.repository.SportEventRepository;
@@ -23,8 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class FriendMatchingService {
-    private final FriendMatchingRepository friendMatchingRepository;
+public class FriendMatchingPostService {
+    private final FriendMatchingPostRepository friendMatchingPostRepository;
     private final SportEventRepository sportEventRepository;
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
@@ -52,7 +53,7 @@ public class FriendMatchingService {
         SportEvent sportEvent = SportUtils.getSportEventById(createFriendMatchingPostRequestDTO.getSportEventId(), sportEventRepository);
         friendMatchingPost.setSportEvent(sportEvent);
 
-        friendMatchingRepository.save(friendMatchingPost);
+        friendMatchingPostRepository.save(friendMatchingPost);
         FriendMatchingPostResponseDTO friendMatchingPostResponseDTO = FriendMatchingPostResponseDTO.from(friendMatchingPost);
 
         return CreateFriendMatchingPostResponseDTO.builder()
@@ -67,17 +68,20 @@ public class FriendMatchingService {
         Page<FriendMatchingPost> friendMatchingPosts;
         SportEvent sportEvent = SportUtils.getSportEventById(sportEventID, sportEventRepository);
         if (type == FriendMatchingPostType.INVITE) {
-            friendMatchingPosts = friendMatchingRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+            friendMatchingPosts = friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
                     FriendMatchingPostType.INVITE, sportEvent, pageable);
         } else if (type == FriendMatchingPostType.REQUEST) {
-            friendMatchingPosts = friendMatchingRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+            friendMatchingPosts = friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
                     FriendMatchingPostType.REQUEST, sportEvent, pageable);
         } else {
             throw new IllegalArgumentException("Invalid FriendMatchingPostType");
         }
         return friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
     }
-
-
+    @Transactional(readOnly = true)
+    public FriendMatchingRequestsResponseDTO getFriendMatchingRequests(Long friendMatchingPostId, Long userId){
+        FriendMatchingRequestsResponseDTO friendMatchingRequestsResponseDTO =null;
+        return friendMatchingRequestsResponseDTO;
+    }
 
 }

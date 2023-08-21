@@ -1,4 +1,4 @@
-package com.sporthustle.hustle.friendmatch.dto;
+package com.sporthustle.hustle.friendmatch.dto.friendmatchingpost;
 
 import lombok.Builder;
 import lombok.Getter;
