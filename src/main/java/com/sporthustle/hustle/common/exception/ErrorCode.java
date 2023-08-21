@@ -22,6 +22,7 @@ public enum ErrorCode {
   ENTRY_TEAM_NOT_FOUND(BAD_REQUEST, "ENTRY_TEAM_NOT_FOUND", "대회 참가팀이 아닙니다."),
   PRE_ROUND_DETAIL_NOT_FOUND(BAD_REQUEST, "PRE_ROUND_DETAIL_NOT_FOUND", "예선 세부 정보를 찾을 수 없습니다."),
   FINAL_ROUND_DETAIL_NOT_FOUND(BAD_REQUEST, "FINAL_ROUND_DETAIL_NOT_FOUND", "본선 세부 정보를 찾을 수 없습니다."),
+  FRIEND_MATCHING_POST_NOT_FOUND(BAD_REQUEST, "FRIEND_MATCHING_POST_NOT_FOUND", "해당 교류전글을 찾을 수 없습니다.")
   ;
 
   private final HttpStatus status;
