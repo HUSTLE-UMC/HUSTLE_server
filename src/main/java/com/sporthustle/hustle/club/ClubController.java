@@ -87,7 +87,7 @@ public class ClubController {
   })
   @PostMapping("/{club_id}/member")
   public ResponseEntity<JoinClubResponseDTO> joinClub(
-      @UserId Long userId, @RequestParam("club_id") Long clubId) {
+      @UserId Long userId, @PathVariable("club_id") Long clubId) {
     JoinClubResponseDTO joinClubResponseDTO = clubService.joinClub(userId, clubId);
     return ResponseEntity.ok(joinClubResponseDTO);
   }
