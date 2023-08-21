@@ -65,6 +65,8 @@ public class FriendMatchingPost extends BaseEntity {
   @JoinColumn(name = "sport_event_id", nullable = false)
   private SportEvent sportEvent;
 
+  //// 주요활동지역 필요
+
   @Builder
   public FriendMatchingPost(
           String title,

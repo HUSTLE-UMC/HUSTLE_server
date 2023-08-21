@@ -1,7 +1,6 @@
 package com.sporthustle.hustle.friendmatch;
 import com.sporthustle.hustle.common.annotation.UserId;
-import com.sporthustle.hustle.friendmatch.dto.CreateFriendMatchingPostRequestDTO;
-import com.sporthustle.hustle.friendmatch.dto.CreateFriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -30,7 +29,27 @@ public class FriendMatchingController {
         return ResponseEntity.ok(createFriendMatchingPostResponseDTO);
     }
 
+    @GetMapping("/{matchId}")
+    public FriendMatchingResponseDTO getFriendMatchingRequests(@PathVariable("matchId")Long matchId
+                                                              , @RequestParam (value = "userId") Long userId){
+            return friendMatchingService.getRequests(matchId,userId);
+    }
 
+    @PutMapping("/{matchId}")
+    public void updateFriendMatchingRequests(@PathVariable("matchId")Long matchId,
+                                             @RequestBody UpdateStateRequestDTO updateStateRequestDTO){
+
+        friendMatchingService.updateRequests(updateStateRequestDTO);
+
+    }
+
+    @PostMapping("/{matchId}")
+    public ApplyResponseDTO applyFriendMatching(@PathVariable("matchId")Long matchId
+                                                ,@RequestParam(value = "userId") Long userId
+                                                ,@RequestBody ApplyRequestDTO applyRequestDTO){
+
+        return friendMatchingService.applyFriendMatching(matchId, userId,applyRequestDTO);
+    }
 
 }
 

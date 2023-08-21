@@ -5,6 +5,7 @@ import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.user.entity.User;
 import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.geo.Point;
@@ -50,4 +51,31 @@ public class FriendMatchingRequest extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_id", nullable = false)
   private Club club;
+
+
+
+  @Builder
+  FriendMatchingRequest(
+          Point location,
+          String locationAddress,
+          String name,
+          String phoneNumber,
+          FriendMatchingPost friendMatchingPost,
+          User user,
+          Club club
+  )
+  {
+   this.location = location;
+   this.locationAddress = locationAddress;
+   this.name = name;
+   this.phoneNumber = phoneNumber;
+   this.friendMatchingPost = friendMatchingPost;
+   this.user = user;
+   this. club = club;
+  }
+
+  public void updateType(FriendMatchingRequestType type){
+    this.type = type;
+  }
+
 }
