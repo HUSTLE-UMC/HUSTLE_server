@@ -1,5 +1,4 @@
 package com.sporthustle.hustle.friendmatch;
-
 import com.sporthustle.hustle.club.ClubUtils;
 import com.sporthustle.hustle.club.dto.MyClubsResponseDTO;
 import com.sporthustle.hustle.club.entity.Club;
@@ -11,7 +10,6 @@ import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPost;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingRequest;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingRequestType;
-import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import com.sporthustle.hustle.friendmatch.repository.FriendMatchingRepository;
 import com.sporthustle.hustle.friendmatch.repository.FriendMatchingRequestRepository;
 import com.sporthustle.hustle.sport.SportUtils;
@@ -40,7 +38,6 @@ public class FriendMatchingService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final FriendMatchingRequestRepository friendMatchingRequestRepository;
-
 
     @Transactional
     public CreateFriendMatchingPostResponseDTO createFriendMatchingPost(
@@ -84,8 +81,9 @@ public class FriendMatchingService {
         List<MyClubsResponseDTO>myClubsResponseDTOS = new ArrayList<>();
         boolean isHost = checkUser(matchId,userId);
 
-        if (isHost) {
+        if (!isHost) {
             List<FriendMatchingRequest> requests = friendMatchingRequestRepository.findAllByFriendMatchingPost(match.get());
+            System.out.println("=================================================");
             requests.stream()
                     .map(
                             matchRequest ->
@@ -145,10 +143,8 @@ public class FriendMatchingService {
                 .updateType(FriendMatchingRequestType.valueOf(updateStateRequestDTO.getFriendMatchingRequestType()));
 
     }
-
     public boolean checkUser(Long matchId, Long userId) {
         Optional<FriendMatchingPost> match = friendMatchingRepository.findById(matchId);
-
         return (match.get().getUser().getId() == userId);
     }
 
@@ -169,12 +165,12 @@ public class FriendMatchingService {
         return friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
     }
 
-
     @Transactional
     public ApplyResponseDTO applyFriendMatching(Long matchId, Long userId, ApplyRequestDTO applyRequestDTO) {
             Optional<FriendMatchingPost> friendMatchingPost = friendMatchingRepository.findById(matchId);
-            Optional<User> user = userRepository.findById(userId);
-            Optional<Club> club = clubRepository.findByName(applyRequestDTO.getName());
+            Optional<Club> club = clubRepository.findByName(applyRequestDTO.getClubName());
+
+
 
             FriendMatchingRequest friendMatchingRequest =
                     FriendMatchingRequest.builder()
@@ -183,12 +179,11 @@ public class FriendMatchingService {
                     .name(applyRequestDTO.getName())
                     .phoneNumber(applyRequestDTO.getPhoneNumber())
                     .friendMatchingPost(friendMatchingPost.get())
-                    .user(user.get())
-                    .club(club.get())
                     .build();
-
+            friendMatchingRequest.setClub(club.get());
+            User user = UserUtils.getUserById(userId, userRepository);
+            friendMatchingRequest.setUser(user);
             friendMatchingRequestRepository.save(friendMatchingRequest);
-
             String message;
             if(FriendMatchingPostType.valueOf(applyRequestDTO.getCategory())==FriendMatchingPostType.REQUEST){
                 message = "요청이 완료되었습니다!";
@@ -196,7 +191,6 @@ public class FriendMatchingService {
             else{
                 message = "초청이 완료되었습니다!";
             }
-
             return ApplyResponseDTO.builder().message(message).build();
     }
 

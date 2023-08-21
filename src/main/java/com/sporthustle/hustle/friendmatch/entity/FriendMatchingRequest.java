@@ -13,6 +13,7 @@ import org.springframework.data.geo.Point;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "FriendMatchingRequest")
 @Entity
+@Setter
 public class FriendMatchingRequest extends BaseEntity {
 
   @Id
@@ -70,13 +71,10 @@ public class FriendMatchingRequest extends BaseEntity {
    this.phoneNumber = phoneNumber;
    this.friendMatchingPost = friendMatchingPost;
    this.user = user;
-   this. club = club;
+   this.club = club;
   }
-
-
 
   public void updateType(FriendMatchingRequestType type){
     this.type = type;
   }
-
 }
