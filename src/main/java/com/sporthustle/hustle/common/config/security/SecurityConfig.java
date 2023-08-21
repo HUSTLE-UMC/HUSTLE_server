@@ -40,9 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.csrf()
+    http.csrf() // Rest API 이므로 CSRF 토큰 인증 비활성화
         .disable()
-        .httpBasic()
+        .httpBasic() // HTTP Request 헤더에서 평문으로 계정 인증하는 기본 인증 비활성화
         .disable()
         .cors()
         .configurationSource(corsConfigurationSource())
