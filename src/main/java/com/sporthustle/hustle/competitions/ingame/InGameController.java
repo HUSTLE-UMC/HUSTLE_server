@@ -45,12 +45,13 @@ public class InGameController {
 
   @Operation(summary = "대회 예선 경기 수 조회 API")
   @ApiResponses({
-          @ApiResponse(responseCode = "200", description = "대회 예선 경기 수 조회에 성공한 경우"),
+    @ApiResponse(responseCode = "200", description = "대회 예선 경기 수 조회에 성공한 경우"),
   })
   @GetMapping("/{competition_id}/preround/match/count")
   public ResponseEntity<PreRoundMatchCountResponseDTO> getPreRoundMatchCount(
-          @PathVariable("competition_id") Long competitionId) {
-    PreRoundMatchCountResponseDTO preRoundMatchCountResponseDTO = inGameService.getPreRoundMatchCount(competitionId);
+      @PathVariable("competition_id") Long competitionId) {
+    PreRoundMatchCountResponseDTO preRoundMatchCountResponseDTO =
+        inGameService.getPreRoundMatchCount(competitionId);
     return ResponseEntity.ok(preRoundMatchCountResponseDTO);
   }
 }
