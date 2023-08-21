@@ -16,13 +16,8 @@ import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.entity.User;
 import com.sporthustle.hustle.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,16 +63,21 @@ public class FriendMatchingService {
 
     @Transactional(readOnly = true)
     public Page<FriendMatchingPostResponseDTO> getFriendMatchingPostsByType(
-            FriendMatchingPostType type, int page, Pageable pageable) {
+            Long sportEventID, FriendMatchingPostType type, Pageable pageable) {
         Page<FriendMatchingPost> friendMatchingPosts;
+        SportEvent sportEvent = SportUtils.getSportEventById(sportEventID, sportEventRepository);
         if (type == FriendMatchingPostType.INVITE) {
-            friendMatchingPosts = friendMatchingRepository.findByCategoryOrderByCategoryAsc(FriendMatchingPostType.INVITE, pageable);
+            friendMatchingPosts = friendMatchingRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+                    FriendMatchingPostType.INVITE, sportEvent, pageable);
         } else if (type == FriendMatchingPostType.REQUEST) {
-            friendMatchingPosts = friendMatchingRepository.findByCategoryOrderByCategoryAsc(FriendMatchingPostType.REQUEST, pageable);
+            friendMatchingPosts = friendMatchingRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+                    FriendMatchingPostType.REQUEST, sportEvent, pageable);
         } else {
             throw new IllegalArgumentException("Invalid FriendMatchingPostType");
         }
         return friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
     }
+
+
 
 }
