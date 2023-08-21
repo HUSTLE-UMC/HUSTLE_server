@@ -121,4 +121,18 @@ public class InGameService {
 
     return finalRoundCategories;
   }
+
+  public PreRoundMatchCountResponseDTO getPreRoundMatchCount(Long competitionId) {
+    Competition competition =
+            CompetitionUtils.getCompetitionById(competitionId, competitionRepository);
+
+    int entryTeamCountByPreRoundGroup = competition.getMaxEntryCount() / competition.getPreRoundGroupCount();
+
+    int preRoundMatchCount = entryTeamCountByPreRoundGroup * (entryTeamCountByPreRoundGroup - 1) / 2;
+
+    return PreRoundMatchCountResponseDTO.builder()
+            .message("예선 경기 수를 조회했습니다.")
+            .data(preRoundMatchCount)
+            .build();
+  }
 }
