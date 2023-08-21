@@ -97,13 +97,11 @@ public class FriendMatchingController {
     friendMatchingService.updateRequests(userId, friendMatchingPostId,updateFriendMatchingRequestStateRequestDTO);
   }
 
-  /*
+
   @GetMapping("/{friendMatchingPostId}")
-  public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(@PathVariable("friendMatchingPostId")Long matchId
+  public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(@PathVariable("friendMatchingPostId")Long friendMatchingPostId
           , @UserId Long userId){
-
-
-    return ResponseEntity.ok(friendMatchingService.getRequests(matchId,userId));
+    return ResponseEntity.ok(friendMatchingService.getRequests(friendMatchingPostId,userId));
   }
-*/
+
 }

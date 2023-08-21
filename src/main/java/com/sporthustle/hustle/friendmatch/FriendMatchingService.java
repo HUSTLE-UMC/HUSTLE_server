@@ -97,6 +97,7 @@ public class FriendMatchingService {
     return friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
   }
 
+
   @Transactional
   public CreateFriendMatchingRequestResponseDTO applyFriendMatching(
       Long matchId,
@@ -147,15 +148,22 @@ public class FriendMatchingService {
      friendMatchingRequest.updateType(FriendMatchingRequestType.valueOf(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestType()));
   }
 
-  /*
+
   @Transactional
   public FriendMatchingRequestsResponseDTO getRequests(Long matchId, Long userId) {
-    FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(matchId,friendMatchingPostRepository);
-    validateFriendMatchingPostOwner(friendMatchingPost,userId);
+    FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(matchId, friendMatchingPostRepository);
+    validateFriendMatchingPostOwner(friendMatchingPost, userId);
 
-    }
+    List<FriendMatchingRequest> friendMatchingRequests = friendMatchingRequestRepository.findAllByFriendMatchingPost(friendMatchingPost);
+    List<FriendMatchingRequestResponseDTO> friendMatchingRequestResponseDTOS = friendMatchingRequests.stream()
+            .map(FriendMatchingRequestResponseDTO::from)
+            .collect(Collectors.toList());
 
-   */
+    return FriendMatchingRequestsResponseDTO.builder()
+            .friendMatchingRequestResponseDTOS(friendMatchingRequestResponseDTOS)
+            .build();
+  }
+
   private void validateFriendMatchingPostOwner(FriendMatchingPost friendMatchingPost, Long userId) {
     User user = friendMatchingPost.getUser();
     if (user.getId() != userId) {
