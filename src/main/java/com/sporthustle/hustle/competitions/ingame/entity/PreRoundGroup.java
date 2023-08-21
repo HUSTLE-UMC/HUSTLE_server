@@ -19,8 +19,26 @@ public class PreRoundGroup extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, length = 20)
-  private String name;
+  @Column(name = "group_category", nullable = false, length = 20)
+  private String groupCategory;
+
+  @Column(name = "match_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int matchCount;
+
+  @Column(name = "win_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int winCount;
+
+  @Column(name = "lose_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int loseCount;
+
+  @Column(name = "draw_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int drawCount;
+
+  @Column(
+      name = "score_difference_count",
+      nullable = false,
+      columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int scoreDifferenceCount;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "competition_id", nullable = false)
@@ -31,8 +49,8 @@ public class PreRoundGroup extends BaseEntity {
   private EntryTeam entryTeam;
 
   @Builder
-  private PreRoundGroup(String name) {
-    this.name = name;
+  private PreRoundGroup(String groupCategory) {
+    this.groupCategory = groupCategory;
   }
 
   public void updateCompetition(Competition competition) {
