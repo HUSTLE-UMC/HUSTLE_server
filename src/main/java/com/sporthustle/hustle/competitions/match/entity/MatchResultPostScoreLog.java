@@ -26,7 +26,7 @@ public class MatchResultPostScoreLog extends BaseEntity {
   @Column(nullable = false, length = 20)
   private String name;
 
-  @Column(columnDefinition = "INT UNSIGNED default 0")
+  @Column(columnDefinition = "SMALLINT UNSIGNED default 0")
   private Long score;
 
   @Type(type = "json")
