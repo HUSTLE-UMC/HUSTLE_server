@@ -1,4 +1,4 @@
-package com.sporthustle.hustle.friendmatch.dto;
+package com.sporthustle.hustle.friendmatch.dto.friendmatchingpost;
 
 import com.sporthustle.hustle.club.dto.ClubResponseDTO;
 import com.sporthustle.hustle.club.entity.Club;

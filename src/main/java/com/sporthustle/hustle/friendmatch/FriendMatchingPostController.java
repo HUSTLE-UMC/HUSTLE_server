@@ -1,8 +1,9 @@
 package com.sporthustle.hustle.friendmatch;
 import com.sporthustle.hustle.common.annotation.UserId;
-import com.sporthustle.hustle.friendmatch.dto.CreateFriendMatchingPostRequestDTO;
-import com.sporthustle.hustle.friendmatch.dto.CreateFriendMatchingPostResponseDTO;
-import com.sporthustle.hustle.friendmatch.dto.FriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostRequestDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.FriendMatchingRequestsResponseDTO;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,10 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "FriendMatching", description = "친선전 API")
 @RestController
-@RequestMapping("api/friendMatching")
+@RequestMapping("api/friendMatchingPost")
 @RequiredArgsConstructor
-public class FriendMatchingController {
-    private final FriendMatchingService friendMatchingService;
+public class FriendMatchingPostController {
+    private final FriendMatchingPostService friendMatchingPostService;
 
 
     @Operation(summary = "교류전 개설 API")
@@ -32,7 +33,7 @@ public class FriendMatchingController {
     public ResponseEntity<CreateFriendMatchingPostResponseDTO> createFriendMatching(
             @UserId Long userId, @RequestBody CreateFriendMatchingPostRequestDTO createFriendMatchingPostRequestDTO) {
         CreateFriendMatchingPostResponseDTO createFriendMatchingPostResponseDTO =
-                friendMatchingService.createFriendMatchingPost(userId,createFriendMatchingPostRequestDTO);
+                friendMatchingPostService.createFriendMatchingPost(userId,createFriendMatchingPostRequestDTO);
         return ResponseEntity.ok(createFriendMatchingPostResponseDTO);
     }
 
@@ -47,8 +48,19 @@ public class FriendMatchingController {
             @PageableDefault(size = 15, sort = "startDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         FriendMatchingPostType postType = FriendMatchingPostType.valueOf(type.toUpperCase());
-        Page<FriendMatchingPostResponseDTO> friendMatchingPostsResponseDTO = friendMatchingService.getFriendMatchingPostsByType(sportEventId, postType,pageable);
+        Page<FriendMatchingPostResponseDTO> friendMatchingPostsResponseDTO = friendMatchingPostService.getFriendMatchingPostsByType(sportEventId, postType,pageable);
         return ResponseEntity.ok(friendMatchingPostsResponseDTO);
+    }
+
+    @Operation(summary = "교류전 게시글 상세 조회")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "교류전 게시글 상세 조회에 성공한 경우"),
+    })
+    @GetMapping("/{FriendMatchingPostId}")
+    public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(@PathVariable("FriendMatchingPostId")Long friendMatchingPostId
+            , @UserId Long userId){
+        FriendMatchingRequestsResponseDTO friendMatchingRequestsResponseDTO = friendMatchingPostService.getFriendMatchingRequests(friendMatchingPostId,userId);
+        return ResponseEntity.ok(friendMatchingRequestsResponseDTO);
     }
 
 }

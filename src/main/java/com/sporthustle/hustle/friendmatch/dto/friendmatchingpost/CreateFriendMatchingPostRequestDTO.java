@@ -1,4 +1,4 @@
-package com.sporthustle.hustle.friendmatch.dto;
+package com.sporthustle.hustle.friendmatch.dto.friendmatchingpost;
 
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import org.locationtech.jts.geom.Point;
