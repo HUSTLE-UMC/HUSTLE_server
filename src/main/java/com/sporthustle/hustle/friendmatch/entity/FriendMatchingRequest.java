@@ -4,10 +4,8 @@ import com.sporthustle.hustle.club.entity.Club;
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.user.entity.User;
 import javax.persistence.*;
-
 import lombok.*;
 import org.locationtech.jts.geom.Point;
-
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -54,13 +52,11 @@ public class FriendMatchingRequest extends BaseEntity {
 
   @Builder
   FriendMatchingRequest(
-          Point location,
-          String locationAddress,
-          String name,
-          String phoneNumber,
-          FriendMatchingRequestType type
-  )
-  {
+      Point location,
+      String locationAddress,
+      String name,
+      String phoneNumber,
+      FriendMatchingRequestType type) {
     this.location = location;
     this.locationAddress = locationAddress;
     this.name = name;
@@ -68,7 +64,7 @@ public class FriendMatchingRequest extends BaseEntity {
     this.type = type;
   }
 
-  public void updateType(FriendMatchingRequestType type){
+  public void updateType(FriendMatchingRequestType type) {
     this.type = type;
   }
 }
