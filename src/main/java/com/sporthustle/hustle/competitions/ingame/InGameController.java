@@ -1,7 +1,6 @@
 package com.sporthustle.hustle.competitions.ingame;
 
-import com.sporthustle.hustle.common.annotation.UserId;
-import com.sporthustle.hustle.competitions.ingame.dto.PreRoundGroupsResponseDTO;
+import com.sporthustle.hustle.competitions.ingame.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,68 +19,27 @@ public class InGameController {
 
   private final InGameService inGameService;
 
-  @Operation(summary = "대회 예선 조 목록 조회 (개설자) API")
+  @Operation(summary = "대회 예선 조 목록 조회 API")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
     @ApiResponse(responseCode = "400", description = "대회 개설자가 아닌 경우"),
   })
   @GetMapping("/{competition_id}/preround/group")
   public ResponseEntity<PreRoundGroupsResponseDTO> getPreRoundGroups(
-      @UserId Long userId,
       @PathVariable("competition_id") Long competitionId) {
-    PreRoundGroupsResponseDTO preRoundGroupsResponseDTO = inGameService.getPreRoundGroups(userId, competitionId);
+    PreRoundGroupsResponseDTO preRoundGroupsResponseDTO =
+        inGameService.getPreRoundGroups(competitionId);
     return ResponseEntity.ok(preRoundGroupsResponseDTO);
-  }
-
-  @Operation(summary = "대회 예선 조 편성 (개설자) API")
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
-  })
-  @PostMapping("/{competition_id}/preround/group/pick")
-  public ResponseEntity<Object> pickPreRoundGroups(
-      @PathVariable("competition_id") Long competitionId) {
-    return ResponseEntity.ok(null);
-  }
-
-  @Operation(summary = "대회 예선 조 목록 생성 (개설자) API")
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
-  })
-  @PostMapping("/{competition_id}/preround/group")
-  public ResponseEntity<Object> createPreRoundGroups(
-      @PathVariable("competition_id") Long competitionId) {
-    return ResponseEntity.ok(null);
   }
 
   @Operation(summary = "대회 예선 / 본선 카테고리 조회 API")
   @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
+    @ApiResponse(responseCode = "200", description = "대회 예선 / 본선 카테고리 조회에 성공한 경우"),
   })
   @GetMapping("/{competition_id}/{type}/category")
-  public ResponseEntity<Object> getCategories(
-      @PathVariable("competition_id") Long competitionId, @PathVariable("type") String type) {
-    return ResponseEntity.ok(null);
-  }
-
-  @Operation(summary = "대회 본선 조 목록 조회 (개설자) API")
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
-  })
-  @GetMapping("/{competition_id}/finalround/team")
-  public ResponseEntity<Object> getFinalRoundTeams(
-      @PathVariable("competition_id") Long competitionId,
-      @RequestParam("category") String category) {
-    return ResponseEntity.ok(null);
-  }
-
-  @Operation(summary = "대회 예선 조 순위 조회 API (일반 유저)")
-  @ApiResponses({
-    @ApiResponse(responseCode = "200", description = "대회 예선 조 목록 조회에 성공한 경우"),
-  })
-  @GetMapping("/{competition_id}/preround/ranking")
-  public ResponseEntity<Object> getPreRoundRankingByCategory(
-      @PathVariable("competition_id") Long competitionId,
-      @RequestParam("category") String category) {
-    return ResponseEntity.ok(null);
+  public ResponseEntity<CategoriesResponseDTO> getCategories(
+      @PathVariable("competition_id") Long competitionId, @PathVariable("type") InGameType type) {
+    CategoriesResponseDTO categoriesResponseDTO = inGameService.getCategories(competitionId, type);
+    return ResponseEntity.ok(categoriesResponseDTO);
   }
 }
