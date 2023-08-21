@@ -34,6 +34,18 @@ public class EntryTeamController {
     return ResponseEntity.ok(entryTeamsResponseDTO);
   }
 
+  @Operation(summary = "대회 참가팀 이름 검색 API")
+  @ApiResponses({
+    @ApiResponse(responseCode = "200", description = "대회 참가팀 이름 목록 조회에 성공한 경우"),
+  })
+  @GetMapping("/{competition_id}/entry_team/find")
+  public ResponseEntity<EntryTeamsResponseDTO> findEntryTeams(
+      @PathVariable("competition_id") Long competitionId, @RequestParam("name") String name) {
+    EntryTeamsResponseDTO entryTeamsResponseDTO =
+        entryTeamService.findEntryTeams(competitionId, name);
+    return ResponseEntity.ok(entryTeamsResponseDTO);
+  }
+
   @Operation(summary = "대회 참가 API")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "대회 참가에 성공한 경우"),
