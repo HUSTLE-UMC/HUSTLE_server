@@ -1,8 +1,12 @@
 package com.sporthustle.hustle.friendmatch;
 
 import com.sporthustle.hustle.club.ClubUtils;
+import com.sporthustle.hustle.club.dto.MyClubsResponseDTO;
 import com.sporthustle.hustle.club.entity.Club;
 import com.sporthustle.hustle.club.repository.ClubRepository;
+import com.sporthustle.hustle.common.exception.BaseException;
+import com.sporthustle.hustle.common.exception.ErrorCode;
+import com.sporthustle.hustle.competition.entity.competition.Competition;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostRequestDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostResponseDTO;
@@ -10,6 +14,7 @@ import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.*;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPost;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingRequest;
+import com.sporthustle.hustle.friendmatch.entity.FriendMatchingRequestType;
 import com.sporthustle.hustle.friendmatch.repository.FriendMatchingPostRepository;
 import com.sporthustle.hustle.friendmatch.repository.FriendMatchingRequestRepository;
 import com.sporthustle.hustle.sport.SportUtils;
@@ -23,6 +28,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -128,11 +137,30 @@ public class FriendMatchingService {
         .build();
   }
 
+
+  @Transactional
+  public void updateRequests( Long userId, Long friendMatchingPostId,UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO) {
+
+    FriendMatchingRequest friendMatchingRequest = FriendMatchingUtils.getFriendMatchingRequestById(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestId(), friendMatchingRequestRepository);
+     FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(friendMatchingPostId,friendMatchingPostRepository);
+     validateFriendMatchingPostOwner(friendMatchingPost,userId);
+     friendMatchingRequest.updateType(FriendMatchingRequestType.valueOf(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestType()));
+  }
+
   /*
   @Transactional
-  public void updateRequests(UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO) {
-     FriendMatchingRequest friendMatchingRequest = FriendMatchingUtils.getFriendMatchingRequestById(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestId(),friendMatchingRequestRepository);
-     friendMatchingRequest.updateType(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestType());
-  }*/
+  public FriendMatchingRequestsResponseDTO getRequests(Long matchId, Long userId) {
+    FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(matchId,friendMatchingPostRepository);
+    validateFriendMatchingPostOwner(friendMatchingPost,userId);
+
+    }
+
+   */
+  private void validateFriendMatchingPostOwner(FriendMatchingPost friendMatchingPost, Long userId) {
+    User user = friendMatchingPost.getUser();
+    if (user.getId() != userId) {
+      throw BaseException.from(ErrorCode.USER_NOT_OWNER);
+    }
+  }
 
 }

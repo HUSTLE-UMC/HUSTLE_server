@@ -6,7 +6,10 @@ import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMat
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestRequestDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.FriendMatchingRequestsResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.UpdateFriendMatchingRequestStateRequestDTO;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
+import com.sporthustle.hustle.friendmatch.entity.FriendMatchingRequestType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -80,17 +83,27 @@ public class FriendMatchingController {
     return ResponseEntity.ok(createFriendMatchingRequestResponseDTO);
   }
 
-  /*
+
   @Operation(summary = "교류전 지원 수락 거절 API")
   @ApiResponses({
           @ApiResponse(responseCode = "200", description = "교류전 지원 (수락/거절) 상태 변경에 성공한 경우"),
   })
-
   @PutMapping("/{friendMatchingPostId}")
-  public void updateFriendMatchingRequests(@PathVariable("friendMatchingPostId")Long friendMatchingPostId,
-                                           @RequestBody UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO){
-      friendMatchingService.updateRequests(updateFriendMatchingRequestStateRequestDTO);
+  public void updateFriendMatchingRequests(
+          @PathVariable("friendMatchingPostId") Long friendMatchingPostId,
+          @UserId Long userId,
+          @RequestBody UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO) {
 
-  }*/
+    friendMatchingService.updateRequests(userId, friendMatchingPostId,updateFriendMatchingRequestStateRequestDTO);
+  }
 
+  /*
+  @GetMapping("/{friendMatchingPostId}")
+  public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(@PathVariable("friendMatchingPostId")Long matchId
+          , @UserId Long userId){
+
+
+    return ResponseEntity.ok(friendMatchingService.getRequests(matchId,userId));
+  }
+*/
 }

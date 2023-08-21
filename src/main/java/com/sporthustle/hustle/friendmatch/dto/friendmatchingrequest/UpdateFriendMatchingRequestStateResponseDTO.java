@@ -5,5 +5,5 @@ import lombok.Builder;
 @Builder
 public class UpdateFriendMatchingRequestStateResponseDTO {
   String message;
-  // private FriendMatchingRequestResponseDTO data;
+  private FriendMatchingRequestResponseDTO data;
 }

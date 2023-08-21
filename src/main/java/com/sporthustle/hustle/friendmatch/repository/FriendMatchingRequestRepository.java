@@ -9,5 +9,5 @@ public interface FriendMatchingRequestRepository
     extends JpaRepository<FriendMatchingRequest, Long> {
   List<FriendMatchingRequest> findAllByFriendMatchingPost(Long friendMatchingPostId);
 
-  Optional<FriendMatchingRequest> findById(Long id);
+  Optional<FriendMatchingRequest> findById(Long friendMatchingRequestid);
 }
