@@ -29,6 +29,24 @@ public class EntryTeam extends BaseEntity {
   @Column(nullable = false, columnDefinition = "INT UNSIGNED default 0")
   private long score;
 
+  @Column(name = "match_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int matchCount;
+
+  @Column(name = "win_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int winCount;
+
+  @Column(name = "lose_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int loseCount;
+
+  @Column(name = "draw_count", nullable = false, columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int drawCount;
+
+  @Column(
+      name = "score_difference_count",
+      nullable = false,
+      columnDefinition = "SMALLINT UNSIGNED default 0")
+  private int scoreDifferenceCount;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "competition_id", nullable = false)
   private Competition competition;

@@ -18,6 +18,16 @@ public class EntryTeamResponseDTO {
 
   private Long score;
 
+  private Integer matchCount;
+
+  private Integer winCount;
+
+  private Integer loseCount;
+
+  private Integer drawCount;
+
+  private Integer scoreDifferenceCount;
+
   private UserResponseDTO user;
 
   private ClubResponseDTO club;
@@ -28,6 +38,11 @@ public class EntryTeamResponseDTO {
         .name(entryTeam.getName())
         .phoneNumber(entryTeam.getPhoneNumber())
         .score(entryTeam.getScore())
+        .matchCount(entryTeam.getMatchCount())
+        .winCount(entryTeam.getWinCount())
+        .loseCount(entryTeam.getLoseCount())
+        .drawCount(builder().drawCount)
+        .scoreDifferenceCount(entryTeam.getScoreDifferenceCount())
         .user(UserResponseDTO.from(entryTeam.getUser(), null))
         .club(ClubResponseDTO.from(entryTeam.getClub()))
         .build();
