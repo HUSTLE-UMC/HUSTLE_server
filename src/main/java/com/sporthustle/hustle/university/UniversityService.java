@@ -21,9 +21,7 @@ public class UniversityService {
     List<University> universities = universityRepository.findAllByNameStartsWith(keyword);
 
     List<UniversityResponseDTO> universityResponseDTOs =
-        universities.stream()
-            .map(university -> UniversityResponseDTO.from(university))
-            .collect(Collectors.toList());
+        universities.stream().map(UniversityResponseDTO::from).collect(Collectors.toList());
 
     FindUniversitiesResponseDTO findUniversitiesResponseDTO =
         FindUniversitiesResponseDTO.builder().universities(universityResponseDTOs).build();

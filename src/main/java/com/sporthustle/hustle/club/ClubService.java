@@ -43,9 +43,7 @@ public class ClubService {
 
     List<Club> clubs = clubRepository.findAllByIdIn(clubIds);
     List<MyClubsResponseDTO> myClubsResponseDTOs =
-        clubs.stream()
-            .map(club -> MyClubsResponseDTO.builder().id(club.getId()).name(club.getName()).build())
-            .collect(Collectors.toList());
+        clubs.stream().map(MyClubsResponseDTO::from).collect(Collectors.toList());
 
     return myClubsResponseDTOs;
   }
@@ -56,7 +54,7 @@ public class ClubService {
         clubRepository.findAllByUniversity_idAndNameStartsWith(universityId, keyword);
 
     List<ClubResponseDTO> clubResponseDTOs =
-        clubs.stream().map(club -> ClubResponseDTO.from(club)).collect(Collectors.toList());
+        clubs.stream().map(ClubResponseDTO::from).collect(Collectors.toList());
 
     ClubsResponseDTO clubsResponseDTO = ClubsResponseDTO.builder().clubs(clubResponseDTOs).build();
     return clubsResponseDTO;
@@ -145,9 +143,7 @@ public class ClubService {
 
     List<ClubMember> clubMembers = clubMemberRepository.findAllByClub_id(clubId);
     List<ClubMemberResponseDTO> clubMembersResponseDTO =
-        clubMembers.stream()
-            .map(clubMember -> ClubMemberResponseDTO.from(clubMember))
-            .collect(Collectors.toList());
+        clubMembers.stream().map(ClubMemberResponseDTO::from).collect(Collectors.toList());
 
     return GetClubMembersResponseDTO.builder().clubMembers(clubMembersResponseDTO).build();
   }
