@@ -1,8 +1,6 @@
 package com.sporthustle.hustle.sport.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -20,7 +18,4 @@ public class SportEvent extends BaseEntity {
 
   @Column(nullable = false)
   private String name;
-
-  @OneToMany(mappedBy = "sportEvent")
-  private List<SportPosition> sportPositions = new ArrayList<>();
 }
