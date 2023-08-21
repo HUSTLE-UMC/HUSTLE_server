@@ -6,12 +6,11 @@ import com.sporthustle.hustle.club.repository.ClubRepository;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostRequestDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostResponseDTO;
-import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestRequestDTO;
-import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestResponseDTO;
-import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.FriendMatchingRequestResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.*;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPost;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingRequest;
+import com.sporthustle.hustle.friendmatch.entity.FriendMatchingRequestType;
 import com.sporthustle.hustle.friendmatch.repository.FriendMatchingPostRepository;
 import com.sporthustle.hustle.friendmatch.repository.FriendMatchingRequestRepository;
 import com.sporthustle.hustle.sport.SportUtils;
@@ -26,6 +25,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class FriendMatchingService {
@@ -34,6 +35,7 @@ public class FriendMatchingService {
     private final UserRepository userRepository;
     private final ClubRepository clubRepository;
     private final FriendMatchingRequestRepository friendMatchingRequestRepository;
+
     @Transactional
     public CreateFriendMatchingPostResponseDTO createFriendMatchingPost(
             Long userId, CreateFriendMatchingPostRequestDTO createFriendMatchingPostRequestDTO) {
@@ -51,7 +53,7 @@ public class FriendMatchingService {
         User user = UserUtils.getUserById(userId, userRepository);
         friendMatchingPost.setUser(user);
 
-        Club club = ClubUtils.getClubById(createFriendMatchingPostRequestDTO.getClubId(),clubRepository);
+        Club club = ClubUtils.getClubById(createFriendMatchingPostRequestDTO.getClubId(), clubRepository);
         friendMatchingPost.setClub(club);
 
         SportEvent sportEvent = SportUtils.getSportEventById(createFriendMatchingPostRequestDTO.getSportEventId(), sportEventRepository);
@@ -82,12 +84,13 @@ public class FriendMatchingService {
         }
         return friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
     }
-    @Transactional
-    public CreateFriendMatchingRequestResponseDTO applyFriendMatching(Long matchId, Long userId, Long clubId , CreateFriendMatchingRequestRequestDTO createFriendMatchingRequestRequestDTO) {
 
-        FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(matchId,friendMatchingPostRepository);
-        Club club = ClubUtils.getClubById(clubId,clubRepository);
-        User user = UserUtils.getUserById(userId,userRepository);
+    @Transactional
+    public CreateFriendMatchingRequestResponseDTO applyFriendMatching(Long matchId, Long userId, Long clubId, CreateFriendMatchingRequestRequestDTO createFriendMatchingRequestRequestDTO) {
+
+        FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(matchId, friendMatchingPostRepository);
+        Club club = ClubUtils.getClubById(clubId, clubRepository);
+        User user = UserUtils.getUserById(userId, userRepository);
 
 
         FriendMatchingRequest friendMatchingRequest =
@@ -106,10 +109,9 @@ public class FriendMatchingService {
         FriendMatchingRequestResponseDTO friendMatchingRequestResponseDTO = FriendMatchingRequestResponseDTO.from(friendMatchingRequest);
         String message = "dd";
 
-        if(createFriendMatchingRequestRequestDTO.getType().equals(FriendMatchingPostType.INVITE)){
+        if (createFriendMatchingRequestRequestDTO.getType().equals(FriendMatchingPostType.INVITE)) {
             message = "요청이 완료되었습니다!";
-        }
-        else{
+        } else {
             message = "초청이 완료되었습니다!";
         }
         return CreateFriendMatchingRequestResponseDTO
@@ -118,4 +120,12 @@ public class FriendMatchingService {
                 .data(friendMatchingRequestResponseDTO)
                 .build();
     }
+
+    /*
+    @Transactional
+    public void updateRequests(UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO) {
+       FriendMatchingRequest friendMatchingRequest = FriendMatchingUtils.getFriendMatchingRequestById(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestId(),friendMatchingRequestRepository);
+       friendMatchingRequest.updateType(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestType());
+    }*/
+
 }
