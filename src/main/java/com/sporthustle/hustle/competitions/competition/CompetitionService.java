@@ -52,7 +52,7 @@ public class CompetitionService {
     }
 
     Page<CompetitionResponseDTO> competitionResponseDTOs =
-        competitions.map(competition -> CompetitionResponseDTO.from(competition));
+        competitions.map(CompetitionResponseDTO::from);
 
     return CompetitionsResponseDTO.builder()
         .count(competitionResponseDTOs.getNumberOfElements())
@@ -224,7 +224,7 @@ public class CompetitionService {
     Page<Competition> competitions = competitionRepositoryCustom.getPopularCompetitions(pageable);
 
     Page<CompetitionResponseDTO> competitionResponseDTOs =
-        competitions.map(competition -> CompetitionResponseDTO.from(competition));
+        competitions.map(CompetitionResponseDTO::from);
 
     return CompetitionsResponseDTO.builder()
         .count(competitionResponseDTOs.getNumberOfElements())

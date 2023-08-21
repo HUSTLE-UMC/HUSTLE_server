@@ -61,9 +61,7 @@ public class CompetitionResponseDTO {
 
     Set<CompetitionContact> contacts = competition.getContacts();
     List<CompetitionContactResponseDTO> contactResponseDTOs =
-        contacts.stream()
-            .map(competitionContact -> CompetitionContactResponseDTO.from(competitionContact))
-            .collect(Collectors.toList());
+        contacts.stream().map(CompetitionContactResponseDTO::from).collect(Collectors.toList());
 
     SportEvent sportEvent = competition.getSportEvent();
     SportEventResponseDTO sportEventResponseDTO = SportEventResponseDTO.from(sportEvent);
