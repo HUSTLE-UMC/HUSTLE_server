@@ -6,6 +6,7 @@ import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingP
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestRequestDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.FriendMatchingRequestsResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.UpdateFriendMatchingRequestStateRequestDTO;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,10 +55,6 @@ public class FriendMatchingController {
         return ResponseEntity.ok(friendMatchingPostsResponseDTO);
     }
 
-    @Operation(summary = "교류전 게시글 상세 조회")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "교류전 게시글 상세 조회에 성공한 경우"),
-    })
     /*
     @GetMapping("/{FriendMatchingPostId}")
     public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(@PathVariable("FriendMatchingPostId")Long friendMatchingPostId
@@ -66,6 +63,10 @@ public class FriendMatchingController {
         return ResponseEntity.ok(friendMatchingRequestsResponseDTO);
     }
 */
+    @Operation(summary = "교류전 지원 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "교류전 지원 생성에 성공한 경우"),
+    })
     @PostMapping("/{friendMatchingPostId}")
     public ResponseEntity<CreateFriendMatchingRequestResponseDTO> applyFriendMatching(@PathVariable("friendMatchingPostId")Long friendMatchingPostId
             , @UserId Long userId, @RequestParam(name = "club_id" , required = false) Long clubId
@@ -75,6 +76,19 @@ public class FriendMatchingController {
                 = friendMatchingService.applyFriendMatching(friendMatchingPostId, userId ,clubId,createFriendMatchingRequestRequestDTO);
         return ResponseEntity.ok(createFriendMatchingRequestResponseDTO);
     }
+
+    /*
+    @Operation(summary = "교류전 지원 수락 거절 API")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "교류전 지원 (수락/거절) 상태 변경에 성공한 경우"),
+    })
+
+    @PutMapping("/{friendMatchingPostId}")
+    public void updateFriendMatchingRequests(@PathVariable("friendMatchingPostId")Long friendMatchingPostId,
+                                             @RequestBody UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO){
+        friendMatchingService.updateRequests(updateFriendMatchingRequestStateRequestDTO);
+
+    }*/
 
 }
 
