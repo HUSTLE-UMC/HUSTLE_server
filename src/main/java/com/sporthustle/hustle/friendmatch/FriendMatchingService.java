@@ -21,15 +21,13 @@ import com.sporthustle.hustle.sport.repository.SportEventRepository;
 import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.entity.User;
 import com.sporthustle.hustle.user.repository.UserRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -42,87 +40,86 @@ public class FriendMatchingService {
 
   @Transactional
   public CreateFriendMatchingPostResponseDTO createFriendMatchingPost(
-          Long userId, CreateFriendMatchingPostRequestDTO createFriendMatchingPostRequestDTO) {
+      Long userId, CreateFriendMatchingPostRequestDTO createFriendMatchingPostRequestDTO) {
 
     FriendMatchingPost friendMatchingPost =
-            FriendMatchingPost.builder()
-                    .title(createFriendMatchingPostRequestDTO.getTitle())
-                    .category(createFriendMatchingPostRequestDTO.getCategory())
-                    .name(createFriendMatchingPostRequestDTO.getName())
-                    .phoneNumber(createFriendMatchingPostRequestDTO.getPhoneNumber())
-                    .startDate(createFriendMatchingPostRequestDTO.getStartDate())
-                    .location(createFriendMatchingPostRequestDTO.getLocation())
-                    .locationAddress(createFriendMatchingPostRequestDTO.getLocationAddress())
-                    .build();
+        FriendMatchingPost.builder()
+            .title(createFriendMatchingPostRequestDTO.getTitle())
+            .category(createFriendMatchingPostRequestDTO.getCategory())
+            .name(createFriendMatchingPostRequestDTO.getName())
+            .phoneNumber(createFriendMatchingPostRequestDTO.getPhoneNumber())
+            .startDate(createFriendMatchingPostRequestDTO.getStartDate())
+            .location(createFriendMatchingPostRequestDTO.getLocation())
+            .locationAddress(createFriendMatchingPostRequestDTO.getLocationAddress())
+            .build();
     User user = UserUtils.getUserById(userId, userRepository);
     friendMatchingPost.setUser(user);
 
     Club club =
-            ClubUtils.getClubById(createFriendMatchingPostRequestDTO.getClubId(), clubRepository);
+        ClubUtils.getClubById(createFriendMatchingPostRequestDTO.getClubId(), clubRepository);
     friendMatchingPost.setClub(club);
 
     SportEvent sportEvent =
-            SportUtils.getSportEventById(
-                    createFriendMatchingPostRequestDTO.getSportEventId(), sportEventRepository);
+        SportUtils.getSportEventById(
+            createFriendMatchingPostRequestDTO.getSportEventId(), sportEventRepository);
     friendMatchingPost.setSportEvent(sportEvent);
 
     friendMatchingPostRepository.save(friendMatchingPost);
     FriendMatchingPostResponseDTO friendMatchingPostResponseDTO =
-            FriendMatchingPostResponseDTO.from(friendMatchingPost);
+        FriendMatchingPostResponseDTO.from(friendMatchingPost);
 
     return CreateFriendMatchingPostResponseDTO.builder()
-            .message("교류전 게시글을 생성했습니다.")
-            .data(friendMatchingPostResponseDTO)
-            .build();
+        .message("교류전 게시글을 생성했습니다.")
+        .data(friendMatchingPostResponseDTO)
+        .build();
   }
 
   @Transactional(readOnly = true)
   public Page<FriendMatchingPostResponseDTO> getFriendMatchingPostsByType(
-          Long sportEventID, FriendMatchingPostType type, Pageable pageable) {
+      Long sportEventID, FriendMatchingPostType type, Pageable pageable) {
     Page<FriendMatchingPost> friendMatchingPosts;
     SportEvent sportEvent = SportUtils.getSportEventById(sportEventID, sportEventRepository);
     if (type == FriendMatchingPostType.INVITE) {
       friendMatchingPosts =
-              friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
-                      FriendMatchingPostType.INVITE, sportEvent, pageable);
+          friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+              FriendMatchingPostType.INVITE, sportEvent, pageable);
     } else if (type == FriendMatchingPostType.REQUEST) {
       friendMatchingPosts =
-              friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
-                      FriendMatchingPostType.REQUEST, sportEvent, pageable);
+          friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+              FriendMatchingPostType.REQUEST, sportEvent, pageable);
     } else {
       throw new IllegalArgumentException("Invalid FriendMatchingPostType");
     }
     return friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
   }
 
-
   @Transactional
   public CreateFriendMatchingRequestResponseDTO applyFriendMatching(
-          Long matchId,
-          Long userId,
-          Long clubId,
-          CreateFriendMatchingRequestRequestDTO createFriendMatchingRequestRequestDTO) {
+      Long matchId,
+      Long userId,
+      Long clubId,
+      CreateFriendMatchingRequestRequestDTO createFriendMatchingRequestRequestDTO) {
 
     FriendMatchingPost friendMatchingPost =
-            FriendMatchingUtils.getFriendMatchingPostById(matchId, friendMatchingPostRepository);
+        FriendMatchingUtils.getFriendMatchingPostById(matchId, friendMatchingPostRepository);
     Club club = ClubUtils.getClubById(clubId, clubRepository);
     User user = UserUtils.getUserById(userId, userRepository);
 
     FriendMatchingRequest friendMatchingRequest =
-            FriendMatchingRequest.builder()
-                    .phoneNumber(createFriendMatchingRequestRequestDTO.getPhoneNumber())
-                    .name(createFriendMatchingRequestRequestDTO.getName())
-                    .locationAddress(createFriendMatchingRequestRequestDTO.getLocationAddress())
-                    .location(createFriendMatchingRequestRequestDTO.getLocation())
-                    .type(createFriendMatchingRequestRequestDTO.getType())
-                    .build();
+        FriendMatchingRequest.builder()
+            .phoneNumber(createFriendMatchingRequestRequestDTO.getPhoneNumber())
+            .name(createFriendMatchingRequestRequestDTO.getName())
+            .locationAddress(createFriendMatchingRequestRequestDTO.getLocationAddress())
+            .location(createFriendMatchingRequestRequestDTO.getLocation())
+            .type(createFriendMatchingRequestRequestDTO.getType())
+            .build();
     friendMatchingRequest.setUser(user);
     friendMatchingRequest.setClub(club);
     friendMatchingRequest.setFriendMatchingPost(friendMatchingPost);
 
     friendMatchingRequestRepository.save(friendMatchingRequest);
     FriendMatchingRequestResponseDTO friendMatchingRequestResponseDTO =
-            FriendMatchingRequestResponseDTO.from(friendMatchingRequest);
+        FriendMatchingRequestResponseDTO.from(friendMatchingRequest);
     String message = "dd";
 
     if (createFriendMatchingRequestRequestDTO.getType().equals(FriendMatchingPostType.INVITE)) {
@@ -131,35 +128,46 @@ public class FriendMatchingService {
       message = "초청이 완료되었습니다!";
     }
     return CreateFriendMatchingRequestResponseDTO.builder()
-            .message(message)
-            .data(friendMatchingRequestResponseDTO)
-            .build();
+        .message(message)
+        .data(friendMatchingRequestResponseDTO)
+        .build();
   }
-
 
   @Transactional
-  public void updateRequests( Long userId, Long friendMatchingPostId,UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO) {
+  public void updateRequests(
+      Long userId,
+      Long friendMatchingPostId,
+      UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO) {
 
-    FriendMatchingRequest friendMatchingRequest = FriendMatchingUtils.getFriendMatchingRequestById(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestId(), friendMatchingRequestRepository);
-    FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(friendMatchingPostId,friendMatchingPostRepository);
-    validateFriendMatchingPostOwner(friendMatchingPost,userId);
-    friendMatchingRequest.updateType(FriendMatchingRequestType.valueOf(updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestType()));
+    FriendMatchingRequest friendMatchingRequest =
+        FriendMatchingUtils.getFriendMatchingRequestById(
+            updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestId(),
+            friendMatchingRequestRepository);
+    FriendMatchingPost friendMatchingPost =
+        FriendMatchingUtils.getFriendMatchingPostById(
+            friendMatchingPostId, friendMatchingPostRepository);
+    validateFriendMatchingPostOwner(friendMatchingPost, userId);
+    friendMatchingRequest.updateType(
+        FriendMatchingRequestType.valueOf(
+            updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestType()));
   }
-
 
   @Transactional
   public FriendMatchingRequestsResponseDTO getRequests(Long matchId, Long userId) {
-    FriendMatchingPost friendMatchingPost = FriendMatchingUtils.getFriendMatchingPostById(matchId, friendMatchingPostRepository);
+    FriendMatchingPost friendMatchingPost =
+        FriendMatchingUtils.getFriendMatchingPostById(matchId, friendMatchingPostRepository);
     validateFriendMatchingPostOwner(friendMatchingPost, userId);
 
-    List<FriendMatchingRequest> friendMatchingRequests = friendMatchingRequestRepository.findAllByFriendMatchingPost(friendMatchingPost);
-    List<FriendMatchingRequestResponseDTO> friendMatchingRequestResponseDTOS = friendMatchingRequests.stream()
+    List<FriendMatchingRequest> friendMatchingRequests =
+        friendMatchingRequestRepository.findAllByFriendMatchingPost(friendMatchingPost);
+    List<FriendMatchingRequestResponseDTO> friendMatchingRequestResponseDTOS =
+        friendMatchingRequests.stream()
             .map(FriendMatchingRequestResponseDTO::from)
             .collect(Collectors.toList());
 
     return FriendMatchingRequestsResponseDTO.builder()
-            .friendMatchingRequestResponseDTOS(friendMatchingRequestResponseDTOS)
-            .build();
+        .friendMatchingRequestResponseDTOS(friendMatchingRequestResponseDTOS)
+        .build();
   }
 
   private void validateFriendMatchingPostOwner(FriendMatchingPost friendMatchingPost, Long userId) {
@@ -168,5 +176,4 @@ public class FriendMatchingService {
       throw BaseException.from(ErrorCode.USER_NOT_OWNER);
     }
   }
-
 }

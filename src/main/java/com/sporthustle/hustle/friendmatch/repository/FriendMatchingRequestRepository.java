@@ -9,6 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FriendMatchingRequestRepository
     extends JpaRepository<FriendMatchingRequest, Long> {
   List<FriendMatchingRequest> findAllByFriendMatchingPost(FriendMatchingPost friendMatchingPostId);
-  Optional<FriendMatchingRequest> findById(Long friendMatchingRequestid);
 
+  Optional<FriendMatchingRequest> findById(Long friendMatchingRequestid);
 }
