@@ -13,7 +13,7 @@ public class FriendMatchingUtils {
     FriendMatchingPost friendMatchingPost =
         friendMatchingPostRepository
             .findById(friendMatchingPostId)
-            .orElseThrow(() -> BaseException.from(ErrorCode.Friend_MATCHING_POST_NOT_FOUND));
+            .orElseThrow(() -> BaseException.from(ErrorCode.FRIEND_MATCHING_POST_NOT_FOUND));
     return friendMatchingPost;
   }
 
@@ -23,7 +23,7 @@ public class FriendMatchingUtils {
     FriendMatchingRequest friendMatchingRequest =
         friendMatchingRequestRepository
             .findById(friendMatchingRequestId)
-            .orElseThrow(() -> BaseException.from(ErrorCode.Friend_MATCHING_POST_NOT_FOUND));
+            .orElseThrow(() -> BaseException.from(ErrorCode.FRIEND_MATCHING_POST_NOT_FOUND));
     return friendMatchingRequest;
   }
 }
