@@ -128,7 +128,9 @@ public class Competition extends BaseEntity {
   }
 
   public void updateEntryCount(int entryCount) {
-    this.entryCount = entryCount;
+    if (entryCount >= 0) {
+      this.entryCount = entryCount;
+    }
   }
 
   public void updateContacts(Set<CompetitionContact> contacts) {
