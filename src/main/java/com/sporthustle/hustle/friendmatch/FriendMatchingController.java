@@ -3,6 +3,8 @@ import com.sporthustle.hustle.common.annotation.UserId;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostRequestDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestRequestDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.CreateFriendMatchingRequestResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.FriendMatchingRequestsResponseDTO;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,10 +21,10 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "FriendMatching", description = "친선전 API")
 @RestController
-@RequestMapping("api/friendMatchingPost")
+@RequestMapping("api/friendMatchingPosts")
 @RequiredArgsConstructor
-public class FriendMatchingPostController {
-    private final FriendMatchingPostService friendMatchingPostService;
+public class FriendMatchingController {
+    private final FriendMatchingService friendMatchingService;
 
 
     @Operation(summary = "교류전 개설 API")
@@ -33,7 +35,7 @@ public class FriendMatchingPostController {
     public ResponseEntity<CreateFriendMatchingPostResponseDTO> createFriendMatching(
             @UserId Long userId, @RequestBody CreateFriendMatchingPostRequestDTO createFriendMatchingPostRequestDTO) {
         CreateFriendMatchingPostResponseDTO createFriendMatchingPostResponseDTO =
-                friendMatchingPostService.createFriendMatchingPost(userId,createFriendMatchingPostRequestDTO);
+                friendMatchingService.createFriendMatchingPost(userId,createFriendMatchingPostRequestDTO);
         return ResponseEntity.ok(createFriendMatchingPostResponseDTO);
     }
 
@@ -48,7 +50,7 @@ public class FriendMatchingPostController {
             @PageableDefault(size = 15, sort = "startDate", direction = Sort.Direction.DESC) Pageable pageable) {
 
         FriendMatchingPostType postType = FriendMatchingPostType.valueOf(type.toUpperCase());
-        Page<FriendMatchingPostResponseDTO> friendMatchingPostsResponseDTO = friendMatchingPostService.getFriendMatchingPostsByType(sportEventId, postType,pageable);
+        Page<FriendMatchingPostResponseDTO> friendMatchingPostsResponseDTO = friendMatchingService.getFriendMatchingPostsByType(sportEventId, postType,pageable);
         return ResponseEntity.ok(friendMatchingPostsResponseDTO);
     }
 
@@ -56,11 +58,22 @@ public class FriendMatchingPostController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "교류전 게시글 상세 조회에 성공한 경우"),
     })
+    /*
     @GetMapping("/{FriendMatchingPostId}")
     public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(@PathVariable("FriendMatchingPostId")Long friendMatchingPostId
             , @UserId Long userId){
-        FriendMatchingRequestsResponseDTO friendMatchingRequestsResponseDTO = friendMatchingPostService.getFriendMatchingRequests(friendMatchingPostId,userId);
+        FriendMatchingRequestsResponseDTO friendMatchingRequestsResponseDTO = friendMatchingService.getFriendMatchingRequests(friendMatchingPostId,userId);
         return ResponseEntity.ok(friendMatchingRequestsResponseDTO);
+    }
+*/
+    @PostMapping("/{friendMatchingPostId}")
+    public ResponseEntity<CreateFriendMatchingRequestResponseDTO> applyFriendMatching(@PathVariable("friendMatchingPostId")Long friendMatchingPostId
+            , @UserId Long userId, @RequestParam(name = "club_id" , required = false) Long clubId
+            , @RequestBody CreateFriendMatchingRequestRequestDTO createFriendMatchingRequestRequestDTO
+    ){
+        CreateFriendMatchingRequestResponseDTO createFriendMatchingRequestResponseDTO
+                = friendMatchingService.applyFriendMatching(friendMatchingPostId, userId ,clubId,createFriendMatchingRequestRequestDTO);
+        return ResponseEntity.ok(createFriendMatchingRequestResponseDTO);
     }
 
 }
