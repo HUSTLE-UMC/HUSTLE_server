@@ -19,4 +19,9 @@ public class Constants {
           "https://www.sport-hustle.com",
           "https://api.sport-hustle.com");
   public static final String PERMIT_ALL = "*";
+
+  // For Oauth
+  public static final String KAKAO_REQUEST_URL_FOR_TOKEN = "https://kauth.kakao.com/oauth/token";
+  public static final String KAKAO_REQUEST_URL_FOR_INFORMATION =
+      "https://kapi.kakao.com/v2/user/me";
 }
