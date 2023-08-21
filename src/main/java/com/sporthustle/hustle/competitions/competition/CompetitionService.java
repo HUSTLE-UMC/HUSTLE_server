@@ -9,7 +9,6 @@ import com.sporthustle.hustle.competitions.competition.repository.CompetitionRep
 import com.sporthustle.hustle.competitions.competition.repository.CompetitionRepositoryCustom;
 import com.sporthustle.hustle.competitions.competition.repository.condition.CompetitionsBeforeCompleteCondition;
 import com.sporthustle.hustle.competitions.competition.repository.condition.RecentCompleteCompetitionsCondition;
-import com.sporthustle.hustle.competitions.ingame.CompetitionDetailService;
 import com.sporthustle.hustle.sport.SportUtils;
 import com.sporthustle.hustle.sport.entity.SportEvent;
 import com.sporthustle.hustle.sport.repository.SportEventRepository;
@@ -33,7 +32,6 @@ public class CompetitionService {
   private final CompetitionRepositoryCustom competitionRepositoryCustom;
   private final SportEventRepository sportEventRepository;
   private final UserRepository userRepository;
-  private final CompetitionDetailService competitionDetailService;
 
   @Transactional(readOnly = true)
   public CompetitionsResponseDTO getCompetitionsByListType(
@@ -133,8 +131,6 @@ public class CompetitionService {
 
     competitionRepository.save(competition);
 
-    competitionDetailService.createDetails(competition.getId());
-
     CompetitionResponseDTO competitionResponseDTO = CompetitionResponseDTO.from(competition);
 
     return CreateCompetitionResponseDTO.builder()
@@ -213,8 +209,6 @@ public class CompetitionService {
 
     competition.delete();
     competitionRepository.save(competition);
-
-    competitionDetailService.deleteDetails(competitionId);
 
     return DeleteCompetitionResponseDTO.builder().message("대회를 성공적으로 삭제했습니다.").build();
   }
