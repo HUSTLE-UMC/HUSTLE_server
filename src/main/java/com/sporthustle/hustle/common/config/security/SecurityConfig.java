@@ -48,11 +48,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .configurationSource(corsConfigurationSource())
         .and()
         .authorizeRequests()
-        .antMatchers(getPermitAllPatterns().toArray(new String[0]))
+        .antMatchers(getPermitAllPatterns())
         .permitAll()
-        .antMatchers(getAuthenticatedPatterns().toArray(new String[0]))
+        .antMatchers(getAuthenticatedPatterns())
         .authenticated()
-        .antMatchers(getAdminRolePatterns().toArray(new String[0]))
+        .antMatchers(getAdminRolePatterns())
         .hasRole(UserRole.ADMIN.name())
         .and()
         .addFilterBefore(
@@ -61,16 +61,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
   }
 
-  private List<String> getPermitAllPatterns() {
-    return List.of("/", "/api/auth/**", "/api/university", "/api/user/find/**", "/swagger-ui/**");
+  private String[] getPermitAllPatterns() {
+    List<String> permitAllPatterns =
+        List.of("/", "/api/auth/**", "/api/university", "/api/user/find/**", "/swagger-ui/**");
+    return permitAllPatterns.toArray(new String[0]);
   }
 
-  private List<String> getAuthenticatedPatterns() {
-    return List.of("/api/**");
+  private String[] getAuthenticatedPatterns() {
+    List<String> authenticatedPatterns = List.of("/api/**");
+    return authenticatedPatterns.toArray(new String[0]);
   }
 
-  private List<String> getAdminRolePatterns() {
-    return List.of("/api/admin/**");
+  private String[] getAdminRolePatterns() {
+    List<String> adminRolePatterns = List.of("/api/admin/**");
+    return adminRolePatterns.toArray(new String[0]);
   }
 
   @Bean
