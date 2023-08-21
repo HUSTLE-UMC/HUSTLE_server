@@ -8,6 +8,9 @@ import com.sporthustle.hustle.oauth.dto.OAuthUserInfoResponseDTO;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import com.sporthustle.hustle.oauth.utils.KakaoInformationParser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +18,10 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class OAuthService {
+
+  private final KakaoInformationParser kakaoInformationParser;
 
   @Value("${oauth.secret.client-id}")
   private String clientId;
@@ -101,65 +107,21 @@ public class OAuthService {
       while ((line = br.readLine()) != null) {
         result += line;
       }
-      System.out.println("response body : " + result);
 
       // Gson 라이브러리로 JSON파싱
       JsonParser parser = new JsonParser();
       JsonElement element = parser.parse(result);
 
-      long id = element.getAsJsonObject().get("id").getAsLong();
-      String snsId = Long.toString(id);
-
-      boolean hasEmail =
-          element
-              .getAsJsonObject()
-              .get("kakao_account")
-              .getAsJsonObject()
-              .get("has_email")
-              .getAsBoolean();
-      String email = "";
-      if (hasEmail) {
-        email =
-            element
-                .getAsJsonObject()
-                .get("kakao_account")
-                .getAsJsonObject()
-                .get("email")
-                .getAsString();
-      }
-      String nickname =
-          element
-              .getAsJsonObject()
-              .get("kakao_account")
-              .getAsJsonObject()
-              .get("profile")
-              .getAsJsonObject()
-              .get("nickname")
-              .getAsString();
-
-      boolean has_gender =
-          element
-              .getAsJsonObject()
-              .get("kakao_account")
-              .getAsJsonObject()
-              .get("has_gender")
-              .getAsBoolean();
-      String gender = "";
-      if (has_gender) {
-        gender =
-            element
-                .getAsJsonObject()
-                .get("kakao_account")
-                .getAsJsonObject()
-                .get("gender")
-                .getAsString();
-      }
+      String snsId = kakaoInformationParser.getSnsIdByParsing(element);
+      String email = kakaoInformationParser.getEmailByParsing(element);
+      String name = kakaoInformationParser.getNameByParsing(element);
+      String gender = kakaoInformationParser.getGenderByParsing(element);
 
       br.close();
       return OAuthUserInfoResponseDTO.builder()
           .oauthId(snsId)
           .email(email)
-          .name(nickname)
+          .name(name)
           .password(getRamdomPassword())
           .gender(gender)
           .build();
@@ -169,6 +131,66 @@ public class OAuthService {
     }
     return null;
   }
+
+//  private String getSnsIdByParsing(JsonElement element) {
+//    long id = element.getAsJsonObject().get("id").getAsLong();
+//    return Long.toString(id);
+//  }
+//
+//  private String getEmailByParsing(JsonElement element) {
+//    boolean hasEmail =
+//            element
+//                    .getAsJsonObject()
+//                    .get("kakao_account")
+//                    .getAsJsonObject()
+//                    .get("has_email")
+//                    .getAsBoolean();
+//    String email = "";
+//    if (hasEmail) {
+//      email =
+//              element
+//                      .getAsJsonObject()
+//                      .get("kakao_account")
+//                      .getAsJsonObject()
+//                      .get("email")
+//                      .getAsString();
+//    }
+//    return email;
+//  }
+//
+//  private String getNameByParsing(JsonElement element) {
+//    String name =
+//            element
+//                    .getAsJsonObject()
+//                    .get("kakao_account")
+//                    .getAsJsonObject()
+//                    .get("profile")
+//                    .getAsJsonObject()
+//                    .get("nickname")
+//                    .getAsString();
+//    return name;
+//  }
+//
+//  private String getGenderByParsing(JsonElement element) {
+//    boolean has_gender =
+//            element
+//                    .getAsJsonObject()
+//                    .get("kakao_account")
+//                    .getAsJsonObject()
+//                    .get("has_gender")
+//                    .getAsBoolean();
+//    String gender = "";
+//    if (has_gender) {
+//      gender =
+//              element
+//                      .getAsJsonObject()
+//                      .get("kakao_account")
+//                      .getAsJsonObject()
+//                      .get("gender")
+//                      .getAsString();
+//    }
+//    return gender;
+//  }
 
   private String getRamdomPassword() {
     return RandomStringUtils.randomAlphanumeric(100);

@@ -20,12 +20,12 @@ public class OAuthController {
 
   private final OAuthService oAuthService;
 
-  @GetMapping("/kakao")
+  @GetMapping("/kakao/token")
   public ResponseEntity<KakaoTokenInfo> getKakaoToken(@RequestParam("code") String code) {
     return ResponseEntity.ok(oAuthService.getKakaoToken(code));
   }
 
-  @GetMapping("/kakao/callback")
+  @GetMapping("/kakao/information")
   public ResponseEntity<OAuthUserInfoResponseDTO> getKakaoUserInfo(
       @RequestParam("token") String token) {
     return ResponseEntity.ok(oAuthService.getKakaoUserInfo(token));
