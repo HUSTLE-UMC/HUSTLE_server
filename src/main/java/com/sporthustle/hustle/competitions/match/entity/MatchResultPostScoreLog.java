@@ -34,8 +34,8 @@ public class MatchResultPostScoreLog extends BaseEntity {
   private Map<String, Object> extra = new HashMap<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "match_result_post_club_id", nullable = false)
-  private MatchResultPostClub matchResultPostClub;
+  @JoinColumn(name = "match_result_post_id", nullable = false)
+  private MatchResultPost matchResultPost;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
