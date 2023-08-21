@@ -51,6 +51,8 @@ public class EntryTeamService {
         CompetitionUtils.getCompetitionById(competitionId, competitionRepository);
     Club club = ClubUtils.getClubById(createEntryTeamRequestDTO.getClubId(), clubRepository);
 
+    validateCompetitionInRecruiting(competition);
+
     EntryTeam entryTeam =
         EntryTeam.builder()
             .name(createEntryTeamRequestDTO.getName())
