@@ -1,9 +1,9 @@
 package com.sporthustle.hustle.friendmatch.dto;
 
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
+import org.locationtech.jts.geom.Point;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.geo.Point;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,7 +25,7 @@ public class CreateFriendMatchingPostRequestDTO {
     private String phoneNumber;
 
     @NotNull(message = "일시는 필수 입력 값입니다.")
-    private LocalDateTime date;
+    private LocalDateTime startDate;
 
     @NotNull(message = "교류전 위치는 필수 입력 값입니다.(좌표)")
     private Point location;
