@@ -13,22 +13,34 @@ CREATE TABLE University
 );
 
 
+-- SportEvent Table Create SQL
+-- 테이블 생성 SQL - SportEvent
+CREATE TABLE SportEvent
+(
+    `id`          BIGINT         NOT NULL    AUTO_INCREMENT,
+    `name`        VARCHAR(10)    NOT NULL    COMMENT '종목 명 ex. 축구',
+    `created_at`  TIMESTAMP      NOT NULL    DEFAULT NOW(),
+    `updated_at`  TIMESTAMP      NOT NULL    DEFAULT NOW(),
+     PRIMARY KEY (id)
+);
+
+
 -- User Table Create SQL
 -- 테이블 생성 SQL - User
 CREATE TABLE User
 (
-    `id`             BIGINT          NOT NULL    AUTO_INCREMENT, 
-    `university_id`  BIGINT          NOT NULL, 
-    `email`          VARCHAR(255)    NOT NULL    COMMENT '이메일 / 소셜로그인의 경우 소셜로그인 고유 ID 와 합침', 
-    `password`       VARCHAR(128)    NOT NULL    COMMENT '비밀번호 / 소셜 로그인의 경우 이메일 기준으로 암호화', 
-    `name`           VARCHAR(20)     NOT NULL    COMMENT '이름', 
-    `sns_type`       VARCHAR(20)     NOT NULL    DEFAULT 'DEFAULT' COMMENT '소셜로그인 종류', 
-    `sns_id`         VARCHAR(60)     NOT NULL    DEFAULT '' COMMENT '소셜로그인 고유 ID 키', 
-    `birthday`       DATE            NOT NULL    COMMENT '생년월일', 
-    `gender`         CHAR(6)         NOT NULL    DEFAULT 'MALE' COMMENT 'MALE / FEMALE', 
-    `status`         CHAR(10)        NOT NULL    DEFAULT 'ACTIVE', 
-    `is_mailing`     TINYINT         NOT NULL    DEFAULT 0 COMMENT '메일링 여부', 
-    `role`           CHAR(10)        NOT NULL    DEFAULT 'USER' COMMENT 'USER / ADMIN', 
+    `id`             BIGINT          NOT NULL    AUTO_INCREMENT,
+    `university_id`  BIGINT          NOT NULL,
+    `email`          VARCHAR(255)    NOT NULL    COMMENT '이메일 / 소셜로그인의 경우 소셜로그인 고유 ID 와 합침',
+    `password`       VARCHAR(128)    NOT NULL    COMMENT '비밀번호 / 소셜 로그인의 경우 이메일 기준으로 암호화',
+    `name`           VARCHAR(20)     NOT NULL    COMMENT '이름',
+    `sns_type`       VARCHAR(20)     NOT NULL    DEFAULT 'DEFAULT' COMMENT '소셜로그인 종류',
+    `sns_id`         VARCHAR(60)     NOT NULL    DEFAULT '' COMMENT '소셜로그인 고유 ID 키',
+    `birthday`       DATE            NOT NULL    COMMENT '생년월일',
+    `gender`         CHAR(6)         NOT NULL    DEFAULT 'MALE' COMMENT 'MALE / FEMALE',
+    `status`         CHAR(10)        NOT NULL    DEFAULT 'ACTIVE',
+    `is_mailing`     TINYINT         NOT NULL    DEFAULT 0 COMMENT '메일링 여부',
+    `role`           CHAR(10)        NOT NULL    DEFAULT 'USER' COMMENT 'USER / ADMIN',
     `refresh_token`  VARCHAR(255)    NOT NULL    DEFAULT '' COMMENT '리프레쉬 토큰 저장',
     `created_at`     TIMESTAMP       NOT NULL    DEFAULT NOW(),
     `updated_at`     TIMESTAMP       NOT NULL    DEFAULT NOW(),
@@ -43,18 +55,6 @@ ALTER TABLE User
 -- Foreign Key 삭제 SQL - User(university_id)
 -- ALTER TABLE User
 -- DROP FOREIGN KEY FK_User_university_id_University_id;
-
-
--- SportEvent Table Create SQL
--- 테이블 생성 SQL - SportEvent
-CREATE TABLE SportEvent
-(
-    `id`          BIGINT         NOT NULL    AUTO_INCREMENT,
-    `name`        VARCHAR(10)    NOT NULL    COMMENT '종목 명 ex. 축구',
-    `created_at`  TIMESTAMP      NOT NULL    DEFAULT NOW(),
-    `updated_at`  TIMESTAMP      NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
 
 
 -- Competition Table Create SQL
@@ -78,6 +78,7 @@ CREATE TABLE Competition
     `poster_url`              VARCHAR(255)         NOT NULL    COMMENT '포스터 이미지 URL',
     `pre_round_group_count`   SMALLINT UNSIGNED    NOT NULL    DEFAULT 1 COMMENT '예선 조 수',
     `final_round_team_count`  SMALLINT UNSIGNED    NOT NULL    DEFAULT 1 COMMENT '본선 진출 팀 수',
+    `type`                    CHAR(20)             NOT NULL    DEFAULT 'RECRUITING' COMMENT '모집중 / 모집완료 / 모집전 ( RECRUITING / COMPLETE / BEFORE )',
     `status`                  CHAR(10)             NOT NULL    DEFAULT 'ACTIVE',
     `created_at`              TIMESTAMP            NOT NULL    DEFAULT NOW(),
     `updated_at`              TIMESTAMP            NOT NULL    DEFAULT NOW(),
@@ -141,204 +142,6 @@ ALTER TABLE Club
 -- DROP FOREIGN KEY FK_Club_sport_event_id_SportEvent_id;
 
 
--- MatchResultPost Table Create SQL
--- 테이블 생성 SQL - MatchResultPost
-CREATE TABLE MatchResultPost
-(
-    `id`              BIGINT               NOT NULL    AUTO_INCREMENT,
-    `competition_id`  BIGINT               NULL,
-    `title`           VARCHAR(60)          NOT NULL    COMMENT '경기 제목',
-    `category`        CHAR(10)             NOT NULL    DEFAULT 'PREROUND' COMMENT 'PREROUND(예선) / FINAL(본선) 종류',
-    `group_category`  CHAR(20)             NOT NULL    COMMENT '예선 조 (A조) / 본선 조 (32강/16강/8강/4강/34위전/결승전)',
-    `post_order`      SMALLINT UNSIGNED    NOT NULL    DEFAULT 1 COMMENT '경기 수',
-    `media_url`       VARCHAR(255)         NULL,
-    `created_at`      TIMESTAMP            NULL        DEFAULT NOW(),
-    `updated_at`      TIMESTAMP            NULL        DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - MatchResultPost(competition_id) -> Competition(id)
-ALTER TABLE MatchResultPost
-    ADD CONSTRAINT FK_MatchResultPost_competition_id_Competition_id FOREIGN KEY (competition_id)
-        REFERENCES Competition (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - MatchResultPost(competition_id)
--- ALTER TABLE MatchResultPost
--- DROP FOREIGN KEY FK_MatchResultPost_competition_id_Competition_id;
-
-
--- ClubPost Table Create SQL
--- 테이블 생성 SQL - ClubPost
-CREATE TABLE ClubPost
-(
-    `id`          BIGINT          NOT NULL    AUTO_INCREMENT,
-    `user_id`     BIGINT          NOT NULL    COMMENT '작성자',
-    `club_id`     BIGINT          NOT NULL    COMMENT '동아리',
-    `title`       VARCHAR(100)    NOT NULL,
-    `content`     TEXT            NOT NULL,
-    `status`      CHAR(10)        NOT NULL    DEFAULT 'ACTIVE',
-    `created_at`  TIMESTAMP       NOT NULL    DEFAULT NOW(),
-    `updated_at`  TIMESTAMP       NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - ClubPost(user_id) -> User(id)
-ALTER TABLE ClubPost
-    ADD CONSTRAINT FK_ClubPost_user_id_User_id FOREIGN KEY (user_id)
-        REFERENCES User (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - ClubPost(user_id)
--- ALTER TABLE ClubPost
--- DROP FOREIGN KEY FK_ClubPost_user_id_User_id;
-
--- Foreign Key 설정 SQL - ClubPost(club_id) -> Club(id)
-ALTER TABLE ClubPost
-    ADD CONSTRAINT FK_ClubPost_club_id_Club_id FOREIGN KEY (club_id)
-        REFERENCES Club (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - ClubPost(club_id)
--- ALTER TABLE ClubPost
--- DROP FOREIGN KEY FK_ClubPost_club_id_Club_id;
-
-
--- SportPosition Table Create SQL
--- 테이블 생성 SQL - SportPosition
-CREATE TABLE SportPosition
-(
-    `id`              BIGINT         NOT NULL    AUTO_INCREMENT,
-    `sport_event_id`  BIGINT         NOT NULL,
-    `name`            VARCHAR(20)    NOT NULL    COMMENT '포지션명 ex. SG',
-    `created_at`      TIMESTAMP      NOT NULL    DEFAULT NOW(),
-    `updated_at`      TIMESTAMP      NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - SportPosition(sport_event_id) -> SportEvent(id)
-ALTER TABLE SportPosition
-    ADD CONSTRAINT FK_SportPosition_sport_event_id_SportEvent_id FOREIGN KEY (sport_event_id)
-        REFERENCES SportEvent (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - SportPosition(sport_event_id)
--- ALTER TABLE SportPosition
--- DROP FOREIGN KEY FK_SportPosition_sport_event_id_SportEvent_id;
-
-
--- QuestionPost Table Create SQL
--- 테이블 생성 SQL - QuestionPost
-CREATE TABLE QuestionPost
-(
-    `id`              BIGINT          NOT NULL    AUTO_INCREMENT,
-    `user_id`         BIGINT          NOT NULL    COMMENT '작성자',
-    `sport_event_id`  BIGINT          NOT NULL    COMMENT '종목',
-    `title`           VARCHAR(100)    NOT NULL    COMMENT '제목',
-    `content`         TEXT            NOT NULL    COMMENT '내용',
-    `status`          CHAR(10)        NOT NULL    DEFAULT 'ACTIVE',
-    `created_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
-    `updated_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - QuestionPost(user_id) -> User(id)
-ALTER TABLE QuestionPost
-    ADD CONSTRAINT FK_QuestionPost_user_id_User_id FOREIGN KEY (user_id)
-        REFERENCES User (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - QuestionPost(user_id)
--- ALTER TABLE QuestionPost
--- DROP FOREIGN KEY FK_QuestionPost_user_id_User_id;
-
--- Foreign Key 설정 SQL - QuestionPost(sport_event_id) -> SportEvent(id)
-ALTER TABLE QuestionPost
-    ADD CONSTRAINT FK_QuestionPost_sport_event_id_SportEvent_id FOREIGN KEY (sport_event_id)
-        REFERENCES SportEvent (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - QuestionPost(sport_event_id)
--- ALTER TABLE QuestionPost
--- DROP FOREIGN KEY FK_QuestionPost_sport_event_id_SportEvent_id;
-
-
--- MatchResultPostClub Table Create SQL
--- 테이블 생성 SQL - MatchResultPostClub
-CREATE TABLE MatchResultPostClub
-(
-    `id`                    BIGINT          NOT NULL    AUTO_INCREMENT,
-    `match_result_post_id`  BIGINT          NOT NULL,
-    `club_id`               BIGINT          NOT NULL,
-    `score`                 INT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '득점 스코어',
-    `is_win`                TINYINT         NOT NULL    DEFAULT 0,
-    `created_at`            TIMESTAMP       NOT NULL    DEFAULT NOW(),
-    `updated_at`            TIMESTAMP       NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - MatchResultPostClub(match_result_post_id) -> MatchResultPost(id)
-ALTER TABLE MatchResultPostClub
-    ADD CONSTRAINT FK_MatchResultPostClub_match_result_post_id_MatchResultPost_id FOREIGN KEY (match_result_post_id)
-        REFERENCES MatchResultPost (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - MatchResultPostClub(match_result_post_id)
--- ALTER TABLE MatchResultPostClub
--- DROP FOREIGN KEY FK_MatchResultPostClub_match_result_post_id_MatchResultPost_id;
-
--- Foreign Key 설정 SQL - MatchResultPostClub(club_id) -> Club(id)
-ALTER TABLE MatchResultPostClub
-    ADD CONSTRAINT FK_MatchResultPostClub_club_id_Club_id FOREIGN KEY (club_id)
-        REFERENCES Club (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - MatchResultPostClub(club_id)
--- ALTER TABLE MatchResultPostClub
--- DROP FOREIGN KEY FK_MatchResultPostClub_club_id_Club_id;
-
-
--- FriendMatchingPost Table Create SQL
--- 테이블 생성 SQL - FriendMatchingPost
-CREATE TABLE FriendMatchingPost
-(
-    `id`                BIGINT          NOT NULL    AUTO_INCREMENT,
-    `user_id`           BIGINT          NOT NULL    COMMENT '작성자',
-    `club_id`           BIGINT          NOT NULL,
-    `sport_event_id`    BIGINT          NOT NULL,
-    `title`             VARCHAR(100)    NOT NULL,
-    `category`          CHAR(20)        NOT NULL    DEFAULT 'INVITE' COMMENT 'INVITE / REQUEST',
-    `name`              VARCHAR(20)     NOT NULL,
-    `phone_number`      VARCHAR(20)     NOT NULL,
-    `start_date`        TIMESTAMP       NOT NULL    COMMENT '경기 일시',
-    `location`          POINT           NOT NULL    COMMENT '위치 정보',
-    `location_address`  VARCHAR(60)     NOT NULL    DEFAULT '' COMMENT '상세 정보 주소',
-    `status`            CHAR(10)        NOT NULL    DEFAULT 'ACTIVE',
-    `created_at`        TIMESTAMP       NOT NULL    DEFAULT NOW(),
-    `updated_at`        TIMESTAMP       NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - FriendMatchingPost(club_id) -> Club(id)
-ALTER TABLE FriendMatchingPost
-    ADD CONSTRAINT FK_FriendMatchingPost_club_id_Club_id FOREIGN KEY (club_id)
-        REFERENCES Club (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - FriendMatchingPost(club_id)
--- ALTER TABLE FriendMatchingPost
--- DROP FOREIGN KEY FK_FriendMatchingPost_club_id_Club_id;
-
--- Foreign Key 설정 SQL - FriendMatchingPost(user_id) -> User(id)
-ALTER TABLE FriendMatchingPost
-    ADD CONSTRAINT FK_FriendMatchingPost_user_id_User_id FOREIGN KEY (user_id)
-        REFERENCES User (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - FriendMatchingPost(user_id)
--- ALTER TABLE FriendMatchingPost
--- DROP FOREIGN KEY FK_FriendMatchingPost_user_id_User_id;
-
--- Foreign Key 설정 SQL - FriendMatchingPost(sport_event_id) -> SportEvent(id)
-ALTER TABLE FriendMatchingPost
-    ADD CONSTRAINT FK_FriendMatchingPost_sport_event_id_SportEvent_id FOREIGN KEY (sport_event_id)
-        REFERENCES SportEvent (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - FriendMatchingPost(sport_event_id)
--- ALTER TABLE FriendMatchingPost
--- DROP FOREIGN KEY FK_FriendMatchingPost_sport_event_id_SportEvent_id;
-
-
 -- EntryTeam Table Create SQL
 -- 테이블 생성 SQL - EntryTeam
 CREATE TABLE EntryTeam
@@ -386,6 +189,147 @@ ALTER TABLE EntryTeam
 -- Foreign Key 삭제 SQL - EntryTeam(user_id)
 -- ALTER TABLE EntryTeam
 -- DROP FOREIGN KEY FK_EntryTeam_user_id_User_id;
+
+
+-- QuestionPost Table Create SQL
+-- 테이블 생성 SQL - QuestionPost
+CREATE TABLE QuestionPost
+(
+    `id`              BIGINT          NOT NULL    AUTO_INCREMENT,
+    `user_id`         BIGINT          NOT NULL    COMMENT '작성자',
+    `sport_event_id`  BIGINT          NOT NULL    COMMENT '종목',
+    `title`           VARCHAR(100)    NOT NULL    COMMENT '제목',
+    `content`         TEXT            NOT NULL    COMMENT '내용',
+    `status`          CHAR(10)        NOT NULL    DEFAULT 'ACTIVE',
+    `created_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
+    `updated_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
+     PRIMARY KEY (id)
+);
+
+-- Foreign Key 설정 SQL - QuestionPost(user_id) -> User(id)
+ALTER TABLE QuestionPost
+    ADD CONSTRAINT FK_QuestionPost_user_id_User_id FOREIGN KEY (user_id)
+        REFERENCES User (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - QuestionPost(user_id)
+-- ALTER TABLE QuestionPost
+-- DROP FOREIGN KEY FK_QuestionPost_user_id_User_id;
+
+-- Foreign Key 설정 SQL - QuestionPost(sport_event_id) -> SportEvent(id)
+ALTER TABLE QuestionPost
+    ADD CONSTRAINT FK_QuestionPost_sport_event_id_SportEvent_id FOREIGN KEY (sport_event_id)
+        REFERENCES SportEvent (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - QuestionPost(sport_event_id)
+-- ALTER TABLE QuestionPost
+-- DROP FOREIGN KEY FK_QuestionPost_sport_event_id_SportEvent_id;
+
+
+-- SportPosition Table Create SQL
+-- 테이블 생성 SQL - SportPosition
+CREATE TABLE SportPosition
+(
+    `id`              BIGINT         NOT NULL    AUTO_INCREMENT,
+    `sport_event_id`  BIGINT         NOT NULL,
+    `name`            VARCHAR(20)    NOT NULL    COMMENT '포지션명 ex. SG',
+    `created_at`      TIMESTAMP      NOT NULL    DEFAULT NOW(),
+    `updated_at`      TIMESTAMP      NOT NULL    DEFAULT NOW(),
+     PRIMARY KEY (id)
+);
+
+-- Foreign Key 설정 SQL - SportPosition(sport_event_id) -> SportEvent(id)
+ALTER TABLE SportPosition
+    ADD CONSTRAINT FK_SportPosition_sport_event_id_SportEvent_id FOREIGN KEY (sport_event_id)
+        REFERENCES SportEvent (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - SportPosition(sport_event_id)
+-- ALTER TABLE SportPosition
+-- DROP FOREIGN KEY FK_SportPosition_sport_event_id_SportEvent_id;
+
+
+-- ClubPost Table Create SQL
+-- 테이블 생성 SQL - ClubPost
+CREATE TABLE ClubPost
+(
+    `id`          BIGINT          NOT NULL    AUTO_INCREMENT,
+    `user_id`     BIGINT          NOT NULL    COMMENT '작성자',
+    `club_id`     BIGINT          NOT NULL    COMMENT '동아리',
+    `title`       VARCHAR(100)    NOT NULL,
+    `content`     TEXT            NOT NULL,
+    `status`      CHAR(10)        NOT NULL    DEFAULT 'ACTIVE',
+    `created_at`  TIMESTAMP       NOT NULL    DEFAULT NOW(),
+    `updated_at`  TIMESTAMP       NOT NULL    DEFAULT NOW(),
+     PRIMARY KEY (id)
+);
+
+-- Foreign Key 설정 SQL - ClubPost(user_id) -> User(id)
+ALTER TABLE ClubPost
+    ADD CONSTRAINT FK_ClubPost_user_id_User_id FOREIGN KEY (user_id)
+        REFERENCES User (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - ClubPost(user_id)
+-- ALTER TABLE ClubPost
+-- DROP FOREIGN KEY FK_ClubPost_user_id_User_id;
+
+-- Foreign Key 설정 SQL - ClubPost(club_id) -> Club(id)
+ALTER TABLE ClubPost
+    ADD CONSTRAINT FK_ClubPost_club_id_Club_id FOREIGN KEY (club_id)
+        REFERENCES Club (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - ClubPost(club_id)
+-- ALTER TABLE ClubPost
+-- DROP FOREIGN KEY FK_ClubPost_club_id_Club_id;
+
+
+-- MatchResultPost Table Create SQL
+-- 테이블 생성 SQL - MatchResultPost
+CREATE TABLE MatchResultPost
+(
+    `id`                  BIGINT               NOT NULL    AUTO_INCREMENT,
+    `competition_id`      BIGINT               NOT NULL,
+    `title`               VARCHAR(60)          NOT NULL    COMMENT '경기 제목',
+    `category`            CHAR(10)             NOT NULL    DEFAULT 'PREROUND' COMMENT 'PREROUND(예선) / FINAL(본선) 종류',
+    `group_category`      VARCHAR(20)          NOT NULL    DEFAULT '' COMMENT '예선 조 (A조) / 본선 조 (32강/16강/8강/4강/34위전/결승전)',
+    `post_order`          SMALLINT UNSIGNED    NOT NULL    DEFAULT 1 COMMENT '경기 수',
+    `match_time`          TIMESTAMP            NOT NULL    COMMENT '경기 시각',
+    `media_url`           VARCHAR(255)         NULL        COMMENT '경가 영상 주소',
+    `home_entry_team_id`  BIGINT               NOT NULL    COMMENT '참가팀1',
+    `home_score`          SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '참가팀1 점수',
+    `is_home_win`         TINYINT              NOT NULL    DEFAULT 0 COMMENT '참가팀1 승리 여부',
+    `away_entry_team_id`  BIGINT               NOT NULL    COMMENT '참가팀2',
+    `away_score`          SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '참가팀2 점수',
+    `is_away_win`         TINYINT              NOT NULL    DEFAULT 0 COMMENT '참가팀2 승리 여부',
+    `created_at`          TIMESTAMP            NOT NULL    DEFAULT NOW(),
+    `updated_at`          TIMESTAMP            NOT NULL    DEFAULT NOW(),
+     PRIMARY KEY (id)
+);
+
+-- Foreign Key 설정 SQL - MatchResultPost(competition_id) -> Competition(id)
+ALTER TABLE MatchResultPost
+    ADD CONSTRAINT FK_MatchResultPost_competition_id_Competition_id FOREIGN KEY (competition_id)
+        REFERENCES Competition (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - MatchResultPost(competition_id)
+-- ALTER TABLE MatchResultPost
+-- DROP FOREIGN KEY FK_MatchResultPost_competition_id_Competition_id;
+
+-- Foreign Key 설정 SQL - MatchResultPost(home_entry_team_id) -> EntryTeam(id)
+ALTER TABLE MatchResultPost
+    ADD CONSTRAINT FK_MatchResultPost_home_entry_team_id_EntryTeam_id FOREIGN KEY (home_entry_team_id)
+        REFERENCES EntryTeam (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - MatchResultPost(home_entry_team_id)
+-- ALTER TABLE MatchResultPost
+-- DROP FOREIGN KEY FK_MatchResultPost_home_entry_team_id_EntryTeam_id;
+
+-- Foreign Key 설정 SQL - MatchResultPost(away_entry_team_id) -> EntryTeam(id)
+ALTER TABLE MatchResultPost
+    ADD CONSTRAINT FK_MatchResultPost_away_entry_team_id_EntryTeam_id FOREIGN KEY (away_entry_team_id)
+        REFERENCES EntryTeam (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - MatchResultPost(away_entry_team_id)
+-- ALTER TABLE MatchResultPost
+-- DROP FOREIGN KEY FK_MatchResultPost_away_entry_team_id_EntryTeam_id;
 
 
 -- QuestionPostComment Table Create SQL
@@ -499,6 +443,55 @@ ALTER TABLE ClubMember
 -- Foreign Key 삭제 SQL - ClubMember(position_id)
 -- ALTER TABLE ClubMember
 -- DROP FOREIGN KEY FK_ClubMember_position_id_SportPosition_id;
+
+
+-- FriendMatchingPost Table Create SQL
+-- 테이블 생성 SQL - FriendMatchingPost
+CREATE TABLE FriendMatchingPost
+(
+    `id`                BIGINT          NOT NULL    AUTO_INCREMENT,
+    `user_id`           BIGINT          NOT NULL    COMMENT '작성자',
+    `club_id`           BIGINT          NOT NULL,
+    `sport_event_id`    BIGINT          NOT NULL,
+    `title`             VARCHAR(100)    NOT NULL,
+    `category`          CHAR(20)        NOT NULL    DEFAULT 'INVITE' COMMENT 'INVITE / REQUEST',
+    `name`              VARCHAR(20)     NOT NULL,
+    `phone_number`      VARCHAR(20)     NOT NULL,
+    `start_date`        TIMESTAMP       NOT NULL    COMMENT '경기 일시',
+    `location`          POINT           NOT NULL    COMMENT '위치 정보',
+    `location_address`  VARCHAR(60)     NOT NULL    DEFAULT '' COMMENT '상세 정보 주소',
+    `status`            CHAR(10)        NOT NULL    DEFAULT 'ACTIVE',
+    `created_at`        TIMESTAMP       NOT NULL    DEFAULT NOW(),
+    `updated_at`        TIMESTAMP       NOT NULL    DEFAULT NOW(),
+     PRIMARY KEY (id)
+);
+
+-- Foreign Key 설정 SQL - FriendMatchingPost(club_id) -> Club(id)
+ALTER TABLE FriendMatchingPost
+    ADD CONSTRAINT FK_FriendMatchingPost_club_id_Club_id FOREIGN KEY (club_id)
+        REFERENCES Club (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - FriendMatchingPost(club_id)
+-- ALTER TABLE FriendMatchingPost
+-- DROP FOREIGN KEY FK_FriendMatchingPost_club_id_Club_id;
+
+-- Foreign Key 설정 SQL - FriendMatchingPost(user_id) -> User(id)
+ALTER TABLE FriendMatchingPost
+    ADD CONSTRAINT FK_FriendMatchingPost_user_id_User_id FOREIGN KEY (user_id)
+        REFERENCES User (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - FriendMatchingPost(user_id)
+-- ALTER TABLE FriendMatchingPost
+-- DROP FOREIGN KEY FK_FriendMatchingPost_user_id_User_id;
+
+-- Foreign Key 설정 SQL - FriendMatchingPost(sport_event_id) -> SportEvent(id)
+ALTER TABLE FriendMatchingPost
+    ADD CONSTRAINT FK_FriendMatchingPost_sport_event_id_SportEvent_id FOREIGN KEY (sport_event_id)
+        REFERENCES SportEvent (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - FriendMatchingPost(sport_event_id)
+-- ALTER TABLE FriendMatchingPost
+-- DROP FOREIGN KEY FK_FriendMatchingPost_sport_event_id_SportEvent_id;
 
 
 -- LecturePost Table Create SQL
@@ -676,12 +669,17 @@ ALTER TABLE EntryTeamScoreLog
 -- 테이블 생성 SQL - PreRoundGroup
 CREATE TABLE PreRoundGroup
 (
-    `id`              BIGINT         NOT NULL    AUTO_INCREMENT,
-    `competition_id`  BIGINT         NOT NULL,
-    `entry_team_id`   BIGINT         NOT NULL,
-    `name`            VARCHAR(20)    NOT NULL    COMMENT '예선 조명 (A조)',
-    `created_at`      TIMESTAMP      NOT NULL    DEFAULT NOW(),
-    `updated_at`      TIMESTAMP      NOT NULL    DEFAULT NOW(),
+    `id`                      BIGINT               NOT NULL    AUTO_INCREMENT,
+    `competition_id`          BIGINT               NOT NULL,
+    `entry_team_id`           BIGINT               NOT NULL,
+    `group_category`          VARCHAR(20)          NOT NULL    COMMENT '예선 조명 (A조)',
+    `match_count`             SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '경기 수',
+    `win_count`               SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '승리 수',
+    `lose_count`              SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '패배 수',
+    `draw_count`              SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '무승부 수',
+    `score_difference_count`  SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '득실차',
+    `created_at`              TIMESTAMP            NOT NULL    DEFAULT NOW(),
+    `updated_at`              TIMESTAMP            NOT NULL    DEFAULT NOW(),
      PRIMARY KEY (id)
 );
 
@@ -702,82 +700,6 @@ ALTER TABLE PreRoundGroup
 -- Foreign Key 삭제 SQL - PreRoundGroup(entry_team_id)
 -- ALTER TABLE PreRoundGroup
 -- DROP FOREIGN KEY FK_PreRoundGroup_entry_team_id_EntryTeam_id;
-
-
--- FinalRoundTeam Table Create SQL
--- 테이블 생성 SQL - FinalRoundTeam
-CREATE TABLE FinalRoundTeam
-(
-    `id`                        BIGINT               NOT NULL    AUTO_INCREMENT,
-    `competition_id`            BIGINT               NOT NULL,
-    `entry_team_id`             BIGINT               NOT NULL,
-    `current_tournament_level`  SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '32, 16, 8, 4, 2, 1 : 현재 단계',
-    `created_at`                TIMESTAMP            NOT NULL    DEFAULT NOW(),
-    `updated_at`                TIMESTAMP            NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - FinalRoundTeam(competition_id) -> Competition(id)
-ALTER TABLE FinalRoundTeam
-    ADD CONSTRAINT FK_FinalRoundTeam_competition_id_Competition_id FOREIGN KEY (competition_id)
-        REFERENCES Competition (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - FinalRoundTeam(competition_id)
--- ALTER TABLE FinalRoundTeam
--- DROP FOREIGN KEY FK_FinalRoundTeam_competition_id_Competition_id;
-
--- Foreign Key 설정 SQL - FinalRoundTeam(entry_team_id) -> EntryTeam(id)
-ALTER TABLE FinalRoundTeam
-    ADD CONSTRAINT FK_FinalRoundTeam_entry_team_id_EntryTeam_id FOREIGN KEY (entry_team_id)
-        REFERENCES EntryTeam (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - FinalRoundTeam(entry_team_id)
--- ALTER TABLE FinalRoundTeam
--- DROP FOREIGN KEY FK_FinalRoundTeam_entry_team_id_EntryTeam_id;
-
-
--- PreRoundDetail Table Create SQL
--- 테이블 생성 SQL - PreRoundDetail
-CREATE TABLE PreRoundDetail
-(
-    `id`              BIGINT          NOT NULL    AUTO_INCREMENT,
-    `competition_id`  BIGINT          NULL,
-    `time_table_url`  VARCHAR(255)    NULL        COMMENT '타임테이블 이미지 주소',
-    `created_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
-    `updated_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - PreRoundDetail(competition_id) -> Competition(id)
-ALTER TABLE PreRoundDetail
-    ADD CONSTRAINT FK_PreRoundDetail_competition_id_Competition_id FOREIGN KEY (competition_id)
-        REFERENCES Competition (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - PreRoundDetail(competition_id)
--- ALTER TABLE PreRoundDetail
--- DROP FOREIGN KEY FK_PreRoundDetail_competition_id_Competition_id;
-
-
--- FinalRoundDetail Table Create SQL
--- 테이블 생성 SQL - FinalRoundDetail
-CREATE TABLE FinalRoundDetail
-(
-    `id`              BIGINT          NOT NULL    AUTO_INCREMENT,
-    `competition_id`  BIGINT          NULL,
-    `time_table_url`  VARCHAR(255)    NULL        COMMENT '타임테이블 이미지 주소',
-    `created_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
-    `updated_at`      TIMESTAMP       NOT NULL    DEFAULT NOW(),
-     PRIMARY KEY (id)
-);
-
--- Foreign Key 설정 SQL - FinalRoundDetail(competition_id) -> Competition(id)
-ALTER TABLE FinalRoundDetail
-    ADD CONSTRAINT FK_FinalRoundDetail_competition_id_Competition_id FOREIGN KEY (competition_id)
-        REFERENCES Competition (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - FinalRoundDetail(competition_id)
--- ALTER TABLE FinalRoundDetail
--- DROP FOREIGN KEY FK_FinalRoundDetail_competition_id_Competition_id;
 
 
 -- FriendMatchingRequest Table Create SQL
@@ -830,25 +752,17 @@ ALTER TABLE FriendMatchingRequest
 -- 테이블 생성 SQL - MatchResultPostScoreLog
 CREATE TABLE MatchResultPostScoreLog
 (
-    `id`                         BIGINT          NOT NULL    AUTO_INCREMENT,
-    `match_result_post_club_id`  BIGINT          NOT NULL,
-    `user_id`                    BIGINT          NULL        COMMENT 'NULL 가능 / 사이트에 없는 사람도 입력은 가능하게끔',
-    `name`                       VARCHAR(20)     NOT NULL    DEFAULT '' COMMENT '이름 중복 저장',
-    `score`                      INT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '득점',
-    `extra`                      JSON            NOT NULL    COMMENT '종목별로 작성 (농구의 경우 리바운드, 어시스트 등)',
-    `created_at`                 TIMESTAMP       NOT NULL    DEFAULT NOW(),
-    `updated_at`                 TIMESTAMP       NOT NULL    DEFAULT NOW(),
+    `id`                    BIGINT               NOT NULL    AUTO_INCREMENT,
+    `match_result_post_id`  BIGINT               NOT NULL,
+    `entry_team_id`         BIGINT               NOT NULL,
+    `user_id`               BIGINT               NULL        COMMENT 'NULL 가능 / 사이트에 없는 사람도 입력은 가능하게끔',
+    `name`                  VARCHAR(20)          NOT NULL    DEFAULT '' COMMENT '이름 중복 저장 / NULL 일 때 수동 입력 가능하게끔 설계',
+    `score`                 SMALLINT UNSIGNED    NOT NULL    DEFAULT 0 COMMENT '득점',
+    `extra`                 JSON                 NOT NULL    COMMENT '종목별로 작성 (농구의 경우 리바운드, 어시스트 등)',
+    `created_at`            TIMESTAMP            NOT NULL    DEFAULT NOW(),
+    `updated_at`            TIMESTAMP            NOT NULL    DEFAULT NOW(),
      PRIMARY KEY (id)
 );
-
--- Foreign Key 설정 SQL - MatchResultPostScoreLog(match_result_post_club_id) -> MatchResultPostClub(id)
-ALTER TABLE MatchResultPostScoreLog
-    ADD CONSTRAINT FK_MatchResultPostScoreLog_match_result_post_club_id_MatchResult FOREIGN KEY (match_result_post_club_id)
-        REFERENCES MatchResultPostClub (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
-
--- Foreign Key 삭제 SQL - MatchResultPostScoreLog(match_result_post_club_id)
--- ALTER TABLE MatchResultPostScoreLog
--- DROP FOREIGN KEY FK_MatchResultPostScoreLog_match_result_post_club_id_MatchResult;
 
 -- Foreign Key 설정 SQL - MatchResultPostScoreLog(user_id) -> User(id)
 ALTER TABLE MatchResultPostScoreLog
@@ -858,5 +772,23 @@ ALTER TABLE MatchResultPostScoreLog
 -- Foreign Key 삭제 SQL - MatchResultPostScoreLog(user_id)
 -- ALTER TABLE MatchResultPostScoreLog
 -- DROP FOREIGN KEY FK_MatchResultPostScoreLog_user_id_User_id;
+
+-- Foreign Key 설정 SQL - MatchResultPostScoreLog(match_result_post_id) -> MatchResultPost(id)
+ALTER TABLE MatchResultPostScoreLog
+    ADD CONSTRAINT FK_MatchResultPostScoreLog_match_result_post_id_MatchResultPost_ FOREIGN KEY (match_result_post_id)
+        REFERENCES MatchResultPost (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - MatchResultPostScoreLog(match_result_post_id)
+-- ALTER TABLE MatchResultPostScoreLog
+-- DROP FOREIGN KEY FK_MatchResultPostScoreLog_match_result_post_id_MatchResultPost_;
+
+-- Foreign Key 설정 SQL - MatchResultPostScoreLog(entry_team_id) -> EntryTeam(id)
+ALTER TABLE MatchResultPostScoreLog
+    ADD CONSTRAINT FK_MatchResultPostScoreLog_entry_team_id_EntryTeam_id FOREIGN KEY (entry_team_id)
+        REFERENCES EntryTeam (id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+
+-- Foreign Key 삭제 SQL - MatchResultPostScoreLog(entry_team_id)
+-- ALTER TABLE MatchResultPostScoreLog
+-- DROP FOREIGN KEY FK_MatchResultPostScoreLog_entry_team_id_EntryTeam_id;
 
 
