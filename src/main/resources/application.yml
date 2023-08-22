@@ -2,7 +2,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -22,6 +22,12 @@ security:
     name: ENC(oVSEw6gxE46j0SJPrnVgyg==)
     password: ENC(kyHrVONdlwShgsY4YOKmiZDmH3g3tCae4Z55N6qyyYypqG0AQWsF6g==)
   #      roles: USER, ADMIN
+
+### oauth ###
+oauth:
+  secret:
+    client-id: ENC(qk8aM1R8DeowlfZ+OMWL8FrpwvPsvB69ItqMsLQjsQ8RSJ0n7DkAQ3cVmiB1vxTP)
+    redirect-url: ENC(+x9186WELcWVi2tjNjO5owbG1vXSERZHnp3c9RIeUpM=)
 
 ### jwt ###
 jwt:
