@@ -24,6 +24,7 @@ public enum ErrorCode {
   MATCH_RESULT_POST_NOT_FOUND(BAD_REQUEST, "MATCH_RESULT_POST_NOT_FOUND", "경기 결과를 찾을 수 없습니다."),
   FRIEND_MATCHING_POST_NOT_FOUND(
       BAD_REQUEST, "FRIEND_MATCHING_POST_NOT_FOUND", "해당 교류전글을 찾을 수 없습니다."),
+  FILE_SIZE_LIMIT(PAYLOAD_TOO_LARGE, "FILE_SIZE_LIMIT", "파일 사이즈가 10MB 보다 큽니다."),
   ;
 
   private final HttpStatus status;
