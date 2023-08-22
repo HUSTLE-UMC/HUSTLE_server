@@ -45,10 +45,10 @@ public class MatchController {
       @UserId Long userId,
       @PathVariable("competition_id") Long competitionId,
       @PathVariable("category") InGameCategory inGameCategory,
-      @RequestBody CreateMatchResultPostRequestDTO createMatchResultPostRequestDTO) {
+      @RequestBody CreateMatchRequestPostsRequestDTO createMatchRequestPostsRequestDTO) {
     CreateMatchResultPostResponseDTO createMatchResultPostResponseDTO =
         matchService.createMatchResultPost(
-            userId, competitionId, inGameCategory, createMatchResultPostRequestDTO);
+            userId, competitionId, inGameCategory, createMatchRequestPostsRequestDTO);
     return ResponseEntity.ok(createMatchResultPostResponseDTO);
   }
 
