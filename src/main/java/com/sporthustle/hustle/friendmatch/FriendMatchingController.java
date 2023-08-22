@@ -58,14 +58,6 @@ public class FriendMatchingController {
     return ResponseEntity.ok(friendMatchingPostsResponseDTO);
   }
 
-  /*
-      @GetMapping("/{FriendMatchingPostId}")
-      public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(@PathVariable("FriendMatchingPostId")Long friendMatchingPostId
-              , @UserId Long userId){
-          FriendMatchingRequestsResponseDTO friendMatchingRequestsResponseDTO = friendMatchingService.getFriendMatchingRequests(friendMatchingPostId,userId);
-          return ResponseEntity.ok(friendMatchingRequestsResponseDTO);
-      }
-  */
   @Operation(summary = "교류전 지원 API")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "교류전 지원 생성에 성공한 경우"),
@@ -97,6 +89,10 @@ public class FriendMatchingController {
         userId, friendMatchingPostId, updateFriendMatchingRequestStateRequestDTO);
   }
 
+  @Operation(summary = "교류전 지원 조회 API")
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "교류전 지원 조회에 성공한 경우"),
+  })
   @GetMapping("/{friendMatchingPostId}")
   public ResponseEntity<FriendMatchingRequestsResponseDTO> getFriendMatchingRequests(
       @PathVariable("friendMatchingPostId") Long friendMatchingPostId, @UserId Long userId) {
