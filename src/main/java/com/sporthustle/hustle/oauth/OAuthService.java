@@ -26,10 +26,10 @@ public class OAuthService {
   private final KakaoInformationParser kakaoInformationParser;
   private final OAuthConnector connector;
 
-  @Value("${oauth.secret.client-id}")
+  @Value("${oauth.kakao.secret.client-id}")
   private String clientId;
 
-  @Value("${oauth.secret.redirect-url}")
+  @Value("${oauth.kakao.secret.redirect-url}")
   private String redirectUrl;
 
   public KakaoTokenInfo getKakaoToken(String code) {
