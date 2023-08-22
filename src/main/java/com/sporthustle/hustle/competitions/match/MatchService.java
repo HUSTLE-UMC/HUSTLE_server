@@ -111,24 +111,28 @@ public class MatchService {
                 })
             .collect(Collectors.toList());
 
-    inGameService.deleteAllPreRoundGroup(competitionId, groupCategory);
+    if (inGameCategory == InGameCategory.PREROUND) {
+      inGameService.deleteAllPreRoundGroup(competitionId, groupCategory);
+    }
 
     deleteAllMatchResult(competitionId, groupCategory);
 
     matchResultPostRepository.saveAll(matchResultPosts);
 
-    Set<EntryTeam> entryTeams =
-        matchResultPosts.stream()
-            .flatMap(
-                matchResultPost ->
-                    List.of(matchResultPost.getHomeEntryTeam(), matchResultPost.getAwayEntryTeam())
-                        .stream())
-            .collect(Collectors.toSet());
+    if (inGameCategory == InGameCategory.PREROUND) {
+      Set<EntryTeam> entryTeams =
+              matchResultPosts.stream()
+                      .flatMap(
+                              matchResultPost ->
+                                      List.of(matchResultPost.getHomeEntryTeam(), matchResultPost.getAwayEntryTeam())
+                                              .stream())
+                      .collect(Collectors.toSet());
 
-    entryTeams.stream()
-        .forEach(
-            entryTeam ->
-                inGameService.createPreRoundGroup(competitionId, entryTeam.getId(), groupCategory));
+      entryTeams.stream()
+              .forEach(
+                      entryTeam ->
+                              inGameService.createPreRoundGroup(competitionId, entryTeam.getId(), groupCategory));
+    }
 
     List<MatchResultPostResponseDTO> matchResultPostResponseDTOs =
         matchResultPosts.stream()
