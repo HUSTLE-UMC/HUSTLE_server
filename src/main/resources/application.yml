@@ -26,9 +26,10 @@ security:
 
 ### oauth ###
 oauth:
-  secret:
-    client-id: ENC(qk8aM1R8DeowlfZ+OMWL8FrpwvPsvB69ItqMsLQjsQ8RSJ0n7DkAQ3cVmiB1vxTP)
-    redirect-url: ENC(+x9186WELcWVi2tjNjO5owbG1vXSERZHnp3c9RIeUpM=)
+  kakao:
+    secret:
+      client-id: ENC(wp/HMNq/89yPzT2HWEe7v65FDAqXvC24M6WvPUMG/QzYwf4GRnpYAsOHMLTfL0uL)
+      redirect-url: ENC(kQHBI+E/AOrSHdSs9ZShsbKIsB6DFpLWnXKlqVBC2l3AvQ+qrozcT9XKrE/NK9aH)
 
 ### jwt ###
 jwt:
