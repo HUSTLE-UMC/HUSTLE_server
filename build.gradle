@@ -85,5 +85,6 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	systemProperty "com.amazonaws.sdk.disableEc2Metadata", "true"
 	systemProperty "jasypt.encryptor.password", System.getProperty("jasypt.encryptor.password")
 }
