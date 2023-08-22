@@ -122,7 +122,7 @@ public class FriendMatchingService {
         FriendMatchingRequestResponseDTO.from(friendMatchingRequest);
     String message = "dd";
 
-    if (createFriendMatchingRequestRequestDTO.getType().equals(FriendMatchingPostType.INVITE)) {
+    if (friendMatchingPost.getCategory().equals(FriendMatchingPostType.INVITE)) {
       message = "요청이 완료되었습니다!";
     } else {
       message = "초청이 완료되었습니다!";
