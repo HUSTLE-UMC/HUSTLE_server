@@ -14,7 +14,6 @@ import com.sporthustle.hustle.competitions.entryteam.entity.EntryTeam;
 import com.sporthustle.hustle.competitions.entryteam.repository.EntryTeamRepository;
 import com.sporthustle.hustle.competitions.entryteam.repository.EntryTeamRepositoryCustom;
 import com.sporthustle.hustle.competitions.entryteam.repository.condition.EntryTeamCondition;
-import com.sporthustle.hustle.competitions.ingame.InGameService;
 import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.entity.User;
 import com.sporthustle.hustle.user.repository.UserRepository;
@@ -56,6 +55,8 @@ public class EntryTeamService {
 
     validateCompetitionInRecruiting(competition);
 
+    validateClubAlreadyExist(competitionId, club.getId());
+
     EntryTeam entryTeam =
         EntryTeam.builder()
             .name(createEntryTeamRequestDTO.getName())
@@ -77,6 +78,14 @@ public class EntryTeamService {
         .message("대회 참가에 성공하였습니다.")
         .data(entryTeamResponseDTO)
         .build();
+  }
+
+  private void validateClubAlreadyExist(Long competitionId, Long clubId) {
+    boolean isClubAlreadyExist =
+        entryTeamRepository.existsByCompetition_IdAndClub_Id(competitionId, clubId);
+    if (isClubAlreadyExist) {
+      throw BaseException.from(ErrorCode.ENTRY_TEAM_CLUB_ALREADY_EXIST);
+    }
   }
 
   @Transactional

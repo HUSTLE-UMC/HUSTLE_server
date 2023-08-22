@@ -10,7 +10,7 @@ public class EntryTeamUtils {
       Long id, Long competitionId, EntryTeamRepository entryTeamRepository) {
     EntryTeam entryTeam =
         entryTeamRepository
-            .findByUser_IdAndCompetition_id(id, competitionId)
+            .findByIdAndCompetition_Id(id, competitionId)
             .orElseThrow(() -> BaseException.from(ErrorCode.ENTRY_TEAM_NOT_FOUND));
 
     return entryTeam;
