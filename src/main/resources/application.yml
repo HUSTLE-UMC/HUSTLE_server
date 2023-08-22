@@ -1,5 +1,9 @@
 ### jpa setting ###
 spring:
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
   jpa:
     hibernate:
       ddl-auto: validate
@@ -48,11 +52,14 @@ cloud:
   aws:
     s3:
       bucket: ENC(NUG0m3ZU5uTDSjVaNWQvzeQk7kddxsAu7ghVY3SSOeU=)
-    stack.auto: false
-    region.static: ap-northeast-2
+      bucket_url: ENC(h+QPpUStzZUzo2LTKi3L+97pfV+dxJymaYVTkoc14zATlXL6uXs9ldEfGEAfL6mB)
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
     credentials:
-      accessKey: ENC(bYb2yz7qpUVLVhKadqPTuOVpZ+kz/UkEKfybZe2Dolg=)
-      secretKey: ENC(vnorb8IpdHSd+WMtG4T3Az6CPn2hiZUgXFljBRIDxocdZthTq+cX499pML8C6yiTsfT5KVcozDI=)
+      accessKey: ENC(HXnZDXuPkt4xvKR4fdDGbZrfio+yGJ4xDLLlsPS4m3k=)
+      secretKey: ENC(NjUhcg12GDuIiVp7Ho7hWvE4fmGF/n/dim6kRNdYvreNw+Ibx2mk+PkvVsWQynLGiIPwNWlY+OQ=)
 ---
 spring.config:
   activate:

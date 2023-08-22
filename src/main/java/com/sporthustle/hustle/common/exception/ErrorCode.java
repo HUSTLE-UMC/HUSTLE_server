@@ -1,7 +1,6 @@
 package com.sporthustle.hustle.common.exception;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.*;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,9 @@ public enum ErrorCode {
   MATCH_RESULT_POST_NOT_FOUND(BAD_REQUEST, "MATCH_RESULT_POST_NOT_FOUND", "경기 결과를 찾을 수 없습니다."),
   FRIEND_MATCHING_POST_NOT_FOUND(
       BAD_REQUEST, "FRIEND_MATCHING_POST_NOT_FOUND", "해당 교류전글을 찾을 수 없습니다."),
+  FILE_SIZE_LIMIT(PAYLOAD_TOO_LARGE, "FILE_SIZE_LIMIT", "파일 사이즈가 10MB 보다 큽니다."),
+  FILE_UPLOAD_FAILED(BAD_REQUEST, "FILE_UPLOAD_FAILED", "파일 업로드에 실패했습니다."),
+  FILE_NOT_IMAGE(BAD_REQUEST, "FILE_NOT_IMAGE", "파일이 이미지 형식이 아닙니다."),
   ;
 
   private final HttpStatus status;
