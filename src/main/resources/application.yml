@@ -6,7 +6,7 @@ spring:
       maxRequestSize: 10MB
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -18,8 +18,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/hustle?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: root
+    username: mingyu
+    password: mingyu98
 
 ### spring security ###
 security:
@@ -33,7 +33,7 @@ oauth:
   kakao:
     secret:
       client-id: ENC(wp/HMNq/89yPzT2HWEe7v65FDAqXvC24M6WvPUMG/QzYwf4GRnpYAsOHMLTfL0uL)
-      redirect-url: ENC(kQHBI+E/AOrSHdSs9ZShsbKIsB6DFpLWnXKlqVBC2l3AvQ+qrozcT9XKrE/NK9aH)
+      redirect-url: ENC(zf4isDrpHQLVBZJ8VryrsVUmyGKlx+M6+2IV66bO/qQUXO9CxlgBQA==)
 
 ### jwt ###
 jwt:
