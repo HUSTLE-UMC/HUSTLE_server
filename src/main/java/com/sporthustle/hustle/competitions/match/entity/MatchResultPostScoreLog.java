@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -38,6 +39,28 @@ public class MatchResultPostScoreLog extends BaseEntity {
   private MatchResultPost matchResultPost;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", nullable = true, insertable = false, updatable = false)
   private User user;
+
+  @Column(name = "user_id", nullable = true)
+  private Long userId;
+
+  @Builder
+  private MatchResultPostScoreLog(String name, Long score, Map<String, Object> extra) {
+    this.name = name;
+    this.score = score;
+    this.extra = extra;
+  }
+
+  public void updateMatchResultPost(MatchResultPost matchResultPost) {
+    this.matchResultPost = matchResultPost;
+  }
+
+  public void updateUser(User user) {
+    this.user = user;
+  }
+
+  public void updateUserId(Long userId) {
+    this.userId = userId;
+  }
 }

@@ -49,6 +49,7 @@ public class EntryTeamController {
   @Operation(summary = "대회 참가 API")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "대회 참가에 성공한 경우"),
+    @ApiResponse(responseCode = "400", description = "대회를 조회할 수 없는 경우 / 모집 중이 아닌 경우"),
   })
   @PostMapping("/{competition_id}/entry_team")
   public ResponseEntity<CreateEntryTeamResponseDTO> createEntryTeam(
@@ -63,6 +64,7 @@ public class EntryTeamController {
   @Operation(summary = "대회 참가 취소 API")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "대회 참가에 성공한 경우"),
+    @ApiResponse(responseCode = "400", description = "대회를 조회할 수 없는 경우 / 모집 중이 아닌 경우"),
   })
   @DeleteMapping("/{competition_id}/entry_team")
   public ResponseEntity<DeleteEntryTeamResponseDTO> deleteEntryTeam(

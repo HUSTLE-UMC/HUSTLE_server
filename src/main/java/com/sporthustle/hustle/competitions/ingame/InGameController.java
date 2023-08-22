@@ -36,10 +36,12 @@ public class InGameController {
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "대회 예선 / 본선 카테고리 조회에 성공한 경우"),
   })
-  @GetMapping("/{competition_id}/{type}/category")
-  public ResponseEntity<CategoriesResponseDTO> getCategories(
-      @PathVariable("competition_id") Long competitionId, @PathVariable("type") InGameType type) {
-    CategoriesResponseDTO categoriesResponseDTO = inGameService.getCategories(competitionId, type);
+  @GetMapping("/{competition_id}/{category}/group/category")
+  public ResponseEntity<CategoriesResponseDTO> getGroupCategories(
+      @PathVariable("competition_id") Long competitionId,
+      @PathVariable("category") InGameCategory inGameCategory) {
+    CategoriesResponseDTO categoriesResponseDTO =
+        inGameService.getGroupCategories(competitionId, inGameCategory);
     return ResponseEntity.ok(categoriesResponseDTO);
   }
 

@@ -65,6 +65,9 @@ public class EntryTeamService {
 
     entryTeamRepository.save(entryTeam);
 
+    competition.updateEntryCount(competition.getEntryCount() + 1);
+    competitionRepository.save(competition);
+
     EntryTeamResponseDTO entryTeamResponseDTO = EntryTeamResponseDTO.from(entryTeam);
 
     return CreateEntryTeamResponseDTO.builder()
@@ -85,6 +88,9 @@ public class EntryTeamService {
             userId, competitionId, entryTeamRepository);
 
     entryTeamRepository.delete(entryTeam);
+
+    competition.updateEntryCount(competition.getEntryCount() - 1);
+    competitionRepository.save(competition);
 
     EntryTeamResponseDTO entryTeamResponseDTO = EntryTeamResponseDTO.from(entryTeam);
 
