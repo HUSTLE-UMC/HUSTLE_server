@@ -69,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/university",
             "/api/user/find/**",
             "/swagger-ui/**",
-            "/api/oauth/**");
+            "/api/oauth/**",
+            "/api/s3/**");
     return permitAllPatterns.toArray(new String[0]);
   }
 
