@@ -8,4 +8,6 @@ import lombok.Getter;
 public class S3UploadResponseDTO {
 
   private String message;
+
+  private String data;
 }
