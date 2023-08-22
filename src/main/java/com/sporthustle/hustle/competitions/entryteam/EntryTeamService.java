@@ -3,6 +3,8 @@ package com.sporthustle.hustle.competitions.entryteam;
 import com.sporthustle.hustle.club.ClubUtils;
 import com.sporthustle.hustle.club.entity.Club;
 import com.sporthustle.hustle.club.repository.ClubRepository;
+import com.sporthustle.hustle.common.exception.BaseException;
+import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.competitions.competition.CompetitionUtils;
 import com.sporthustle.hustle.competitions.competition.dto.CompetitionState;
 import com.sporthustle.hustle.competitions.competition.entity.Competition;
@@ -12,6 +14,7 @@ import com.sporthustle.hustle.competitions.entryteam.entity.EntryTeam;
 import com.sporthustle.hustle.competitions.entryteam.repository.EntryTeamRepository;
 import com.sporthustle.hustle.competitions.entryteam.repository.EntryTeamRepositoryCustom;
 import com.sporthustle.hustle.competitions.entryteam.repository.condition.EntryTeamCondition;
+import com.sporthustle.hustle.competitions.ingame.InGameService;
 import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.entity.User;
 import com.sporthustle.hustle.user.repository.UserRepository;
@@ -113,7 +116,7 @@ public class EntryTeamService {
             competition.getEndDate());
 
     if (competitionState != CompetitionState.RECRUITING) {
-      throw new IllegalArgumentException("대회 참가를 변경할 수 있는 기간이 아닙니다.");
+      throw BaseException.from(ErrorCode.COMPETITION_NOT_IN_RECRUITING);
     }
   }
 
