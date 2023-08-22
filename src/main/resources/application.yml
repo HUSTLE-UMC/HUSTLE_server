@@ -41,6 +41,16 @@ springdoc:
     try-it-out-enabled: true
   version: 'v1'
 
+### aws s3 ###
+cloud:
+  aws:
+    s3:
+      bucket: ENC(NUG0m3ZU5uTDSjVaNWQvzeQk7kddxsAu7ghVY3SSOeU=)
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: ENC(bYb2yz7qpUVLVhKadqPTuOVpZ+kz/UkEKfybZe2Dolg=)
+      secretKey: ENC(vnorb8IpdHSd+WMtG4T3Az6CPn2hiZUgXFljBRIDxocdZthTq+cX499pML8C6yiTsfT5KVcozDI=)
 ---
 spring.config:
   activate:
