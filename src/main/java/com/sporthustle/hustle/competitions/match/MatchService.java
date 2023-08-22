@@ -10,7 +10,6 @@ import com.sporthustle.hustle.competitions.entryteam.entity.EntryTeam;
 import com.sporthustle.hustle.competitions.entryteam.repository.EntryTeamRepository;
 import com.sporthustle.hustle.competitions.ingame.InGameService;
 import com.sporthustle.hustle.competitions.ingame.dto.InGameCategory;
-import com.sporthustle.hustle.competitions.ingame.entity.PreRoundGroup;
 import com.sporthustle.hustle.competitions.match.dto.*;
 import com.sporthustle.hustle.competitions.match.entity.MatchResultPost;
 import com.sporthustle.hustle.competitions.match.entity.MatchResultPostCategory;
@@ -121,17 +120,19 @@ public class MatchService {
 
     if (inGameCategory == InGameCategory.PREROUND) {
       Set<EntryTeam> entryTeams =
-              matchResultPosts.stream()
-                      .flatMap(
-                              matchResultPost ->
-                                      List.of(matchResultPost.getHomeEntryTeam(), matchResultPost.getAwayEntryTeam())
-                                              .stream())
-                      .collect(Collectors.toSet());
+          matchResultPosts.stream()
+              .flatMap(
+                  matchResultPost ->
+                      List.of(
+                          matchResultPost.getHomeEntryTeam(), matchResultPost.getAwayEntryTeam())
+                          .stream())
+              .collect(Collectors.toSet());
 
       entryTeams.stream()
-              .forEach(
-                      entryTeam ->
-                              inGameService.createPreRoundGroup(competitionId, entryTeam.getId(), groupCategory));
+          .forEach(
+              entryTeam ->
+                  inGameService.createPreRoundGroup(
+                      competitionId, entryTeam.getId(), groupCategory));
     }
 
     List<MatchResultPostResponseDTO> matchResultPostResponseDTOs =
@@ -299,7 +300,9 @@ public class MatchService {
 
   @Transactional
   public void deleteAllMatchResult(Long competitionId, String groupCategory) {
-    List<MatchResultPost> matchResultPosts = matchResultPostRepository.findAllByCompetition_IdAndGroupCategory(competitionId, groupCategory);
+    List<MatchResultPost> matchResultPosts =
+        matchResultPostRepository.findAllByCompetition_IdAndGroupCategory(
+            competitionId, groupCategory);
 
     matchResultPostRepository.deleteAllInBatch(matchResultPosts);
   }

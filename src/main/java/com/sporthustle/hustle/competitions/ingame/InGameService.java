@@ -141,7 +141,9 @@ public class InGameService {
 
   @Transactional
   public void deleteAllPreRoundGroup(Long competitionId, String groupCategory) {
-    List<PreRoundGroup> preRoundGroups = preRoundGroupRepository.findAllByCompetition_IdAndGroupCategory(competitionId, groupCategory);
+    List<PreRoundGroup> preRoundGroups =
+        preRoundGroupRepository.findAllByCompetition_IdAndGroupCategory(
+            competitionId, groupCategory);
 
     preRoundGroupRepository.deleteAllInBatch(preRoundGroups);
   }
