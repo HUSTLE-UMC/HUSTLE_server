@@ -14,11 +14,12 @@ public enum CompetitionState {
       LocalDateTime recruitmentEndDate,
       LocalDateTime startDate,
       LocalDateTime endDate) {
+
     if (CompetitionState.isBefore(recruitmentStartDate)) {
       return CompetitionState.BEFORE;
     } else if (CompetitionState.isRecruiting(recruitmentStartDate, recruitmentEndDate)) {
       return CompetitionState.RECRUITING;
-    } else if (CompetitionState.isActive(startDate, endDate)) {
+    } else if (CompetitionState.isActive(recruitmentEndDate, endDate)) {
       return CompetitionState.ACTIVE;
     } else if (CompetitionState.isComplete(endDate)) {
       return CompetitionState.COMPLETE;
@@ -39,10 +40,9 @@ public enum CompetitionState {
         && (recruitmentEndDate.isEqual(now) || recruitmentEndDate.isAfter(now));
   }
 
-  private static boolean isActive(LocalDateTime startDate, LocalDateTime endDate) {
+  private static boolean isActive(LocalDateTime recruitmentEndDate, LocalDateTime endDate) {
     LocalDateTime now = LocalDateTime.now();
-    return (startDate.isEqual(now) || startDate.isBefore(now))
-        && (endDate.isEqual(now) || endDate.isAfter(now));
+    return recruitmentEndDate.isBefore(now) && (endDate.isEqual(now) || endDate.isAfter(now));
   }
 
   private static boolean isComplete(LocalDateTime endDate) {

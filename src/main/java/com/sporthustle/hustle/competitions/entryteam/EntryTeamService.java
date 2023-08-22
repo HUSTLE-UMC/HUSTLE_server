@@ -3,6 +3,8 @@ package com.sporthustle.hustle.competitions.entryteam;
 import com.sporthustle.hustle.club.ClubUtils;
 import com.sporthustle.hustle.club.entity.Club;
 import com.sporthustle.hustle.club.repository.ClubRepository;
+import com.sporthustle.hustle.common.exception.BaseException;
+import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.competitions.competition.CompetitionUtils;
 import com.sporthustle.hustle.competitions.competition.dto.CompetitionState;
 import com.sporthustle.hustle.competitions.competition.entity.Competition;
@@ -53,6 +55,8 @@ public class EntryTeamService {
 
     validateCompetitionInRecruiting(competition);
 
+    validateClubAlreadyExist(competitionId, club.getId());
+
     EntryTeam entryTeam =
         EntryTeam.builder()
             .name(createEntryTeamRequestDTO.getName())
@@ -74,6 +78,14 @@ public class EntryTeamService {
         .message("대회 참가에 성공하였습니다.")
         .data(entryTeamResponseDTO)
         .build();
+  }
+
+  private void validateClubAlreadyExist(Long competitionId, Long clubId) {
+    boolean isClubAlreadyExist =
+        entryTeamRepository.existsByCompetition_IdAndClub_Id(competitionId, clubId);
+    if (isClubAlreadyExist) {
+      throw BaseException.from(ErrorCode.ENTRY_TEAM_CLUB_ALREADY_EXIST);
+    }
   }
 
   @Transactional
@@ -113,7 +125,7 @@ public class EntryTeamService {
             competition.getEndDate());
 
     if (competitionState != CompetitionState.RECRUITING) {
-      throw new IllegalArgumentException("대회 참가를 변경할 수 있는 기간이 아닙니다.");
+      throw BaseException.from(ErrorCode.COMPETITION_NOT_IN_RECRUITING);
     }
   }
 

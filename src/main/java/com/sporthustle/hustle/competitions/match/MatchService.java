@@ -8,6 +8,7 @@ import com.sporthustle.hustle.competitions.competition.repository.CompetitionRep
 import com.sporthustle.hustle.competitions.entryteam.EntryTeamUtils;
 import com.sporthustle.hustle.competitions.entryteam.entity.EntryTeam;
 import com.sporthustle.hustle.competitions.entryteam.repository.EntryTeamRepository;
+import com.sporthustle.hustle.competitions.ingame.InGameService;
 import com.sporthustle.hustle.competitions.ingame.dto.InGameCategory;
 import com.sporthustle.hustle.competitions.match.dto.*;
 import com.sporthustle.hustle.competitions.match.entity.MatchResultPost;
@@ -19,6 +20,7 @@ import com.sporthustle.hustle.competitions.match.repository.MatchResultPostScore
 import com.sporthustle.hustle.competitions.match.repository.condition.GetMatchResultPostsCondition;
 import com.sporthustle.hustle.user.entity.User;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ public class MatchService {
   private final CompetitionRepository competitionRepository;
   private final EntryTeamRepository entryTeamRepository;
   private final MatchResultPostScoreLogRepository matchResultPostScoreLogRepository;
+  private final InGameService inGameService;
 
   @Transactional(readOnly = true)
   public MatchResultPostsResponseDTO getMatchResultPosts(
@@ -61,89 +64,85 @@ public class MatchService {
       Long userId,
       Long competitionId,
       InGameCategory inGameCategory,
-      CreateMatchResultPostRequestDTO createMatchResultPostRequestDTO) {
+      CreateMatchRequestPostsRequestDTO createMatchRequestPostsRequestDTO) {
     Competition competition =
         CompetitionUtils.getCompetitionById(competitionId, competitionRepository);
 
     validateCompetitionOwner(competition, userId);
 
-    MatchResultPost matchResultPost =
-        MatchResultPost.builder()
-            .title(createMatchResultPostRequestDTO.getTitle())
-            .category(inGameCategory.name())
-            .groupCategory(createMatchResultPostRequestDTO.getGroupCategory())
-            .postOrder(createMatchResultPostRequestDTO.getPostOrder())
-            .matchTime(createMatchResultPostRequestDTO.getMatchTime())
-            .mediaUrl(createMatchResultPostRequestDTO.getMediaUrl())
-            .build();
-
-    EntryTeam homeEntryTeam =
-        EntryTeamUtils.getEntryTeamByIdAndCompetitionId(
-            createMatchResultPostRequestDTO.getHomeEntryTeamId(),
-            competitionId,
-            entryTeamRepository);
-
-    List<MatchResultPostScoreLog> homeMatchResultPostScoreLogs =
-        createMatchResultPostRequestDTO.getHomeMatchResultPostScoreLogs().stream()
+    String groupCategory = createMatchRequestPostsRequestDTO.getGroupCategory();
+    List<MatchResultPost> matchResultPosts =
+        createMatchRequestPostsRequestDTO.getMatchResultPosts().stream()
             .map(
-                createMatchResultPostScoreLogRequestDTO -> {
-                  MatchResultPostScoreLog matchResultPostScoreLog =
-                      MatchResultPostScoreLog.builder()
-                          .name(createMatchResultPostScoreLogRequestDTO.getName())
-                          .score(createMatchResultPostScoreLogRequestDTO.getScore())
-                          .extra(createMatchResultPostScoreLogRequestDTO.getExtra())
+                createMatchResultPostRequestDTO -> {
+                  String title =
+                      groupCategory + " " + createMatchResultPostRequestDTO.getPostOrder() + "경기";
+
+                  MatchResultPost matchResultPost =
+                      MatchResultPost.builder()
+                          .title(title)
+                          .category(inGameCategory.name())
+                          .groupCategory(groupCategory)
+                          .postOrder(createMatchResultPostRequestDTO.getPostOrder())
+                          .matchTime(createMatchResultPostRequestDTO.getMatchTime())
+                          .mediaUrl(null)
                           .build();
 
-                  matchResultPostScoreLog.updateMatchResultPost(matchResultPost);
-                  matchResultPostScoreLog.updateUserId(
-                      createMatchResultPostScoreLogRequestDTO.getUserId());
+                  matchResultPost.updateCompetition(competition);
 
-                  return matchResultPostScoreLog;
+                  EntryTeam homeEntryTeam =
+                      EntryTeamUtils.getEntryTeamByIdAndCompetitionId(
+                          createMatchResultPostRequestDTO.getHomeEntryTeamId(),
+                          competitionId,
+                          entryTeamRepository);
+
+                  matchResultPost.updateHomeTeam(homeEntryTeam, 0, false, null);
+
+                  EntryTeam awayEntryTeam =
+                      EntryTeamUtils.getEntryTeamByIdAndCompetitionId(
+                          createMatchResultPostRequestDTO.getAwayEntryTeamId(),
+                          competitionId,
+                          entryTeamRepository);
+
+                  matchResultPost.updateAwayTeam(awayEntryTeam, 0, false, null);
+
+                  return matchResultPost;
                 })
             .collect(Collectors.toList());
 
-    matchResultPost.updateHomeTeam(
-        homeEntryTeam,
-        createMatchResultPostRequestDTO.getHomeScore(),
-        createMatchResultPostRequestDTO.getIsHomeWin(),
-        homeMatchResultPostScoreLogs);
+    if (inGameCategory == InGameCategory.PREROUND) {
+      inGameService.deleteAllPreRoundGroup(competitionId, groupCategory);
+    }
 
-    EntryTeam awayEntryTeam =
-        EntryTeamUtils.getEntryTeamByIdAndCompetitionId(
-            createMatchResultPostRequestDTO.getAwayEntryTeamId(),
-            competitionId,
-            entryTeamRepository);
+    deleteAllMatchResult(competitionId, groupCategory);
 
-    List<MatchResultPostScoreLog> awayMatchResultPostScoreLogs =
-        createMatchResultPostRequestDTO.getAwayMatchResultPostScoreLogs().stream()
-            .map(
-                createMatchResultPostScoreLogRequestDTO -> {
-                  MatchResultPostScoreLog matchResultPostScoreLog =
-                      MatchResultPostScoreLog.builder()
-                          .name(createMatchResultPostScoreLogRequestDTO.getName())
-                          .score(createMatchResultPostScoreLogRequestDTO.getScore())
-                          .extra(createMatchResultPostScoreLogRequestDTO.getExtra())
-                          .build();
+    matchResultPostRepository.saveAll(matchResultPosts);
 
-                  matchResultPostScoreLog.updateMatchResultPost(matchResultPost);
-                  matchResultPostScoreLog.updateUserId(
-                      createMatchResultPostScoreLogRequestDTO.getUserId());
+    if (inGameCategory == InGameCategory.PREROUND) {
+      Set<EntryTeam> entryTeams =
+          matchResultPosts.stream()
+              .flatMap(
+                  matchResultPost ->
+                      List.of(
+                          matchResultPost.getHomeEntryTeam(), matchResultPost.getAwayEntryTeam())
+                          .stream())
+              .collect(Collectors.toSet());
 
-                  return matchResultPostScoreLog;
-                })
+      entryTeams.stream()
+          .forEach(
+              entryTeam ->
+                  inGameService.createPreRoundGroup(
+                      competitionId, entryTeam.getId(), groupCategory));
+    }
+
+    List<MatchResultPostResponseDTO> matchResultPostResponseDTOs =
+        matchResultPosts.stream()
+            .map(MatchResultPostResponseDTO::from)
             .collect(Collectors.toList());
-
-    matchResultPost.updateAwayTeam(
-        awayEntryTeam,
-        createMatchResultPostRequestDTO.getAwayScore(),
-        createMatchResultPostRequestDTO.getIsAwayWin(),
-        awayMatchResultPostScoreLogs);
-
-    matchResultPostRepository.save(matchResultPost);
 
     return CreateMatchResultPostResponseDTO.builder()
         .message("경기 결과를 작성했습니다.")
-        .data(MatchResultPostResponseDTO.from(matchResultPost))
+        .data(matchResultPostResponseDTOs)
         .build();
   }
 
@@ -297,5 +296,14 @@ public class MatchService {
         .message("경기 결과를 삭제했습니다.")
         .data(matchResultPostResponseDTO)
         .build();
+  }
+
+  @Transactional
+  public void deleteAllMatchResult(Long competitionId, String groupCategory) {
+    List<MatchResultPost> matchResultPosts =
+        matchResultPostRepository.findAllByCompetition_IdAndGroupCategory(
+            competitionId, groupCategory);
+
+    matchResultPostRepository.deleteAllInBatch(matchResultPosts);
   }
 }
