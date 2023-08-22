@@ -2,14 +2,15 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
+    database-platform: org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/hustle?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -23,6 +24,12 @@ security:
     password: ENC(kyHrVONdlwShgsY4YOKmiZDmH3g3tCae4Z55N6qyyYypqG0AQWsF6g==)
   #      roles: USER, ADMIN
 
+### oauth ###
+oauth:
+  secret:
+    client-id: ENC(qk8aM1R8DeowlfZ+OMWL8FrpwvPsvB69ItqMsLQjsQ8RSJ0n7DkAQ3cVmiB1vxTP)
+    redirect-url: ENC(+x9186WELcWVi2tjNjO5owbG1vXSERZHnp3c9RIeUpM=)
+
 ### jwt ###
 jwt:
   secret:
@@ -35,6 +42,16 @@ springdoc:
     try-it-out-enabled: true
   version: 'v1'
 
+### aws s3 ###
+cloud:
+  aws:
+    s3:
+      bucket: ENC(NUG0m3ZU5uTDSjVaNWQvzeQk7kddxsAu7ghVY3SSOeU=)
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: ENC(bYb2yz7qpUVLVhKadqPTuOVpZ+kz/UkEKfybZe2Dolg=)
+      secretKey: ENC(vnorb8IpdHSd+WMtG4T3Az6CPn2hiZUgXFljBRIDxocdZthTq+cX499pML8C6yiTsfT5KVcozDI=)
 ---
 spring.config:
   activate:

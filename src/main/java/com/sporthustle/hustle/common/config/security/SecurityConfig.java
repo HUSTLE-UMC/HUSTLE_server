@@ -63,7 +63,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private String[] getPermitAllPatterns() {
     List<String> permitAllPatterns =
-        List.of("/", "/api/auth/**", "/api/university", "/api/user/find/**", "/swagger-ui/**");
+        List.of(
+            "/",
+            "/api/auth/**",
+            "/api/university",
+            "/api/user/find/**",
+            "/swagger-ui/**",
+            "/api/oauth/**",
+            "/api/s3/**");
     return permitAllPatterns.toArray(new String[0]);
   }
 
