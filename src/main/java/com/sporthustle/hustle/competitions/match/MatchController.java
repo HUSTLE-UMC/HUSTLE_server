@@ -58,13 +58,13 @@ public class MatchController {
     @ApiResponse(responseCode = "400", description = "대회 경기 결과를 찾을 수 없는 경우"),
   })
   @GetMapping("/{competition_id}/{category}/matchresultpost/{match_result_post_id}")
-  public ResponseEntity<MatchResultPostResponseDTO> getMatchResultPost(
+  public ResponseEntity<GetMatchResultPostResponseDTO> getMatchResultPost(
       @PathVariable("competition_id") Long competitionId,
       @PathVariable("category") InGameCategory inGameCategory,
       @PathVariable("match_result_post_id") Long matchResultPostId) {
-    MatchResultPostResponseDTO matchResultPostResponseDTO =
+    GetMatchResultPostResponseDTO getMatchResultPostResponseDTO =
         matchService.getMatchResultPost(competitionId, inGameCategory, matchResultPostId);
-    return ResponseEntity.ok(matchResultPostResponseDTO);
+    return ResponseEntity.ok(getMatchResultPostResponseDTO);
   }
 
   @Operation(summary = "대회 경기 결과 수정 (개설자) API")

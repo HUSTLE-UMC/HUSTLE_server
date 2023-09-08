@@ -42,7 +42,11 @@ public class EntryTeamService {
             .map(entryTeam -> EntryTeamResponseDTO.from(entryTeam))
             .collect(Collectors.toList());
 
-    return EntryTeamsResponseDTO.builder().entryTeams(entryTeamDTOs).build();
+    return EntryTeamsResponseDTO.builder()
+        .code("SUCCESS_GET_ENTRY_TEAMS")
+        .message("성공적으로 참가 팀 목록을 조회했습니다.")
+        .data(entryTeamDTOs)
+        .build();
   }
 
   @Transactional
@@ -75,6 +79,7 @@ public class EntryTeamService {
     EntryTeamResponseDTO entryTeamResponseDTO = EntryTeamResponseDTO.from(entryTeam);
 
     return CreateEntryTeamResponseDTO.builder()
+        .code("SUCCESS_CREATE_ENTRY_TEAM")
         .message("대회 참가에 성공하였습니다.")
         .data(entryTeamResponseDTO)
         .build();
@@ -107,6 +112,7 @@ public class EntryTeamService {
     EntryTeamResponseDTO entryTeamResponseDTO = EntryTeamResponseDTO.from(entryTeam);
 
     return DeleteEntryTeamResponseDTO.builder()
+        .code("SUCCESS_DELETE_ENTRY_TEAM")
         .message("대회 참가를 취소했습니다.")
         .data(entryTeamResponseDTO)
         .build();
@@ -131,13 +137,17 @@ public class EntryTeamService {
 
   @Transactional(readOnly = true)
   public EntryTeamsResponseDTO findEntryTeams(Long competitionId, String name) {
-    List<EntryTeam> entryTeams =
+    List<EntryTeam> searchEntryTeams =
         entryTeamRepositoryCustom.getEntryTeamWithClubNameStartsWith(
             EntryTeamCondition.builder().competitionId(competitionId).name(name).build());
 
-    List<EntryTeamResponseDTO> entryTeamDTOs =
-        entryTeams.stream().map(EntryTeamResponseDTO::from).collect(Collectors.toList());
+    List<EntryTeamResponseDTO> searchEntryTeamDTOs =
+        searchEntryTeams.stream().map(EntryTeamResponseDTO::from).collect(Collectors.toList());
 
-    return EntryTeamsResponseDTO.builder().entryTeams(entryTeamDTOs).build();
+    return EntryTeamsResponseDTO.builder()
+        .code("SUCCESS_SEARCH_ENTRY_TEAMS")
+        .message("성공적으로 참가 팀 목록을 검색했습니다.")
+        .data(searchEntryTeamDTOs)
+        .build();
   }
 }

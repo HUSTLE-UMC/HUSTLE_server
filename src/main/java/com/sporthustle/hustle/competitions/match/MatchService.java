@@ -55,7 +55,9 @@ public class MatchService {
             .collect(Collectors.toList());
 
     return MatchResultPostsResponseDTO.builder()
-        .matchResultPosts(matchResultPostResponseDTOs)
+        .code("SUCCESS_GET_MATCH_RESULT_POSTS")
+        .message("성공적으로 경기 결과 목록을 조회했습니다.")
+        .data(matchResultPostResponseDTOs)
         .build();
   }
 
@@ -141,7 +143,8 @@ public class MatchService {
             .collect(Collectors.toList());
 
     return CreateMatchResultPostResponseDTO.builder()
-        .message("경기 결과를 작성했습니다.")
+        .code("SUCCESS_CREATE_MATCH_RESULT_POST")
+        .message("성공적으로 경기 결과를 생성했습니다.")
         .data(matchResultPostResponseDTOs)
         .build();
   }
@@ -154,14 +157,21 @@ public class MatchService {
   }
 
   @Transactional(readOnly = true)
-  public MatchResultPostResponseDTO getMatchResultPost(
+  public GetMatchResultPostResponseDTO getMatchResultPost(
       Long competitionId, InGameCategory inGameCategory, Long matchResultPostId) {
     MatchResultPost matchResultPost =
         MatchUtils.getMatchResultPostById(matchResultPostId, matchResultPostRepository);
 
     validateMatchResultPostWithParameter(matchResultPost, competitionId, inGameCategory);
 
-    return MatchResultPostResponseDTO.from(matchResultPost);
+    MatchResultPostResponseDTO matchResultPostResponseDTO =
+        MatchResultPostResponseDTO.from(matchResultPost);
+
+    return GetMatchResultPostResponseDTO.builder()
+        .code("SUCCESS_GET_MATCH_RESULT_POST")
+        .message("성공적으로 경기 결과를 조회했습니다.")
+        .data(matchResultPostResponseDTO)
+        .build();
   }
 
   private void validateMatchResultPostWithParameter(
@@ -267,7 +277,8 @@ public class MatchService {
     matchResultPostRepository.save(matchResultPost);
 
     return UpdateMatchResultPostResponseDTO.builder()
-        .message("경기 결과를 수정했습니다.")
+        .code("SUCCESS_UPDATE_MATCH_RESULT_POST")
+        .message("성공적으로 경기 결과를 수정했습니다.")
         .data(MatchResultPostResponseDTO.from(matchResultPost))
         .build();
   }
@@ -293,7 +304,8 @@ public class MatchService {
     matchResultPostRepository.deleteById(matchResultPostId);
 
     return DeleteMatchResultPostResponseDTO.builder()
-        .message("경기 결과를 삭제했습니다.")
+        .code("SUCCESS_DELETE_MATCH_RESULT_POST")
+        .message("성공적으로 경기 결과를 삭제했습니다.")
         .data(matchResultPostResponseDTO)
         .build();
   }

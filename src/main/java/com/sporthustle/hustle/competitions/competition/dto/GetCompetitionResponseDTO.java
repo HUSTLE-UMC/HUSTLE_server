@@ -6,4 +6,4 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
-public class DeleteCompetitionResponseDTO extends BaseResponse<CompetitionResponseDTO> {}
+public class GetCompetitionResponseDTO extends BaseResponse<CompetitionResponseDTO> {}

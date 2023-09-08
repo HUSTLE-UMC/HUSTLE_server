@@ -38,7 +38,9 @@ public class InGameService {
             .collect(Collectors.groupingBy(PreRoundGroupResponseDTO::getGroupCategory));
 
     return PreRoundGroupsResponseDTO.builder()
-        .preRoundGroups(preRoundGroupMappedByGroupCategory)
+        .code("SUCCESS_GET_PREROUND_GROUPS")
+        .message("성공적으로 예선 조 목록을 조회했습니다.")
+        .data(preRoundGroupMappedByGroupCategory)
         .build();
   }
 
@@ -76,7 +78,11 @@ public class InGameService {
         throw new IllegalArgumentException("InGameType 해당되는 값이 없습니다.");
     }
 
-    return CategoriesResponseDTO.builder().categories(groupCategories).build();
+    return CategoriesResponseDTO.builder()
+        .code("SUCCESS_GET_GROUP_CATEGORIES")
+        .message("성공적으로 카테고리를 조회했습니다.")
+        .data(groupCategories)
+        .build();
   }
 
   private List<String> getPreRoundGroupCategories(Competition competition) {
@@ -134,6 +140,7 @@ public class InGameService {
         entryTeamCountByPreRoundGroup * (entryTeamCountByPreRoundGroup - 1) / 2;
 
     return PreRoundMatchCountResponseDTO.builder()
+        .code("SUCCESS_GET_PREROUND_MATCH_COUNT")
         .message("예선 경기 수를 조회했습니다.")
         .data(preRoundMatchCount)
         .build();

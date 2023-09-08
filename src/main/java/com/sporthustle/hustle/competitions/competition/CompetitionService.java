@@ -53,6 +53,8 @@ public class CompetitionService {
         competitions.map(CompetitionResponseDTO::from);
 
     return CompetitionsResponseDTO.builder()
+        .code("SUCCESS_GET_COMPETITIONS_BY_LIST_TYPE")
+        .message("성공적으로 대회 목록을 조회했습니다.")
         .count(competitionResponseDTOs.getNumberOfElements())
         .totalPage(competitionResponseDTOs.getTotalPages())
         .totalCount(competitionResponseDTOs.getTotalElements())
@@ -77,11 +79,17 @@ public class CompetitionService {
   }
 
   @Transactional(readOnly = true)
-  public CompetitionResponseDTO getCompetition(Long competitionId) {
+  public GetCompetitionResponseDTO getCompetition(Long competitionId) {
     Competition competition =
         CompetitionUtils.getCompetitionById(competitionId, competitionRepository);
 
-    return CompetitionResponseDTO.from(competition);
+    CompetitionResponseDTO competitionResponseDTO = CompetitionResponseDTO.from(competition);
+
+    return GetCompetitionResponseDTO.builder()
+        .code("SUCCESS_GET_COMPETITION")
+        .message("성공적으로 대회를 조회했습니다.")
+        .data(competitionResponseDTO)
+        .build();
   }
 
   @Transactional
@@ -134,6 +142,7 @@ public class CompetitionService {
     CompetitionResponseDTO competitionResponseDTO = CompetitionResponseDTO.from(competition);
 
     return CreateCompetitionResponseDTO.builder()
+        .code("SUCCESS_CREATE_COMPETITION")
         .message("대회를 개설했습니다.")
         .data(competitionResponseDTO)
         .build();
@@ -188,6 +197,7 @@ public class CompetitionService {
     CompetitionResponseDTO competitionResponseDTO = CompetitionResponseDTO.from(competition);
 
     return UpdateCompetitionResponseDTO.builder()
+        .code("SUCCESS_UPDATE_COMPETITION")
         .message("대회를 성공적으로 수정했습니다.")
         .data(competitionResponseDTO)
         .build();
@@ -210,7 +220,13 @@ public class CompetitionService {
     competition.delete();
     competitionRepository.save(competition);
 
-    return DeleteCompetitionResponseDTO.builder().message("대회를 성공적으로 삭제했습니다.").build();
+    CompetitionResponseDTO competitionResponseDTO = CompetitionResponseDTO.from(competition);
+
+    return DeleteCompetitionResponseDTO.builder()
+        .code("SUCCESS_DELETE_COMPETITION")
+        .message("대회를 성공적으로 삭제했습니다.")
+        .data(competitionResponseDTO)
+        .build();
   }
 
   @Transactional(readOnly = true)
@@ -221,6 +237,8 @@ public class CompetitionService {
         competitions.map(CompetitionResponseDTO::from);
 
     return CompetitionsResponseDTO.builder()
+        .code("SUCCESS_GET_POPULAR_COMPETITIONS")
+        .message("성공적으로 인기 대회 목록을 조회했습니다.")
         .count(competitionResponseDTOs.getNumberOfElements())
         .totalPage(competitionResponseDTOs.getTotalPages())
         .totalCount(competitionResponseDTOs.getTotalElements())
