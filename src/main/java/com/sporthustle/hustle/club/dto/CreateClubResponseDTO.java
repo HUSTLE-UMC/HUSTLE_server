@@ -1,13 +1,9 @@
 package com.sporthustle.hustle.club.dto;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class CreateClubResponseDTO {
-
-  private String message;
-
-  private ClubResponseDTO data;
-}
+@SuperBuilder
+public class CreateClubResponseDTO extends BaseResponse<ClubResponseDTO> {}

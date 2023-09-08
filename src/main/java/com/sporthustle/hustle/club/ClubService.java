@@ -49,15 +49,14 @@ public class ClubService {
   }
 
   @Transactional(readOnly = true)
-  public ClubsResponseDTO findClubsInUniversity(Long universityId, String keyword) {
+  public List<ClubResponseDTO> findClubsInUniversity(Long universityId, String keyword) {
     List<Club> clubs =
         clubRepository.findAllByUniversity_idAndNameStartsWith(universityId, keyword);
 
     List<ClubResponseDTO> clubResponseDTOs =
         clubs.stream().map(ClubResponseDTO::from).collect(Collectors.toList());
 
-    ClubsResponseDTO clubsResponseDTO = ClubsResponseDTO.builder().clubs(clubResponseDTOs).build();
-    return clubsResponseDTO;
+    return clubResponseDTOs;
   }
 
   @Transactional
@@ -82,8 +81,11 @@ public class ClubService {
     clubRepository.save(club);
 
     ClubResponseDTO clubResponseDTO = ClubResponseDTO.from(club);
-
-    return CreateClubResponseDTO.builder().message("동아리를 생성했습니다.").data(clubResponseDTO).build();
+    return CreateClubResponseDTO.builder()
+        .code("SUCCESS_CREATE_CLUB")
+        .message("동아리를 성공적으로 생성했습니다.")
+        .data(clubResponseDTO)
+        .build();
   }
 
   @Transactional
@@ -111,7 +113,13 @@ public class ClubService {
 
     clubRepository.save(club);
 
-    return UpdateClubResponseDTO.builder().message("동아리를 성공적으로 수정했습니다.").build();
+    ClubResponseDTO clubResponseDTO = ClubResponseDTO.from(club);
+
+    return UpdateClubResponseDTO.builder()
+        .code("SUCCESS_UPDATE_CLUB")
+        .message("동아리를 성공적으로 수정했습니다.")
+        .data(clubResponseDTO)
+        .build();
   }
 
   @Transactional
@@ -121,7 +129,13 @@ public class ClubService {
     club.delete();
     clubRepository.save(club);
 
-    return DeleteClubResponseDTO.builder().message("동아리를 성공적으로 수정했습니다.").build();
+    ClubResponseDTO clubResponseDTO = ClubResponseDTO.from(club);
+
+    return DeleteClubResponseDTO.builder()
+        .code("SUCCESS_DELETE_CLUB")
+        .message("동아리를 성공적으로 삭제했습니다.")
+        .data(clubResponseDTO)
+        .build();
   }
 
   @Transactional
@@ -133,7 +147,13 @@ public class ClubService {
     ClubMember clubMember = ClubMember.builder().user(user).club(club).build();
     clubMemberRepository.save(clubMember);
 
-    return JoinClubResponseDTO.builder().message("동아리에 성공적으로 등록했습니다.").build();
+    ClubMemberResponseDTO clubMemberResponseDTO = ClubMemberResponseDTO.from(clubMember);
+
+    return JoinClubResponseDTO.builder()
+        .code("SUCCESS_JOIN_CLUB")
+        .message("동아리에 성공적으로 등록했습니다.")
+        .data(clubMemberResponseDTO)
+        .build();
   }
 
   @Transactional(readOnly = true)
@@ -145,7 +165,13 @@ public class ClubService {
     List<ClubMemberResponseDTO> clubMembersResponseDTO =
         clubMembers.stream().map(ClubMemberResponseDTO::from).collect(Collectors.toList());
 
-    return GetClubMembersResponseDTO.builder().clubMembers(clubMembersResponseDTO).build();
+    // 데이터 개수가 많아야 1000개 미만일 것으로 예상해 별도의 페이징 없이 한 페이지에 모든 목록을 불러옵니다.
+    // 추후 성능 이슈가 발생한다면 Pageable 조회와 GetClubMembersResponseDTO 을 BasePageable 으로 변경이 필요합니다.
+    return GetClubMembersResponseDTO.builder()
+        .code("SUCCESS_GET_CLUB_MEMBERS")
+        .message("성공적으로 모든 동아리원을 조회했습니다.")
+        .data(clubMembersResponseDTO)
+        .build();
   }
 
   private void validateUserInClub(User user, Long clubId) {
