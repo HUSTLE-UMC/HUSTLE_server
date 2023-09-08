@@ -25,16 +25,17 @@ public class FindService {
 
     validateFindEmail(user, findEmailRequestDTO);
 
-    String email = user.getEmail();
-    FindEmailResponseDTO findEmailResponseDTO = FindEmailResponseDTO.builder().email(email).build();
-
-    return findEmailResponseDTO;
+    return FindEmailResponseDTO.builder()
+        .code("SUCCESS_FIND_EMAIL")
+        .message("이메일 찾기를 성공했습니다.")
+        .data(user.getEmail())
+        .build();
   }
 
   private void validateFindEmail(User user, FindEmailRequestDTO findEmailRequestDTO) {
     LocalDate birthday = findEmailRequestDTO.getBirthday();
     if (!user.getBirthday().equals(birthday)) {
-      throw new BaseException(ErrorCode.USER_NOT_FOUND);
+      throw BaseException.from(ErrorCode.USER_NOT_FOUND);
     }
   }
 
@@ -45,10 +46,11 @@ public class FindService {
 
     validateFindPassword(user, findPasswordRequestDTO);
 
-    FindPasswordResponseDTO findPasswordResponseDTO =
-        FindPasswordResponseDTO.builder().result(true).build();
-
-    return findPasswordResponseDTO;
+    return FindPasswordResponseDTO.builder()
+        .code("SUCCESS_CHANGEABLE_PASSWORD")
+        .message("비밀번호를 변경할 수 있습니다.")
+        .data(true)
+        .build();
   }
 
   private void validateFindPassword(User user, FindPasswordRequestDTO findPasswordRequestDTO) {
@@ -56,11 +58,11 @@ public class FindService {
     LocalDate birthday = findPasswordRequestDTO.getBirthday();
 
     if (!user.getName().equals(name)) {
-      throw new BaseException(ErrorCode.USER_NOT_FOUND);
+      throw BaseException.from(ErrorCode.USER_NOT_FOUND);
     }
 
     if (!user.getBirthday().equals(birthday)) {
-      throw new BaseException(ErrorCode.USER_NOT_FOUND);
+      throw BaseException.from(ErrorCode.USER_NOT_FOUND);
     }
   }
 
@@ -74,8 +76,10 @@ public class FindService {
     user.updateNewPassword(hashedPassword);
     userRepository.save(user);
 
-    UpdatePasswordResponseDTO updatePasswordResponseDTO =
-        UpdatePasswordResponseDTO.builder().result(true).build();
-    return updatePasswordResponseDTO;
+    return UpdatePasswordResponseDTO.builder()
+        .code("SUCCESS_UPDATE_PASSWORD")
+        .message("성공적으로 비밀번호를 변경했습니다.")
+        .data(true)
+        .build();
   }
 }

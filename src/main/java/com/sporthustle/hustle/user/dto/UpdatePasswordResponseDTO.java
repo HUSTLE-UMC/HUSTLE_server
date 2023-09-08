@@ -1,11 +1,9 @@
 package com.sporthustle.hustle.user.dto;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Getter
-public class UpdatePasswordResponseDTO {
-
-  private Boolean result;
-}
+@SuperBuilder
+public class UpdatePasswordResponseDTO extends BaseResponse<Boolean> {}

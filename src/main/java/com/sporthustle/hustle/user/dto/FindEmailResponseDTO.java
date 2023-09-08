@@ -1,11 +1,9 @@
 package com.sporthustle.hustle.user.dto;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Getter
-public class FindEmailResponseDTO {
-
-  private String email;
-}
+@SuperBuilder
+public class FindEmailResponseDTO extends BaseResponse<String> {}
