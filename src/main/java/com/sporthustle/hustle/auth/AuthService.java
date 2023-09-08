@@ -59,10 +59,11 @@ public class AuthService {
 
     userRepository.save(user);
 
-    SignUpResponseDTO signUpResponseDTO =
-        SignUpResponseDTO.builder().message("회원가입 완료하였습니다.").build();
-
-    return signUpResponseDTO;
+    return SignUpResponseDTO.builder()
+        .code("SUCCESS_SIGN_UP")
+        .message("회원가입을 완료하였습니다.")
+        .data(true)
+        .build();
   }
 
   private void validateSignUp(SignUpRequestDTO signUpRequestDTO) {
@@ -79,7 +80,7 @@ public class AuthService {
     User user =
         userRepository
             .findByEmail(email)
-            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> BaseException.from(ErrorCode.USER_NOT_FOUND));
 
     validateDeletedUser(user.getStatus());
     validateDefaultLogin(user);
@@ -94,9 +95,11 @@ public class AuthService {
     user.insertRefreshToken(tokenInfo.getRefreshToken());
     userRepository.save(user);
 
-    SignInResponseDTO signInResponseDTO = SignInResponseDTO.builder().tokenInfo(tokenInfo).build();
-
-    return signInResponseDTO;
+    return SignInResponseDTO.builder()
+        .code("SUCCESS_SIGN_IN")
+        .message("로그인에 성공했습니다.")
+        .data(tokenInfo)
+        .build();
   }
 
   private void validateDeletedUser(BaseStatus status) {
@@ -124,15 +127,18 @@ public class AuthService {
             .findByRefreshToken(refreshToken)
             .orElseThrow(() -> BaseException.from(ErrorCode.REFRESH_TOKEN_NOT_FOUND));
 
-    String email = user.getEmail();
     TokenInfo newTokenInfo = jwtTokenProvider.createToken(user.getEmail());
-    TokenInfo originalRefreshTokenInfo =
+    TokenInfo newAccessTokenWithOriginalRefreshTokenInfo =
         TokenInfo.builder()
             .accessToken(newTokenInfo.getAccessToken())
             .refreshToken(refreshToken)
             .build();
 
-    return GetAccessTokenResponseDTO.builder().tokenInfo(originalRefreshTokenInfo).build();
+    return GetAccessTokenResponseDTO.builder()
+        .code("SUCCESS_REFRESH_ACCESS_TOKEN")
+        .message("액세스 토큰을 새로 발급했습니다.")
+        .data(newAccessTokenWithOriginalRefreshTokenInfo)
+        .build();
   }
 
   private void validateJwtRefreshToken(String refreshToken) {
@@ -157,7 +163,7 @@ public class AuthService {
     User user =
         userRepository
             .findByEmail(email)
-            .orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(() -> BaseException.from(ErrorCode.USER_NOT_FOUND));
 
     validateDeletedUser(user.getStatus());
     validateOAuthSignIn(user);
@@ -166,7 +172,11 @@ public class AuthService {
     user.insertRefreshToken(tokenInfo.getRefreshToken());
     userRepository.save(user);
 
-    return OAuthSignInResponseDTO.builder().tokenInfo(tokenInfo).build();
+    return OAuthSignInResponseDTO.builder()
+        .code("SUCCESS_OAUTH_SIGN_IN")
+        .message("소셜 로그인에 성공했습니다.")
+        .data(tokenInfo)
+        .build();
   }
 
   private void validateOAuthSignIn(User user) {
@@ -198,7 +208,11 @@ public class AuthService {
 
     userRepository.save(user);
 
-    return OAuthSignUpResponseDTO.builder().message("회원가입 완료하였습니다.").build();
+    return OAuthSignUpResponseDTO.builder()
+        .code("SUCCESS_OAUTH_SIGN_UP")
+        .message("회원가입을 완료하였습니다.")
+        .data(true)
+        .build();
   }
 
   private void validateOAUthSignUp(OAuthSignUpRequestDTO oAuthSignUpRequestDTO) {
