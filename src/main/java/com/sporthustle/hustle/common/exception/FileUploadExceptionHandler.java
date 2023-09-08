@@ -15,12 +15,14 @@ public class FileUploadExceptionHandler {
   public ResponseEntity<BaseErrorResponse> handleSizeLimitExceededException(Exception exception) {
     ErrorCode errorCode = ErrorCode.FILE_SIZE_LIMIT;
 
-    return ResponseEntity.status(errorCode.getStatus()).body(BaseErrorResponse.builder()
-            .error(ErrorMessage.builder()
-                    .code(errorCode.getCode())
-                    .message(errorCode.getMessage())
-                    .build())
-            .build()
-    );
+    return ResponseEntity.status(errorCode.getStatus())
+        .body(
+            BaseErrorResponse.builder()
+                .error(
+                    ErrorMessage.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build())
+                .build());
   }
 }

@@ -14,8 +14,6 @@ public class BaseException extends RuntimeException {
   }
 
   public static BaseException from(ErrorCode errorCode) {
-    return BaseException.builder()
-            .errorCode(errorCode)
-            .build();
+    return BaseException.builder().errorCode(errorCode).build();
   }
 }

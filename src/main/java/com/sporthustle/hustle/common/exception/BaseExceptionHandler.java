@@ -14,12 +14,14 @@ public class BaseExceptionHandler {
   protected ResponseEntity<BaseErrorResponse> handleBaseException(BaseException baseException) {
     ErrorCode errorCode = baseException.getErrorCode();
 
-    return ResponseEntity.status(errorCode.getStatus()).body(BaseErrorResponse.builder()
-            .error(ErrorMessage.builder()
-                    .code(errorCode.getCode())
-                    .message(errorCode.getMessage())
-                    .build())
-            .build()
-    );
+    return ResponseEntity.status(errorCode.getStatus())
+        .body(
+            BaseErrorResponse.builder()
+                .error(
+                    ErrorMessage.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build())
+                .build());
   }
 }
