@@ -1,11 +1,10 @@
 package com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Getter
-public class CreateFriendMatchingRequestResponseDTO {
-  private String message;
-  private FriendMatchingRequestResponseDTO data;
-}
+@SuperBuilder
+public class CreateFriendMatchingRequestResponseDTO
+    extends BaseResponse<FriendMatchingRequestResponseDTO> {}

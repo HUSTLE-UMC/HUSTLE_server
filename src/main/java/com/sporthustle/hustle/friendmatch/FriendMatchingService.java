@@ -8,6 +8,7 @@ import com.sporthustle.hustle.common.exception.ErrorCode;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostRequestDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.CreateFriendMatchingPostResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostResponseDTO;
+import com.sporthustle.hustle.friendmatch.dto.friendmatchingpost.FriendMatchingPostsResponseDTO;
 import com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest.*;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPost;
 import com.sporthustle.hustle.friendmatch.entity.FriendMatchingPostType;
@@ -69,32 +70,48 @@ public class FriendMatchingService {
         FriendMatchingPostResponseDTO.from(friendMatchingPost);
 
     return CreateFriendMatchingPostResponseDTO.builder()
+        .code("SUCCESS_CREATE_FRIEND_MATCHING_POST")
         .message("교류전 게시글을 생성했습니다.")
         .data(friendMatchingPostResponseDTO)
         .build();
   }
 
   @Transactional(readOnly = true)
-  public Page<FriendMatchingPostResponseDTO> getFriendMatchingPostsByType(
+  public FriendMatchingPostsResponseDTO getFriendMatchingPostsByType(
       Long sportEventID, FriendMatchingPostType type, Pageable pageable) {
-    Page<FriendMatchingPost> friendMatchingPosts;
     SportEvent sportEvent = SportUtils.getSportEventById(sportEventID, sportEventRepository);
-    if (type == FriendMatchingPostType.INVITE) {
-      friendMatchingPosts =
-          friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
-              FriendMatchingPostType.INVITE, sportEvent, pageable);
-    } else if (type == FriendMatchingPostType.REQUEST) {
-      friendMatchingPosts =
-          friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
-              FriendMatchingPostType.REQUEST, sportEvent, pageable);
-    } else {
-      throw new IllegalArgumentException("Invalid FriendMatchingPostType");
+
+    Page<FriendMatchingPost> friendMatchingPosts = Page.empty();
+    switch (type) {
+      case INVITE:
+        friendMatchingPosts =
+            friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+                FriendMatchingPostType.INVITE, sportEvent, pageable);
+        break;
+      case REQUEST:
+        friendMatchingPosts =
+            friendMatchingPostRepository.findByCategoryAndSportEventOrderByStartDateAsc(
+                FriendMatchingPostType.REQUEST, sportEvent, pageable);
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid FriendMatchingPostType");
     }
-    return friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
+
+    Page<FriendMatchingPostResponseDTO> friendMatchingPostResponseDTOs =
+        friendMatchingPosts.map(FriendMatchingPostResponseDTO::from);
+
+    return FriendMatchingPostsResponseDTO.builder()
+        .code("SUCCESS_GET_FRIEND_MATCHING_POSTS_BY_TYPE")
+        .message("성공적으로 교류전 목록을 조회했습니다.")
+        .count(friendMatchingPostResponseDTOs.getNumberOfElements())
+        .totalPage(friendMatchingPostResponseDTOs.getTotalPages())
+        .totalCount(friendMatchingPostResponseDTOs.getTotalElements())
+        .data(friendMatchingPostResponseDTOs.getContent())
+        .build();
   }
 
   @Transactional
-  public CreateFriendMatchingRequestResponseDTO applyFriendMatching(
+  public CreateFriendMatchingRequestResponseDTO createFriendMatchingRequest(
       Long matchId,
       Long userId,
       Long clubId,
@@ -118,23 +135,19 @@ public class FriendMatchingService {
     friendMatchingRequest.setFriendMatchingPost(friendMatchingPost);
 
     friendMatchingRequestRepository.save(friendMatchingRequest);
+
     FriendMatchingRequestResponseDTO friendMatchingRequestResponseDTO =
         FriendMatchingRequestResponseDTO.from(friendMatchingRequest);
-    String message = "dd";
 
-    if (createFriendMatchingRequestRequestDTO.getType().equals(FriendMatchingPostType.INVITE)) {
-      message = "요청이 완료되었습니다!";
-    } else {
-      message = "초청이 완료되었습니다!";
-    }
     return CreateFriendMatchingRequestResponseDTO.builder()
-        .message(message)
+        .code("CREATE_SUCCESS_FRIEND_MATCHING_REQUEST")
+        .message("성공적으로 교류전에 요청하였습니다.")
         .data(friendMatchingRequestResponseDTO)
         .build();
   }
 
   @Transactional
-  public void updateRequests(
+  public UpdateFriendMatchingRequestResponseDTO updateFriendMatchingRequest(
       Long userId,
       Long friendMatchingPostId,
       UpdateFriendMatchingRequestStateRequestDTO updateFriendMatchingRequestStateRequestDTO) {
@@ -150,10 +163,19 @@ public class FriendMatchingService {
     friendMatchingRequest.updateType(
         FriendMatchingRequestType.valueOf(
             updateFriendMatchingRequestStateRequestDTO.getFriendMatchingRequestType()));
+
+    FriendMatchingRequestResponseDTO friendMatchingRequestResponseDTO =
+        FriendMatchingRequestResponseDTO.from(friendMatchingRequest);
+
+    return UpdateFriendMatchingRequestResponseDTO.builder()
+        .code("SUCCESS_UPDATE_FRIEND_MATCHING_REQUEST")
+        .message("성공적으로 교류전 요청을 수정했습니다.")
+        .data(friendMatchingRequestResponseDTO)
+        .build();
   }
 
   @Transactional
-  public FriendMatchingRequestsResponseDTO getRequests(Long matchId, Long userId) {
+  public FriendMatchingRequestsResponseDTO getFriendMatchingRequests(Long matchId, Long userId) {
     FriendMatchingPost friendMatchingPost =
         FriendMatchingUtils.getFriendMatchingPostById(matchId, friendMatchingPostRepository);
     validateFriendMatchingPostOwner(friendMatchingPost, userId);
@@ -166,7 +188,9 @@ public class FriendMatchingService {
             .collect(Collectors.toList());
 
     return FriendMatchingRequestsResponseDTO.builder()
-        .friendMatchingRequestResponseDTOS(friendMatchingRequestResponseDTOS)
+        .code("SUCCESS_GET_FRIEND_MATCHING_REQUESTS")
+        .message("성공적으로 교류전 요청 목록을 조회했습니다.")
+        .data(friendMatchingRequestResponseDTOS)
         .build();
   }
 

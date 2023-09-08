@@ -53,6 +53,4 @@ public class FriendMatchingPostResponseDTO {
         .club(clubResponseDTO)
         .build();
   }
-
-  // Other methods, constructors, getters, setters, etc.
 }
