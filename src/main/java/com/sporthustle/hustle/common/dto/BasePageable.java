@@ -6,9 +6,8 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
-public class BasePageable<T> {
+public class BasePageable<T> extends BaseResponse<List<T>> {
   protected long count;
   protected long totalPage;
   protected long totalCount;
-  protected List<T> data;
 }
