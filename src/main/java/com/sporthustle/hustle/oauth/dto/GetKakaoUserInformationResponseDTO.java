@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class OAuthUserInfoResponseDTO {
+public class GetKakaoUserInformationResponseDTO {
   private String oauthId;
   private String email;
   private String password;
