@@ -30,6 +30,8 @@ public enum ErrorCode {
   FILE_SIZE_LIMIT(PAYLOAD_TOO_LARGE, "FILE_SIZE_LIMIT", "파일 사이즈가 10MB 보다 큽니다."),
   FILE_UPLOAD_FAILED(BAD_REQUEST, "FILE_UPLOAD_FAILED", "파일 업로드에 실패했습니다."),
   FILE_NOT_IMAGE(BAD_REQUEST, "FILE_NOT_IMAGE", "파일이 이미지 형식이 아닙니다."),
+  INVALID_AUTH_CODE(BAD_REQUEST, "INVALID_AUTH_CODE", "잘못된 인증 코드입니다"),
+  UNKNOWN_ERROR(BAD_GATEWAY, "UNKNOWN_ERROR", "알 수 없는 오류입니다."),
   ;
 
   private final HttpStatus status;
