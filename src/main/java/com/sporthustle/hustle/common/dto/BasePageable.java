@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
-@SuperBuilder
+@SuperBuilder(builderMethodName = "builder2")
 public class BasePageable<T> extends BaseResponse<List<T>> {
   protected long count;
   protected long totalPage;
