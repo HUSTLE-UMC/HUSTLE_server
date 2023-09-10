@@ -115,12 +115,7 @@ public class OAuthService {
         .build();
   }
 
-  private String getRamdomPassword() {
+  private String getRandomPassword() {
     return RandomStringUtils.randomAlphanumeric(100);
-  }
-
-  private void printLogForConnection(HttpURLConnection conn) throws IOException {
-    int responseCode = conn.getResponseCode();
-    log.info("responseCode : " + responseCode);
   }
 }
