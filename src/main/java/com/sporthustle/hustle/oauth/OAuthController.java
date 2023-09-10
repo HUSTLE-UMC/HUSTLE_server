@@ -26,8 +26,8 @@ public class OAuthController {
   }
 
   @GetMapping("/kakao/information")
-  public ResponseEntity<OAuthUserInfoResponseDTO> getKakaoUserInfo(
+  public ResponseEntity<GetKakaoUserInformationResponseDTO> getKakaoUserInformation(
       @RequestParam("token") String token) {
-    return ResponseEntity.ok(oAuthService.getKakaoUserInfo(token));
+    return ResponseEntity.ok(oAuthService.getKakaoUserInformation(token));
   }
 }
