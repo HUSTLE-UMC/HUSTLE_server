@@ -6,4 +6,4 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
-public class UpdateMatchResultPostResponseDTO extends BaseResponse<MatchResultPostResponseDTO> {}
+public class GetMatchResultPostResponseDTO extends BaseResponse<MatchResultPostResponseDTO> {}

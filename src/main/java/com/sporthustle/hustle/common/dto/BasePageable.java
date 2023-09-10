@@ -5,10 +5,9 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
 @Getter
-@SuperBuilder
-public class BasePageable<T> {
+@SuperBuilder(builderMethodName = "builder2")
+public class BasePageable<T> extends BaseResponse<List<T>> {
   protected long count;
   protected long totalPage;
   protected long totalCount;
-  protected List<T> data;
 }

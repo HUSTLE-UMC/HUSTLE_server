@@ -1,11 +1,9 @@
 package com.sporthustle.hustle.auth.dto.oauth;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class OAuthSignUpResponseDTO {
-
-  private String message;
-}
+@SuperBuilder
+public class OAuthSignUpResponseDTO extends BaseResponse<Boolean> {}

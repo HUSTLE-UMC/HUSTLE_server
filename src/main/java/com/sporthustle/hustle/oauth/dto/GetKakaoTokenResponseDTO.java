@@ -1,4 +1,4 @@
-package com.sporthustle.hustle.auth.dto;
+package com.sporthustle.hustle.oauth.dto;
 
 import com.sporthustle.hustle.common.dto.BaseResponse;
 import com.sporthustle.hustle.common.jwt.dto.TokenInfo;
@@ -7,4 +7,4 @@ import lombok.experimental.SuperBuilder;
 
 @Getter
 @SuperBuilder
-public class SignInResponseDTO extends BaseResponse<TokenInfo> {}
+public class GetKakaoTokenResponseDTO extends BaseResponse<TokenInfo> {}

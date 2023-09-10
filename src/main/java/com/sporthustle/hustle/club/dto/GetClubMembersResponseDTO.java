@@ -1,12 +1,10 @@
 package com.sporthustle.hustle.club.dto;
 
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class GetClubMembersResponseDTO {
-
-  private List<ClubMemberResponseDTO> clubMembers;
-}
+@SuperBuilder
+public class GetClubMembersResponseDTO extends BaseResponse<List<ClubMemberResponseDTO>> {}

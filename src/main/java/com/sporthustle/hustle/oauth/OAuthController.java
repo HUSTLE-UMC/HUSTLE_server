@@ -1,7 +1,7 @@
 package com.sporthustle.hustle.oauth;
 
-import com.sporthustle.hustle.common.jwt.dto.KakaoTokenInfo;
-import com.sporthustle.hustle.oauth.dto.OAuthUserInfoResponseDTO;
+import com.sporthustle.hustle.oauth.dto.GetKakaoTokenResponseDTO;
+import com.sporthustle.hustle.oauth.dto.GetKakaoUserInformationResponseDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,13 @@ public class OAuthController {
   private final OAuthService oAuthService;
 
   @GetMapping("/kakao/token")
-  public ResponseEntity<KakaoTokenInfo> getKakaoToken(@RequestParam("code") String code) {
+  public ResponseEntity<GetKakaoTokenResponseDTO> getKakaoToken(@RequestParam("code") String code) {
     return ResponseEntity.ok(oAuthService.getKakaoToken(code));
   }
 
   @GetMapping("/kakao/information")
-  public ResponseEntity<OAuthUserInfoResponseDTO> getKakaoUserInfo(
+  public ResponseEntity<GetKakaoUserInformationResponseDTO> getKakaoUserInformation(
       @RequestParam("token") String token) {
-    return ResponseEntity.ok(oAuthService.getKakaoUserInfo(token));
+    return ResponseEntity.ok(oAuthService.getKakaoUserInformation(token));
   }
 }

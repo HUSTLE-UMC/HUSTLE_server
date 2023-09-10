@@ -1,12 +1,10 @@
 package com.sporthustle.hustle.university.dto;
 
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Getter
-public class FindUniversitiesResponseDTO {
-
-  private List<UniversityResponseDTO> universities;
-}
+@SuperBuilder
+public class FindUniversitiesResponseDTO extends BaseResponse<List<UniversityResponseDTO>> {}
