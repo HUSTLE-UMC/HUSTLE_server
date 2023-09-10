@@ -25,9 +25,6 @@ import reactor.util.retry.Retry;
 @RequiredArgsConstructor
 public class OAuthService {
 
-  private final KakaoInformationParser kakaoInformationParser;
-  private final OAuthConnector connector;
-
   @Value("${oauth.kakao.secret.client-id}")
   private String clientId;
 
