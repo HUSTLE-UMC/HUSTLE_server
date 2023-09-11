@@ -1,11 +1,11 @@
 package com.sporthustle.hustle.friendmatch.dto.friendmatchingrequest;
 
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
-@Builder
 @Getter
-public class FriendMatchingRequestsResponseDTO {
-  private List<FriendMatchingRequestResponseDTO> friendMatchingRequestResponseDTOS;
-}
+@SuperBuilder
+public class FriendMatchingRequestsResponseDTO
+    extends BaseResponse<List<FriendMatchingRequestResponseDTO>> {}

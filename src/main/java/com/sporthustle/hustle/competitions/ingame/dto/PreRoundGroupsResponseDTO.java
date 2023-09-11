@@ -1,13 +1,12 @@
 package com.sporthustle.hustle.competitions.ingame.dto;
 
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import java.util.List;
 import java.util.Map;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class PreRoundGroupsResponseDTO {
-
-  public Map<String, List<PreRoundGroupResponseDTO>> preRoundGroups;
-}
+@SuperBuilder
+public class PreRoundGroupsResponseDTO
+    extends BaseResponse<Map<String, List<PreRoundGroupResponseDTO>>> {}

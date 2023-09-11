@@ -23,8 +23,10 @@ public class UniversityService {
     List<UniversityResponseDTO> universityResponseDTOs =
         universities.stream().map(UniversityResponseDTO::from).collect(Collectors.toList());
 
-    FindUniversitiesResponseDTO findUniversitiesResponseDTO =
-        FindUniversitiesResponseDTO.builder().universities(universityResponseDTOs).build();
-    return findUniversitiesResponseDTO;
+    return FindUniversitiesResponseDTO.builder()
+        .code("SUCCESS_FIND_UNIVERSITIES")
+        .message("성공적으로 대학 목록을 조회했습니다.")
+        .data(universityResponseDTOs)
+        .build();
   }
 }

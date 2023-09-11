@@ -1,13 +1,9 @@
 package com.sporthustle.hustle.competitions.ingame.dto;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class PreRoundMatchCountResponseDTO {
-
-  private String message;
-
-  private int data;
-}
+@SuperBuilder
+public class PreRoundMatchCountResponseDTO extends BaseResponse<Integer> {}

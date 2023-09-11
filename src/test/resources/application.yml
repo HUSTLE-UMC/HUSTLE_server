@@ -1,0 +1,64 @@
+### jpa setting ###
+spring:
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 10MB
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+
+### spring security ###
+security:
+  user:
+    name: user
+    password: password
+  #      roles: USER, ADMIN
+
+### oauth ###
+oauth:
+  kakao:
+    secret:
+      client-id: client-id
+      redirect-url: redirect-url
+
+### jwt ###
+jwt:
+  secret:
+    key: secret_key
+
+### Swagger ###
+springdoc:
+  swagger-ui:
+    enabled: true
+    try-it-out-enabled: true
+  version: 'v1'
+
+### aws s3 ###
+cloud:
+  aws:
+    s3:
+      bucket: bucket
+      bucket_url: bucket_url
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      accessKey: access_key
+      secretKey: secret_key

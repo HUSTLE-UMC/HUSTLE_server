@@ -56,11 +56,11 @@ public class CompetitionController {
     @ApiResponse(responseCode = "200", description = "대회 상세 조회에 성공한 경우"),
   })
   @GetMapping("/{competition_id}")
-  public ResponseEntity<CompetitionResponseDTO> getCompetition(
+  public ResponseEntity<GetCompetitionResponseDTO> getCompetition(
       @PathVariable("competition_id") Long competitionId) {
-    CompetitionResponseDTO competitionResponseDTO =
+    GetCompetitionResponseDTO getCompetitionResponseDTO =
         competitionService.getCompetition(competitionId);
-    return ResponseEntity.ok(competitionResponseDTO);
+    return ResponseEntity.ok(getCompetitionResponseDTO);
   }
 
   @Operation(summary = "대회 수정 API")

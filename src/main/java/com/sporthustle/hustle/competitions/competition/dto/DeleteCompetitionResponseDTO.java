@@ -1,11 +1,9 @@
 package com.sporthustle.hustle.competitions.competition.dto;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class DeleteCompetitionResponseDTO {
-
-  private String message;
-}
+@SuperBuilder
+public class DeleteCompetitionResponseDTO extends BaseResponse<CompetitionResponseDTO> {}

@@ -1,13 +1,9 @@
 package com.sporthustle.hustle.competitions.match.dto;
 
-import lombok.Builder;
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class UpdateMatchResultPostResponseDTO {
-
-  private String message;
-
-  private MatchResultPostResponseDTO data;
-}
+@SuperBuilder
+public class UpdateMatchResultPostResponseDTO extends BaseResponse<MatchResultPostResponseDTO> {}

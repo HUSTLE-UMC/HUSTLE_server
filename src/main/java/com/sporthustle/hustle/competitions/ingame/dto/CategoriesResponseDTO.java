@@ -1,12 +1,10 @@
 package com.sporthustle.hustle.competitions.ingame.dto;
 
+import com.sporthustle.hustle.common.dto.BaseResponse;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
-@Builder
-public class CategoriesResponseDTO {
-
-  private List<String> categories;
-}
+@SuperBuilder
+public class CategoriesResponseDTO extends BaseResponse<List<String>> {}
