@@ -33,7 +33,7 @@ oauth:
   kakao:
     secret:
       client-id: ENC(wp/HMNq/89yPzT2HWEe7v65FDAqXvC24M6WvPUMG/QzYwf4GRnpYAsOHMLTfL0uL)
-      redirect-url: ENC(zf4isDrpHQLVBZJ8VryrsVUmyGKlx+M6+2IV66bO/qQUXO9CxlgBQA==)
+      redirect-url: ENC(sRs8+vRVTC4bbZiQNiRovYF+xnX1fvevP4HDo/Z/wYGcikvIqWQZyEj9rVkkBsGY6h97xQ2taRXG5+EeIE03gg==)
 
 ### jwt ###
 jwt:
