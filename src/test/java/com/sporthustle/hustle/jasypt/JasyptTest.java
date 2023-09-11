@@ -4,8 +4,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.sporthustle.hustle.common.config.JasyptConfig;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@Disabled("암호화, 복호화 결과 확인을 위한 테스트이므로 비활성화")
 public class JasyptTest extends JasyptConfig {
 
   @Test
