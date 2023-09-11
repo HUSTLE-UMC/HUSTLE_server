@@ -59,6 +59,6 @@ cloud:
       auto: false
     region:
       static: ap-northeast-2
-    credentials
+    credentials:
       accessKey: access_key
       secretKey: secret_key
