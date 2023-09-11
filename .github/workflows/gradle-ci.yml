@@ -12,8 +12,7 @@ on:
     branches:
       - '**'
 
-permissions:
-  contents: read
+permissions: write-all
 
 jobs:
   build:
@@ -54,3 +53,11 @@ jobs:
         if: always()
         with:
           report_paths: '**/build/test-results/**/*.xml'
+
+      - name: Discord notifications when failed
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.CICD_DISCORD_WEBHOOK_URL }}
+          username: "Hustle Deployment"
+          content: "[허슬 서버 배포 실패 알림] ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        if: failure()
