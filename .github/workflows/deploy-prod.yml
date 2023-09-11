@@ -45,8 +45,8 @@ jobs:
       - name: Make zip file
         run: zip -r -qq -j ./build-jar.zip ./deploy
 
-      - name: Upload jar to s3
-        run: aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files --s3-location s3://$AWS_S3_BUCKET/$GITHUB_SHA.zip --source ./deploy/build-jar.zip
+      - name: Upload zip to s3
+        run: aws deploy push --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --ignore-hidden-files --s3-location s3://$AWS_S3_BUCKET/$GITHUB_SHA.zip --source ./build-jar.zip
 
       - name: Deploy to EC2 through CodeDeploy
         run: aws deploy create-deployment --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} --s3-location bucket=$AWS_S3_BUCKET,key=$GITHUB_SHA.zip,bundleType=zip
