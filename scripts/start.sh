@@ -16,7 +16,7 @@ START_LOG="$HOME_ROOT/logs/start.log"
 NOW=$(date +%c)
 
 echo "[$NOW] > $JAR 실행" >> $START_LOG
-nohup java -jar $JAR --jasypt.encryptor.password=$JASYPT_PASSWORD --spring.profiles.active=prod > $APP_LOG 2> $ERROR_LOG &
+nohup java -jar $JAR --jasypt.encryptor.password=\'$JASYPT_PASSWORD\' --spring.profiles.active=prod > $APP_LOG 2> $ERROR_LOG &
 
 SERVICE_PID=$(pgrep -f $JAR)
 echo "[$NOW] > 서비스 PID: $SERVICE_PID" >> $START_LOG
