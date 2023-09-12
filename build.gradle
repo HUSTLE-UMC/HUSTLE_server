@@ -43,6 +43,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.15.Final'
 	implementation group: 'org.n52.jackson', name: 'jackson-datatype-jts', version: '1.2.7'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
