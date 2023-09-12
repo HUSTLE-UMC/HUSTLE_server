@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOME_ROOT = "/home/ubuntu"
+HOME_ROOT="/home/ubuntu"
 PROJECT_ROOT="/home/ubuntu/deploy"
 JAR_DIRECTORY="$PROJECT_ROOT/build/libs"
 

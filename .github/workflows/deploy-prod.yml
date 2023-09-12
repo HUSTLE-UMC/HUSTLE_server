@@ -43,7 +43,7 @@ jobs:
         run: cp ./build/libs/*.jar ./deploy/
 
       - name: Make zip file
-        run: zip ./$GITHUB_SHA.zip build/libs/*.jar appspec.yml scripts/*.sh
+        run: zip ./$GITHUB_SHA.zip build/libs/*.jar appspec.yml
         shell: bash
 
       - name: Upload to S3

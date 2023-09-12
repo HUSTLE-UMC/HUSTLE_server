@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOME_ROOT = "/home/ubuntu"
+HOME_ROOT="/home/ubuntu"
 PROJECT_ROOT="/home/ubuntu/deploy"
 JAR_DIRECTORY="$PROJECT_ROOT/build/libs"
 
@@ -11,7 +11,7 @@ JAR="$ROOT_PATH/$LATEST_JAR"
 
 APP_LOG="$HOME_ROOT/logs/application.log"
 ERROR_LOG="$HOME_ROOT/logs/error.log"
-START_LOG="$HOME_ROOT/logs/start.log"
+STOP_LOG="$HOME_ROOT/logs/stop.log"
 
 SERVICE_PID=$(pgrep -f $JAR) # 실행중인 Spring 서버의 PID
 
