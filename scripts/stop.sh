@@ -1,15 +1,17 @@
 #!/bin/bash
 
-ROOT_PATH="/home/ubuntu"
+HOME_ROOT = "/home/ubuntu"
+PROJECT_ROOT="/home/ubuntu/deploy"
+JAR_DIRECTORY="$PROJECT_ROOT/build/libs"
 
-cd $ROOT_PATH
+cd $JAR_DIRECTORY
 
 LATEST_JAR=$(ls -t | grep jar -m 1)
 JAR="$ROOT_PATH/$LATEST_JAR"
 
-APP_LOG="$ROOT_PATH/logs/application.log"
-ERROR_LOG="$ROOT_PATH/logs/error.log"
-START_LOG="$ROOT_PATH/logs/start.log"
+APP_LOG="$HOME_ROOT/logs/application.log"
+ERROR_LOG="$HOME_ROOT/logs/error.log"
+START_LOG="$HOME_ROOT/logs/start.log"
 
 SERVICE_PID=$(pgrep -f $JAR) # 실행중인 Spring 서버의 PID
 
