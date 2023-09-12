@@ -56,14 +56,24 @@ jobs:
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: "${{ secrets.CICD_DISCORD_WEBHOOK_URL }}"
-          username: "Hustle Deployment"
-          content: "[허슬 서버 배포 실패 알림] ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          username: "허슬 배포 알림 봇"
+          avatar-url: "https://cdn.discordapp.com/icons/1122239756537958421/cf97f2444852071f194dcd1ab63bcc4a.webp?size=96"
+          content: ""
+          embed-title: "[허슬 서버 배포 실패 알림]"
+          embed-description: "Github Actions 워크플로우가 실패해 배포에 실패하였습니다.\n[\\> Job 확인하러 가기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          embed-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          embed-color: 16711680
         if: failure()
 
       - name: Discord notifications when success
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: "${{ secrets.CICD_DISCORD_WEBHOOK_URL }}"
-          username: "Hustle Deployment"
-          content: "허슬 서버를 배포하고 있습니다... @everyone"
+          username: "허슬 배포 알림 봇"
+          avatar-url: "https://cdn.discordapp.com/icons/1122239756537958421/cf97f2444852071f194dcd1ab63bcc4a.webp?size=96"
+          content: ""
+          embed-title: "[허슬 서버 배포 성공 알림]"
+          embed-description: "Github Actions 워크플로우가 성공해 CodeDeploy 배포 단계에 들어갔습니다.\n[\\> Job 확인하러 가기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          embed-url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          embed-color: 2096896
         if: success()
