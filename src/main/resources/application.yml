@@ -32,8 +32,8 @@ security:
 oauth:
   kakao:
     secret:
-      client-id: ENC(wp/HMNq/89yPzT2HWEe7v65FDAqXvC24M6WvPUMG/QzYwf4GRnpYAsOHMLTfL0uL)
-      redirect-url: ENC(sRs8+vRVTC4bbZiQNiRovYF+xnX1fvevP4HDo/Z/wYGcikvIqWQZyEj9rVkkBsGY6h97xQ2taRXG5+EeIE03gg==)
+      client-id: ENC(69cgHCe5ObD/GMaHFGflriOgLlFqUpL13NblMJvDzdz2MXL/gTg1kaDGKjoDQi0A)
+      redirect-url: http://localhost:8080/api/oauth/kakao/token
 
 ### jwt ###
 jwt:
@@ -74,3 +74,8 @@ spring:
     url: ENC(n4BgVC45DNHZ7Dv+eIGHp6NmDrt9UVXY93jMqfOq+Eb4lRi9oP6by9eJ3NuZGKrnk1QUdrQ4J2QFWMTvqV9AuCG2y500vtLwPJngcLnbAz1JxooZAJoNCxYOyW1HwFnOY0zEqGA45hhAZxCpZEKn4IPiX8JOxYZpl13BDw/qoExcYplGW3GJVD3mhD1Yqy2B)
     username: ENC(3IlDHh9Hevic4hySvkJUVfhwVklsc20q)
     password: ENC(Z9yNmaE1Sk5DKZerehtnl+GNz3MfhVBsrT8obGfbaLU=)
+
+oauth:
+  kakao:
+    secret:
+      redirect-url: ENC(2j1v5MMXa/AqK/Ry8jVuctw/+/27pwQFPrC11SeYZkzidsAhxwEHDeKWni7eGvt8baKOA7tRR+2vV7BOIHs+pg==)
