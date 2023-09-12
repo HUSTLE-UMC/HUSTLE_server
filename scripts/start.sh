@@ -6,7 +6,7 @@ JAR_DIRECTORY="$PROJECT_ROOT/build/libs"
 
 cd $JAR_DIRECTORY
 
-LATEST_JAR=$(ls -t | grep jar -m 1)
+LATEST_JAR=$(ls -t | grep -v "plain" | grep jar -m 1)
 JAR="$JAR_DIRECTORY/$LATEST_JAR"
 
 APP_LOG="$HOME_ROOT/logs/application.log"
