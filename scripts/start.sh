@@ -1,6 +1,9 @@
 #!/bin/bash
 
 HOME_ROOT="/home/ubuntu"
+
+source $HOME_ROOT/.bash_profile
+
 PROJECT_ROOT="/home/ubuntu/deploy"
 JAR_DIRECTORY="$PROJECT_ROOT/build/libs"
 
