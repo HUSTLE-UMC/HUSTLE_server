@@ -78,4 +78,4 @@ spring:
 oauth:
   kakao:
     secret:
-      redirect-url: ENC(2j1v5MMXa/AqK/Ry8jVuctw/+/27pwQFPrC11SeYZkzidsAhxwEHDeKWni7eGvt8baKOA7tRR+2vV7BOIHs+pg==)
+      redirect-url: ENC(p9N/495b2ECuansXUCjR+e4WL0QfEPb9uex6Z93M96w+2j+AKfZ5s7cxuK8RkhVF)
