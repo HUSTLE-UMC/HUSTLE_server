@@ -32,6 +32,14 @@ public enum ErrorCode {
   FILE_NOT_IMAGE(BAD_REQUEST, "FILE_NOT_IMAGE", "파일이 이미지 형식이 아닙니다."),
   INVALID_AUTH_CODE(BAD_REQUEST, "INVALID_AUTH_CODE", "잘못된 인증 코드입니다"),
   UNKNOWN_ERROR(BAD_GATEWAY, "UNKNOWN_ERROR", "알 수 없는 오류입니다."),
+  CLUB_POST_NOT_FOUND(BAD_REQUEST, "CLUB_POST_NOT_FOUND", "동아리 게시글을 조회할 수 없습니다."),
+  CLUB_POST_COMMENT_NOT_FOUND(
+      BAD_REQUEST, "CLUB_POST_COMMENT_NOT_FOUND", "동아리 게시글 댓글을 조회할 수 없습니다."),
+  CLUB_POST_COMMENT_NOT_IN_CLUB_POST(
+          FORBIDDEN, "CLUB_POST_COMMENT_NOT_IN_CLUB_POST", "해당 동아리 게시글 댓글이 아닙니다."),
+  USER_MUST_NOT_OWNER(FORBIDDEN, "USER_MUST_NOT_OWNER", "소유자가 아니어야 합니다."),
+  CLUB_POST_COMMENT_LIKE_NOT_FOUND(BAD_REQUEST, "CLUB_POST_COMMENT_LIKE_NOT_FOUND", "동아리 게시글 댓글을 추천한 적이 없습니다."),
+  CLUB_POST_COMMENT_LIKE_ALREADY_CREATED(BAD_REQUEST, "CLUB_POST_COMMENT_LIKE_ALREADY_CREATED", "동아리 게시글 댓글을 추천한 적이 있습니다."),
   ;
 
   private final HttpStatus status;
