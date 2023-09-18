@@ -16,11 +16,10 @@ import com.sporthustle.hustle.community.club.post.repository.ClubPostRepository;
 import com.sporthustle.hustle.user.UserUtils;
 import com.sporthustle.hustle.user.entity.User;
 import com.sporthustle.hustle.user.repository.UserRepository;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -88,8 +87,8 @@ public class ClubPostCommentLikeService {
   }
 
   private void validateAlreadyCreated(User user, ClubPostComment clubPostComment) {
-    Optional<ClubPostCommentLike> clubPostCommentLike = clubPostComment.getClubPostCommentLikeSet()
-            .stream()
+    Optional<ClubPostCommentLike> clubPostCommentLike =
+        clubPostComment.getClubPostCommentLikeSet().stream()
             .filter(commentLike -> commentLike.getUser().getId() == user.getId())
             .findFirst();
 
@@ -112,8 +111,8 @@ public class ClubPostCommentLikeService {
     validateClubPostCommentInClubPost(clubPost, clubPostComment);
     validateUserIsNotWriter(user, clubPostComment);
 
-    ClubPostCommentLike clubPostCommentLike = clubPostComment.getClubPostCommentLikeSet()
-            .stream()
+    ClubPostCommentLike clubPostCommentLike =
+        clubPostComment.getClubPostCommentLikeSet().stream()
             .filter(commentLike -> commentLike.getUser().getId() == user.getId())
             .findFirst()
             .orElseThrow(() -> BaseException.from(ErrorCode.CLUB_POST_COMMENT_LIKE_NOT_FOUND));
