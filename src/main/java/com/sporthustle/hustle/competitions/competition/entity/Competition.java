@@ -86,7 +86,7 @@ public class Competition extends BaseEntity {
   @JoinColumn(name = "sport_event_id", nullable = false)
   private SportEvent sportEvent;
 
-  @OneToMany(mappedBy = "competition", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "competition", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private Set<CompetitionContact> contacts = new HashSet<>();
 
   @Builder
@@ -134,6 +134,7 @@ public class Competition extends BaseEntity {
   }
 
   public void updateContacts(Set<CompetitionContact> contacts) {
+    this.contacts.clear();
     this.contacts = contacts;
   }
 

@@ -55,7 +55,7 @@ public class MatchResultPost extends BaseEntity {
   @Column(name = "is_home_win", columnDefinition = "TINYINT(1) default 0")
   private boolean isHomeWin = false;
 
-  @OneToMany(mappedBy = "matchResultPost", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "matchResultPost", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private List<MatchResultPostScoreLog> homeMatchResultPostScoreLogs = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -68,7 +68,7 @@ public class MatchResultPost extends BaseEntity {
   @Column(name = "is_away_win", columnDefinition = "TINYINT(1) default 0")
   private boolean isAwayWin = false;
 
-  @OneToMany(mappedBy = "matchResultPost", cascade = CascadeType.PERSIST)
+  @OneToMany(mappedBy = "matchResultPost", cascade = CascadeType.PERSIST, orphanRemoval = true)
   private List<MatchResultPostScoreLog> awayMatchResultPostScoreLogs = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
