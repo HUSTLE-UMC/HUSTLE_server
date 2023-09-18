@@ -40,7 +40,7 @@ public class ClubPostCommentService {
     Club club = ClubUtils.getClubById(clubId, clubRepository);
     ClubPost clubPost = ClubPostUtils.getClubPostById(clubPostId, clubPostRepository);
 
-    validateUserIsMemberInClub(user, club);
+    ClubUtils.validateUserIsMemberInClub(user, club);
 
     ClubPostComment clubPostComment =
         ClubPostComment.builder()
@@ -56,15 +56,6 @@ public class ClubPostCommentService {
         .message("성공적으로 동아리 게시글 댓글을 생성했습니다.")
         .data(ClubPostCommentResponseDTO.from(clubPostComment, user))
         .build();
-  }
-
-  private void validateUserIsMemberInClub(User user, Club club) {
-    boolean isUserInClubMembers =
-        user.getClubMembers().stream()
-            .anyMatch(clubMember -> clubMember.getClub().getId() == club.getId());
-    if (!isUserInClubMembers) {
-      throw BaseException.from(ErrorCode.MEMBER_NOT_IN_CLUB);
-    }
   }
 
   private void validateUserIsWriter(User user, ClubPostComment clubPostComment) {
@@ -87,8 +78,8 @@ public class ClubPostCommentService {
     ClubPostComment clubPostComment =
         ClubPostCommentUtils.getClubPostCommentById(clubPostCommentId, clubPostCommentRepository);
 
-    validateUserIsMemberInClub(user, club);
-    validateClubPostCommentInClubPost(clubPost, clubPostComment);
+    ClubUtils.validateUserIsMemberInClub(user, club);
+    ClubPostCommentUtils.validateClubPostCommentInClubPost(clubPost, clubPostComment);
     validateUserIsWriter(user, clubPostComment);
 
     clubPostComment.update(updateClubPostCommentRequestDTO.getContent());
@@ -102,16 +93,6 @@ public class ClubPostCommentService {
         .build();
   }
 
-  private void validateClubPostCommentInClubPost(
-      ClubPost clubPost, ClubPostComment clubPostComment) {
-    boolean isClubPostCommentInClubPost =
-        clubPost.getComments().stream()
-            .anyMatch(comment -> comment.getId() == clubPostComment.getId());
-    if (!isClubPostCommentInClubPost) {
-      throw BaseException.from(ErrorCode.CLUB_POST_COMMENT_NOT_IN_CLUB_POST);
-    }
-  }
-
   @Transactional
   public DeleteClubPostCommentResponseDTO deleteClubPostComment(
       Long userId, Long clubId, Long clubPostId, Long clubPostCommentId) {
@@ -122,8 +103,8 @@ public class ClubPostCommentService {
     ClubPostComment clubPostComment =
         ClubPostCommentUtils.getClubPostCommentById(clubPostCommentId, clubPostCommentRepository);
 
-    validateUserIsMemberInClub(user, club);
-    validateClubPostCommentInClubPost(clubPost, clubPostComment);
+    ClubUtils.validateUserIsMemberInClub(user, club);
+    ClubPostCommentUtils.validateClubPostCommentInClubPost(clubPost, clubPostComment);
     validateUserIsWriter(user, clubPostComment);
 
     clubPostComment.delete();
@@ -144,7 +125,7 @@ public class ClubPostCommentService {
     User user = UserUtils.getUserById(userId, userRepository);
     Club club = ClubUtils.getClubById(clubId, clubRepository);
 
-    validateUserIsMemberInClub(user, club);
+    ClubUtils.validateUserIsMemberInClub(user, club);
 
     List<ClubPostComment> clubPostComments = null;
 

@@ -34,7 +34,7 @@ public class ClubPostService {
     User user = UserUtils.getUserById(userId, userRepository);
     Club club = ClubUtils.getClubById(clubId, clubRepository);
 
-    validateUserIsMemberInClub(user, club);
+    ClubUtils.validateUserIsMemberInClub(user, club);
 
     ClubPost clubPost =
         ClubPost.builder()
@@ -53,15 +53,6 @@ public class ClubPostService {
         .build();
   }
 
-  private void validateUserIsMemberInClub(User user, Club club) {
-    boolean isUserInClubMembers =
-        user.getClubMembers().stream()
-            .anyMatch(clubMember -> clubMember.getClub().getId() == club.getId());
-    if (!isUserInClubMembers) {
-      throw BaseException.from(ErrorCode.MEMBER_NOT_IN_CLUB);
-    }
-  }
-
   @Transactional
   public UpdateClubPostResponseDTO updateClubPost(
       Long userId,
@@ -73,7 +64,7 @@ public class ClubPostService {
     Club club = ClubUtils.getClubById(clubId, clubRepository);
     ClubPost clubPost = ClubPostUtils.getClubPostById(clubPostId, clubPostRepository);
 
-    validateUserIsMemberInClub(user, club);
+    ClubUtils.validateUserIsMemberInClub(user, club);
     validateUserIsWriter(user, clubPost);
 
     clubPost.update(updateClubPostRequestDTO.getTitle(), updateClubPostRequestDTO.getContent());
@@ -100,7 +91,7 @@ public class ClubPostService {
     Club club = ClubUtils.getClubById(clubId, clubRepository);
     ClubPost clubPost = ClubPostUtils.getClubPostById(clubPostId, clubPostRepository);
 
-    validateUserIsMemberInClub(user, club);
+    ClubUtils.validateUserIsMemberInClub(user, club);
     validateUserIsWriter(user, clubPost);
 
     clubPost.delete();
@@ -119,7 +110,7 @@ public class ClubPostService {
     User user = UserUtils.getUserById(userId, userRepository);
     Club club = ClubUtils.getClubById(clubId, clubRepository);
 
-    validateUserIsMemberInClub(user, club);
+    ClubUtils.validateUserIsMemberInClub(user, club);
 
     Page<ClubPost> clubPosts = clubPostRepository.findAllByClub_IdOrderByIdDesc(clubId, pageable);
     Page<ClubPostResponseDTO> clubPostDTOs = clubPosts.map(ClubPostResponseDTO::from);
@@ -141,7 +132,7 @@ public class ClubPostService {
     Club club = ClubUtils.getClubById(clubId, clubRepository);
     ClubPost clubPost = ClubPostUtils.getClubPostById(clubPostId, clubPostRepository);
 
-    validateUserIsMemberInClub(user, club);
+    ClubUtils.validateUserIsMemberInClub(user, club);
 
     return GetClubPostResponseDTO.builder()
         .code("SUCCESS_GET_CLUB_POSTS")

@@ -41,8 +41,8 @@ public class ClubPostCommentLikeService {
     ClubPostComment clubPostComment =
         ClubPostCommentUtils.getClubPostCommentById(clubPostCommentId, clubPostCommentRepository);
 
-    validateUserIsMemberInClub(user, club);
-    validateClubPostCommentInClubPost(clubPost, clubPostComment);
+    ClubUtils.validateUserIsMemberInClub(user, club);
+    ClubPostCommentUtils.validateClubPostCommentInClubPost(clubPost, clubPostComment);
     validateUserIsNotWriter(user, clubPostComment);
     validateAlreadyCreated(user, clubPostComment);
 
@@ -61,28 +61,9 @@ public class ClubPostCommentLikeService {
         .build();
   }
 
-  private void validateUserIsMemberInClub(User user, Club club) {
-    boolean isUserInClubMembers =
-        user.getClubMembers().stream()
-            .anyMatch(clubMember -> clubMember.getClub().getId() == club.getId());
-    if (!isUserInClubMembers) {
-      throw BaseException.from(ErrorCode.MEMBER_NOT_IN_CLUB);
-    }
-  }
-
   private void validateUserIsNotWriter(User user, ClubPostComment clubPostComment) {
     if (user.getId() == clubPostComment.getUser().getId()) {
       throw BaseException.from(ErrorCode.USER_MUST_NOT_OWNER);
-    }
-  }
-
-  private void validateClubPostCommentInClubPost(
-      ClubPost clubPost, ClubPostComment clubPostComment) {
-    boolean isClubPostCommentInClubPost =
-        clubPost.getComments().stream()
-            .anyMatch(comment -> comment.getId() == clubPostComment.getId());
-    if (!isClubPostCommentInClubPost) {
-      throw BaseException.from(ErrorCode.CLUB_POST_COMMENT_NOT_IN_CLUB_POST);
     }
   }
 
@@ -107,8 +88,8 @@ public class ClubPostCommentLikeService {
     ClubPostComment clubPostComment =
         ClubPostCommentUtils.getClubPostCommentById(clubPostCommentId, clubPostCommentRepository);
 
-    validateUserIsMemberInClub(user, club);
-    validateClubPostCommentInClubPost(clubPost, clubPostComment);
+    ClubUtils.validateUserIsMemberInClub(user, club);
+    ClubPostCommentUtils.validateClubPostCommentInClubPost(clubPost, clubPostComment);
     validateUserIsNotWriter(user, clubPostComment);
 
     ClubPostCommentLike clubPostCommentLike =
