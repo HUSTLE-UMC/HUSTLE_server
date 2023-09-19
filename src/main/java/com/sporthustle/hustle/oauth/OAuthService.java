@@ -11,6 +11,9 @@ import com.sporthustle.hustle.oauth.dto.KakaoAPIGetUserResponseDTO;
 import com.sporthustle.hustle.oauth.dto.KakaoAPITokenResponseDTO;
 import com.sporthustle.hustle.oauth.exception.BadGatewayException;
 import java.time.Duration;
+
+import com.sporthustle.hustle.user.entity.User;
+import com.sporthustle.hustle.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -32,6 +35,8 @@ public class OAuthService {
   private String redirectUrl;
 
   private final WebClient webClient;
+
+  private final UserRepository userRepository;
 
   public GetKakaoTokenResponseDTO getKakaoToken(String code) {
     KakaoAPITokenResponseDTO response =
@@ -109,10 +114,16 @@ public class OAuthService {
         .name(response.getKakaoAccount().getProfile().getNickname())
         .password(getRandomPassword())
         .gender(response.getKakaoAccount().getGender())
+        .isSignUpUser(isSignUpUser(response.getKakaoAccount().getEmail(), response.snsId))
         .build();
   }
 
   private String getRandomPassword() {
     return RandomStringUtils.randomAlphanumeric(100);
   }
+
+  private boolean isSignUpUser(String email, String snsId) {
+    return userRepository.existsByEmailAndSnsId(email, snsId);
+  }
+
 }
