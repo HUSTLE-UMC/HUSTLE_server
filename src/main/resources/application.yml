@@ -63,7 +63,7 @@ cloud:
 ---
 spring.config:
   activate:
-    on-profile: prod
+    on-profile: prod1
 
 spring:
   jpa:
@@ -79,3 +79,26 @@ oauth:
   kakao:
     secret:
       redirect-url: ENC(2j1v5MMXa/AqK/Ry8jVuctw/+/27pwQFPrC11SeYZkzidsAhxwEHDeKWni7eGvt8baKOA7tRR+2vV7BOIHs+pg==)
+server:
+  port: 8080
+---
+spring.config:
+  activate:
+    on-profile: prod2
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    driver-class-name: ENC(4zv7k66bl0S9CkPIg0RRzaWiUGE2DhjRaIxsA8E9l+kWvMMPExbdHg==)
+    url: ENC(n4BgVC45DNHZ7Dv+eIGHp6NmDrt9UVXY93jMqfOq+Eb4lRi9oP6by9eJ3NuZGKrnk1QUdrQ4J2QFWMTvqV9AuCG2y500vtLwPJngcLnbAz1JxooZAJoNCxYOyW1HwFnOY0zEqGA45hhAZxCpZEKn4IPiX8JOxYZpl13BDw/qoExcYplGW3GJVD3mhD1Yqy2B)
+    username: ENC(3IlDHh9Hevic4hySvkJUVfhwVklsc20q)
+    password: ENC(Z9yNmaE1Sk5DKZerehtnl+GNz3MfhVBsrT8obGfbaLU=)
+
+oauth:
+  kakao:
+    secret:
+      redirect-url: ENC(2j1v5MMXa/AqK/Ry8jVuctw/+/27pwQFPrC11SeYZkzidsAhxwEHDeKWni7eGvt8baKOA7tRR+2vV7BOIHs+pg==)
+server:
+  port: 8081
