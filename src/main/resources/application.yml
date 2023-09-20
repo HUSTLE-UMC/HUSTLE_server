@@ -99,6 +99,6 @@ spring:
 oauth:
   kakao:
     secret:
-      redirect-url: ENC(2j1v5MMXa/AqK/Ry8jVuctw/+/27pwQFPrC11SeYZkzidsAhxwEHDeKWni7eGvt8baKOA7tRR+2vV7BOIHs+pg==)
+      redirect-url: ENC(tp2kAlRtHcKHZWoUz8NaASllsWcty451YZn/QGOa3ZBFub8aX0XsuiqqYeoPT96Y)
 server:
   port: 8081

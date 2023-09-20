@@ -11,4 +11,5 @@ public class GetKakaoUserInformationResponseDTO {
   private String password;
   private String name;
   private String gender;
+  private boolean isSignUpUser;
 }
