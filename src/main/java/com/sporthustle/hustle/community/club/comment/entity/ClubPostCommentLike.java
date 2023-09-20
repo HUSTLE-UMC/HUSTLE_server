@@ -1,9 +1,10 @@
-package com.sporthustle.hustle.community.entity;
+package com.sporthustle.hustle.community.club.comment.entity;
 
 import com.sporthustle.hustle.common.entity.BaseEntity;
 import com.sporthustle.hustle.user.entity.User;
 import javax.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,10 @@ public class ClubPostCommentLike extends BaseEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "club_post_comment_id", nullable = false)
   private ClubPostComment clubPostComment;
+
+  @Builder
+  private ClubPostCommentLike(User user, ClubPostComment clubPostComment) {
+    this.user = user;
+    this.clubPostComment = clubPostComment;
+  }
 }

@@ -1,5 +1,6 @@
 package com.sporthustle.hustle.common.config;
 
+import com.sporthustle.hustle.common.converter.CommentSortTypeRequestConverter;
 import com.sporthustle.hustle.common.converter.CompetitionTypeRequestConverter;
 import com.sporthustle.hustle.common.converter.InGameTypeRequestConverter;
 import com.sporthustle.hustle.common.resolver.AuthUserResolver;
@@ -17,6 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
   public void addFormatters(FormatterRegistry registry) {
     registry.addConverter(new CompetitionTypeRequestConverter());
     registry.addConverter(new InGameTypeRequestConverter());
+    registry.addConverter(new CommentSortTypeRequestConverter());
   }
 
   @Override
