@@ -32,6 +32,7 @@ public enum ErrorCode {
   FILE_NOT_IMAGE(BAD_REQUEST, "FILE_NOT_IMAGE", "파일이 이미지 형식이 아닙니다."),
   INVALID_AUTH_CODE(BAD_REQUEST, "INVALID_AUTH_CODE", "잘못된 인증 코드입니다"),
   UNKNOWN_ERROR(BAD_GATEWAY, "UNKNOWN_ERROR", "알 수 없는 오류입니다."),
+  CLUB_JOIN_REQUEST_NOT_FOUND(BAD_REQUEST, "CLUB_JOIN_REQUEST_NOT_FOUND", "동아리 지원 내역을 찾을 수 없습니다.")
   ;
 
   private final HttpStatus status;

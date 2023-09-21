@@ -87,15 +87,17 @@ public class ClubController {
     return ResponseEntity.ok(getClubMembersResponseDTO);
   }
 
+  /*
   @Operation(summary = "동아리 참여 API")
   @ApiResponses({
     @ApiResponse(responseCode = "200", description = "동아리 등록에 성공한 경우"),
     @ApiResponse(responseCode = "400", description = "파라미터 검증에 실패한 경우")
   })
   @PostMapping("/{club_id}/member")
-  public ResponseEntity<JoinClubResponseDTO> joinClub(
+  public ResponseEntity<JoinClubRequestResponseDTO> joinClub(
       @UserId Long userId, @PathVariable("club_id") Long clubId) {
-    JoinClubResponseDTO joinClubResponseDTO = clubService.joinClub(userId, clubId);
+    JoinClubRequestResponseDTO joinClubResponseDTO = clubService.joinClub(userId, clubId);
     return ResponseEntity.ok(joinClubResponseDTO);
   }
+  */
 }

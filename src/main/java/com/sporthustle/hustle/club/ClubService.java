@@ -138,10 +138,10 @@ public class ClubService {
         .build();
   }
 
+  /*
   @Transactional
-  public JoinClubResponseDTO joinClub(Long userId, Long clubId) {
+  public JoinClubRequestResponseDTO joinClub(Long userId, Long clubId) {
     User user = UserUtils.getUserById(userId, userRepository);
-
     Club club = ClubUtils.getClubById(clubId, clubRepository);
 
     ClubMember clubMember = ClubMember.builder().user(user).club(club).build();
@@ -149,12 +149,13 @@ public class ClubService {
 
     ClubMemberResponseDTO clubMemberResponseDTO = ClubMemberResponseDTO.from(clubMember);
 
-    return JoinClubResponseDTO.builder()
+    return JoinClubRequestResponseDTO.builder()
         .code("SUCCESS_JOIN_CLUB")
         .message("동아리에 성공적으로 등록했습니다.")
         .data(clubMemberResponseDTO)
         .build();
-  }
+  }*/
+
 
   @Transactional(readOnly = true)
   public GetClubMembersResponseDTO getClubMembers(Long userId, Long clubId) {

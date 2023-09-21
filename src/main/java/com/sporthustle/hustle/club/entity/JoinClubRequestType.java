@@ -1,5 +1,5 @@
 package com.sporthustle.hustle.club.entity;
-public enum ClubJoinRequestType {
+public enum JoinClubRequestType {
         WAIT,
         ACCEPT,
         DECLINE,
