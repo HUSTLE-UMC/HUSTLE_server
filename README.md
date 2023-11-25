@@ -11,14 +11,13 @@
 
 ## How to run?
 
-허슬 서버 프로젝트의 설정 파일은 Jasypt 라이브러리로 암호화하고 있습니다.
-실행 시 공유받은 암호화 키를 설정해야 합니다.
-
 ```bash
 # for database setting up
 docker-compose up -d
 ```
 
+허슬 서버 프로젝트의 설정 파일은 Jasypt 라이브러리로 암호화하고 있습니다.
+실행 시 공유받은 암호화 키를 설정해야 합니다.
 프로젝트 코드 실행 시, 테스트 코드 실행 시 아래와 같이 VM options 으로 IDE 의 실행 환경에 추가해야 합니다.
 
 ```bash
